@@ -1,0 +1,402 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"encoder.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.ENCODER_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	ENCODER_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	ENCODER_Init:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/ENCODER/encoder.c"
+   1:Hardware/ENCODER/encoder.c **** #include "encoder.h"
+   2:Hardware/ENCODER/encoder.c **** 
+   3:Hardware/ENCODER/encoder.c **** #include <stm32f10x_rcc.h>
+   4:Hardware/ENCODER/encoder.c **** 
+   5:Hardware/ENCODER/encoder.c **** u8 KUP;  // 旋钮锁死标志 （1为锁死）
+   6:Hardware/ENCODER/encoder.c **** u16 cou;
+   7:Hardware/ENCODER/encoder.c **** 
+   8:Hardware/ENCODER/encoder.c **** void ENCODER_Init(void) {
+  27              		.loc 1 8 25 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  36 0002 82B0     		sub	sp, sp, #8
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 16
+   9:Hardware/ENCODER/encoder.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  39              		.loc 1 9 3 view .LVU1
+  10:Hardware/ENCODER/encoder.c ****   RCC_APB2PeriphClockCmd(
+  40              		.loc 1 10 3 view .LVU2
+  41 0004 0121     		movs	r1, #1
+  42 0006 1C20     		movs	r0, #28
+  43 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  44              	.LVL0:
+  11:Hardware/ENCODER/encoder.c ****       RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC,
+  12:Hardware/ENCODER/encoder.c ****       ENABLE);
+  13:Hardware/ENCODER/encoder.c ****   GPIO_InitStructure.GPIO_Pin = ENCODER_L | ENCODER_D;
+  45              		.loc 1 13 3 view .LVU3
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 2
+
+
+  46              		.loc 1 13 31 is_stmt 0 view .LVU4
+  47 000c C023     		movs	r3, #192
+  48 000e ADF80430 		strh	r3, [sp, #4]	@ movhi
+  14:Hardware/ENCODER/encoder.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  49              		.loc 1 14 3 is_stmt 1 view .LVU5
+  50              		.loc 1 14 32 is_stmt 0 view .LVU6
+  51 0012 4824     		movs	r4, #72
+  52 0014 8DF80740 		strb	r4, [sp, #7]
+  15:Hardware/ENCODER/encoder.c ****   GPIO_Init(ENCODER_PORT_A, &GPIO_InitStructure);
+  53              		.loc 1 15 3 is_stmt 1 view .LVU7
+  54 0018 01A9     		add	r1, sp, #4
+  55 001a 0748     		ldr	r0, .L3
+  56 001c FFF7FEFF 		bl	GPIO_Init
+  57              	.LVL1:
+  16:Hardware/ENCODER/encoder.c **** 
+  17:Hardware/ENCODER/encoder.c ****   GPIO_InitStructure.GPIO_Pin = ENCODER_R;
+  58              		.loc 1 17 3 view .LVU8
+  59              		.loc 1 17 31 is_stmt 0 view .LVU9
+  60 0020 0423     		movs	r3, #4
+  61 0022 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  18:Hardware/ENCODER/encoder.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  62              		.loc 1 18 3 is_stmt 1 view .LVU10
+  63              		.loc 1 18 32 is_stmt 0 view .LVU11
+  64 0026 8DF80740 		strb	r4, [sp, #7]
+  19:Hardware/ENCODER/encoder.c ****   GPIO_Init(ENCODER_PORT_B, &GPIO_InitStructure);
+  65              		.loc 1 19 3 is_stmt 1 view .LVU12
+  66 002a 0DEB0301 		add	r1, sp, r3
+  67 002e 0348     		ldr	r0, .L3+4
+  68 0030 FFF7FEFF 		bl	GPIO_Init
+  69              	.LVL2:
+  20:Hardware/ENCODER/encoder.c **** }
+  70              		.loc 1 20 1 is_stmt 0 view .LVU13
+  71 0034 02B0     		add	sp, sp, #8
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_offset 8
+  74              		@ sp needed
+  75 0036 10BD     		pop	{r4, pc}
+  76              	.L4:
+  77              		.align	2
+  78              	.L3:
+  79 0038 00080140 		.word	1073809408
+  80 003c 000C0140 		.word	1073810432
+  81              		.cfi_endproc
+  82              	.LFE29:
+  84              		.section	.text.ENCODER_READ,"ax",%progbits
+  85              		.align	1
+  86              		.global	ENCODER_READ
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	ENCODER_READ:
+  92              	.LFB30:
+  21:Hardware/ENCODER/encoder.c **** 
+  22:Hardware/ENCODER/encoder.c **** u8 ENCODER_READ(void) {
+  93              		.loc 1 22 23 is_stmt 1 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 3
+
+
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 38B5     		push	{r3, r4, r5, lr}
+  98              	.LCFI3:
+  99              		.cfi_def_cfa_offset 16
+ 100              		.cfi_offset 3, -16
+ 101              		.cfi_offset 4, -12
+ 102              		.cfi_offset 5, -8
+ 103              		.cfi_offset 14, -4
+  23:Hardware/ENCODER/encoder.c ****   u8 a;
+ 104              		.loc 1 23 3 view .LVU15
+  24:Hardware/ENCODER/encoder.c ****   u8 kt;
+ 105              		.loc 1 24 3 view .LVU16
+  25:Hardware/ENCODER/encoder.c ****   a = 0;
+ 106              		.loc 1 25 3 view .LVU17
+ 107              	.LVL3:
+  26:Hardware/ENCODER/encoder.c ****   if (GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L)) KUP = 0;
+ 108              		.loc 1 26 3 view .LVU18
+ 109              		.loc 1 26 7 is_stmt 0 view .LVU19
+ 110 0002 4021     		movs	r1, #64
+ 111 0004 2A48     		ldr	r0, .L18
+ 112 0006 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 113              	.LVL4:
+ 114              		.loc 1 26 6 view .LVU20
+ 115 000a 10B1     		cbz	r0, .L6
+ 116              		.loc 1 26 57 is_stmt 1 discriminator 1 view .LVU21
+ 117              		.loc 1 26 61 is_stmt 0 discriminator 1 view .LVU22
+ 118 000c 294B     		ldr	r3, .L18+4
+ 119 000e 0022     		movs	r2, #0
+ 120 0010 1A70     		strb	r2, [r3]
+ 121              	.L6:
+  27:Hardware/ENCODER/encoder.c ****   if (!GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L) && KUP == 0) {
+ 122              		.loc 1 27 3 is_stmt 1 view .LVU23
+ 123              		.loc 1 27 8 is_stmt 0 view .LVU24
+ 124 0012 4021     		movs	r1, #64
+ 125 0014 2648     		ldr	r0, .L18
+ 126 0016 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 127              	.LVL5:
+ 128              		.loc 1 27 6 view .LVU25
+ 129 001a 0446     		mov	r4, r0
+ 130 001c 78BB     		cbnz	r0, .L12
+ 131              		.loc 1 27 64 discriminator 1 view .LVU26
+ 132 001e 254B     		ldr	r3, .L18+4
+ 133 0020 1D78     		ldrb	r5, [r3]	@ zero_extendqisi2
+ 134              		.loc 1 27 57 discriminator 1 view .LVU27
+ 135 0022 6DBB     		cbnz	r5, .L7
+  28:Hardware/ENCODER/encoder.c ****     delay_us(100);
+ 136              		.loc 1 28 5 is_stmt 1 view .LVU28
+ 137 0024 6420     		movs	r0, #100
+ 138 0026 FFF7FEFF 		bl	delay_us
+ 139              	.LVL6:
+  29:Hardware/ENCODER/encoder.c ****     kt = GPIO_ReadInputDataBit(ENCODER_PORT_B, ENCODER_R);
+ 140              		.loc 1 29 5 view .LVU29
+ 141              		.loc 1 29 10 is_stmt 0 view .LVU30
+ 142 002a 0421     		movs	r1, #4
+ 143 002c 2248     		ldr	r0, .L18+8
+ 144 002e FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 145              	.LVL7:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 4
+
+
+ 146 0032 0446     		mov	r4, r0
+ 147              	.LVL8:
+  30:Hardware/ENCODER/encoder.c ****     delay_ms(3);
+ 148              		.loc 1 30 5 is_stmt 1 view .LVU31
+ 149 0034 0320     		movs	r0, #3
+ 150 0036 FFF7FEFF 		bl	delay_ms
+ 151              	.LVL9:
+  31:Hardware/ENCODER/encoder.c ****     if (!GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L)) {
+ 152              		.loc 1 31 5 view .LVU32
+ 153              		.loc 1 31 10 is_stmt 0 view .LVU33
+ 154 003a 4021     		movs	r1, #64
+ 155 003c 1C48     		ldr	r0, .L18
+ 156 003e FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 157              	.LVL10:
+ 158              		.loc 1 31 8 view .LVU34
+ 159 0042 38BB     		cbnz	r0, .L13
+  32:Hardware/ENCODER/encoder.c ****       if (kt == 0) {
+ 160              		.loc 1 32 7 is_stmt 1 view .LVU35
+ 161              		.loc 1 32 10 is_stmt 0 view .LVU36
+ 162 0044 24B9     		cbnz	r4, .L14
+  33:Hardware/ENCODER/encoder.c ****         a = 1;
+ 163              		.loc 1 33 11 view .LVU37
+ 164 0046 0124     		movs	r4, #1
+ 165              	.LVL11:
+ 166              	.L8:
+  34:Hardware/ENCODER/encoder.c ****       } else {
+  35:Hardware/ENCODER/encoder.c ****         a = 2;
+  36:Hardware/ENCODER/encoder.c ****       }
+  37:Hardware/ENCODER/encoder.c ****       cou = 0;
+ 167              		.loc 1 37 7 is_stmt 1 view .LVU38
+ 168              		.loc 1 37 11 is_stmt 0 view .LVU39
+ 169 0048 1C4B     		ldr	r3, .L18+12
+ 170 004a 0022     		movs	r2, #0
+ 171 004c 1A80     		strh	r2, [r3]	@ movhi
+  38:Hardware/ENCODER/encoder.c ****       while (!GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L) && cou < 60000) {
+ 172              		.loc 1 38 7 is_stmt 1 view .LVU40
+ 173              		.loc 1 38 13 is_stmt 0 view .LVU41
+ 174 004e 0AE0     		b	.L9
+ 175              	.LVL12:
+ 176              	.L14:
+  35:Hardware/ENCODER/encoder.c ****       }
+ 177              		.loc 1 35 11 view .LVU42
+ 178 0050 0224     		movs	r4, #2
+ 179              	.LVL13:
+  35:Hardware/ENCODER/encoder.c ****       }
+ 180              		.loc 1 35 11 view .LVU43
+ 181 0052 F9E7     		b	.L8
+ 182              	.LVL14:
+ 183              	.L10:
+  39:Hardware/ENCODER/encoder.c ****         cou++;
+ 184              		.loc 1 39 9 is_stmt 1 view .LVU44
+ 185              		.loc 1 39 12 is_stmt 0 view .LVU45
+ 186 0054 0133     		adds	r3, r3, #1
+ 187 0056 194A     		ldr	r2, .L18+12
+ 188 0058 1380     		strh	r3, [r2]	@ movhi
+  40:Hardware/ENCODER/encoder.c ****         KUP = 1;
+ 189              		.loc 1 40 9 is_stmt 1 view .LVU46
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 5
+
+
+ 190              		.loc 1 40 13 is_stmt 0 view .LVU47
+ 191 005a 164B     		ldr	r3, .L18+4
+ 192 005c 0122     		movs	r2, #1
+ 193 005e 1A70     		strb	r2, [r3]
+  41:Hardware/ENCODER/encoder.c ****         delay_us(20);
+ 194              		.loc 1 41 9 is_stmt 1 view .LVU48
+ 195 0060 1420     		movs	r0, #20
+ 196 0062 FFF7FEFF 		bl	delay_us
+ 197              	.LVL15:
+ 198              	.L9:
+  38:Hardware/ENCODER/encoder.c ****         cou++;
+ 199              		.loc 1 38 13 view .LVU49
+  38:Hardware/ENCODER/encoder.c ****         cou++;
+ 200              		.loc 1 38 15 is_stmt 0 view .LVU50
+ 201 0066 4021     		movs	r1, #64
+ 202 0068 1148     		ldr	r0, .L18
+ 203 006a FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 204              	.LVL16:
+  38:Hardware/ENCODER/encoder.c ****         cou++;
+ 205              		.loc 1 38 13 view .LVU51
+ 206 006e 38B9     		cbnz	r0, .L7
+  38:Hardware/ENCODER/encoder.c ****         cou++;
+ 207              		.loc 1 38 71 discriminator 1 view .LVU52
+ 208 0070 124B     		ldr	r3, .L18+12
+ 209 0072 1B88     		ldrh	r3, [r3]
+  38:Hardware/ENCODER/encoder.c ****         cou++;
+ 210              		.loc 1 38 64 discriminator 1 view .LVU53
+ 211 0074 4EF65F22 		movw	r2, #59999
+ 212 0078 9342     		cmp	r3, r2
+ 213 007a EBD9     		bls	.L10
+ 214 007c 00E0     		b	.L7
+ 215              	.LVL17:
+ 216              	.L12:
+  25:Hardware/ENCODER/encoder.c ****   if (GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L)) KUP = 0;
+ 217              		.loc 1 25 5 view .LVU54
+ 218 007e 0024     		movs	r4, #0
+ 219              	.LVL18:
+ 220              	.L7:
+  42:Hardware/ENCODER/encoder.c ****       }
+  43:Hardware/ENCODER/encoder.c ****     }
+  44:Hardware/ENCODER/encoder.c ****   }
+  45:Hardware/ENCODER/encoder.c ****   if (!GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_D) && KUP == 0) {
+ 221              		.loc 1 45 3 is_stmt 1 view .LVU55
+ 222              		.loc 1 45 8 is_stmt 0 view .LVU56
+ 223 0080 8021     		movs	r1, #128
+ 224 0082 0B48     		ldr	r0, .L18
+ 225 0084 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 226              	.LVL19:
+ 227              		.loc 1 45 6 view .LVU57
+ 228 0088 10B9     		cbnz	r0, .L11
+ 229              		.loc 1 45 64 discriminator 1 view .LVU58
+ 230 008a 0A4B     		ldr	r3, .L18+4
+ 231 008c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 232              		.loc 1 45 57 discriminator 1 view .LVU59
+ 233 008e 1BB1     		cbz	r3, .L17
+ 234              	.LVL20:
+ 235              	.L11:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 6
+
+
+  46:Hardware/ENCODER/encoder.c ****     delay_ms(20);
+  47:Hardware/ENCODER/encoder.c ****     if (!GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_D)) {
+  48:Hardware/ENCODER/encoder.c ****       a = 3;
+  49:Hardware/ENCODER/encoder.c ****     }
+  50:Hardware/ENCODER/encoder.c ****   }
+  51:Hardware/ENCODER/encoder.c ****   return a;
+ 236              		.loc 1 51 3 is_stmt 1 view .LVU60
+  52:Hardware/ENCODER/encoder.c **** }
+ 237              		.loc 1 52 1 is_stmt 0 view .LVU61
+ 238 0090 2046     		mov	r0, r4
+ 239 0092 38BD     		pop	{r3, r4, r5, pc}
+ 240              	.LVL21:
+ 241              	.L13:
+  25:Hardware/ENCODER/encoder.c ****   if (GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L)) KUP = 0;
+ 242              		.loc 1 25 5 view .LVU62
+ 243 0094 2C46     		mov	r4, r5
+ 244              	.LVL22:
+  25:Hardware/ENCODER/encoder.c ****   if (GPIO_ReadInputDataBit(ENCODER_PORT_A, ENCODER_L)) KUP = 0;
+ 245              		.loc 1 25 5 view .LVU63
+ 246 0096 F3E7     		b	.L7
+ 247              	.LVL23:
+ 248              	.L17:
+  46:Hardware/ENCODER/encoder.c ****     delay_ms(20);
+ 249              		.loc 1 46 5 is_stmt 1 view .LVU64
+ 250 0098 1420     		movs	r0, #20
+ 251 009a FFF7FEFF 		bl	delay_ms
+ 252              	.LVL24:
+  47:Hardware/ENCODER/encoder.c ****       a = 3;
+ 253              		.loc 1 47 5 view .LVU65
+  47:Hardware/ENCODER/encoder.c ****       a = 3;
+ 254              		.loc 1 47 10 is_stmt 0 view .LVU66
+ 255 009e 8021     		movs	r1, #128
+ 256 00a0 0348     		ldr	r0, .L18
+ 257 00a2 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 258              	.LVL25:
+  47:Hardware/ENCODER/encoder.c ****       a = 3;
+ 259              		.loc 1 47 8 view .LVU67
+ 260 00a6 0028     		cmp	r0, #0
+ 261 00a8 F2D1     		bne	.L11
+  48:Hardware/ENCODER/encoder.c ****     }
+ 262              		.loc 1 48 9 view .LVU68
+ 263 00aa 0324     		movs	r4, #3
+ 264              	.LVL26:
+  48:Hardware/ENCODER/encoder.c ****     }
+ 265              		.loc 1 48 9 view .LVU69
+ 266 00ac F0E7     		b	.L11
+ 267              	.L19:
+ 268 00ae 00BF     		.align	2
+ 269              	.L18:
+ 270 00b0 00080140 		.word	1073809408
+ 271 00b4 00000000 		.word	.LANCHOR0
+ 272 00b8 000C0140 		.word	1073810432
+ 273 00bc 00000000 		.word	.LANCHOR1
+ 274              		.cfi_endproc
+ 275              	.LFE30:
+ 277              		.global	cou
+ 278              		.global	KUP
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 7
+
+
+ 279              		.section	.bss.KUP,"aw",%nobits
+ 280              		.set	.LANCHOR0,. + 0
+ 283              	KUP:
+ 284 0000 00       		.space	1
+ 285              		.section	.bss.cou,"aw",%nobits
+ 286              		.align	1
+ 287              		.set	.LANCHOR1,. + 0
+ 290              	cou:
+ 291 0000 0000     		.space	2
+ 292              		.text
+ 293              	.Letext0:
+ 294              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 295              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 296              		.file 4 "CMSIS/stm32f10x.h"
+ 297              		.file 5 "LIB/inc/stm32f10x_gpio.h"
+ 298              		.file 6 "BASIC/delay/delay.h"
+ 299              		.file 7 "LIB/inc/stm32f10x_rcc.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 encoder.c
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:18     .text.ENCODER_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:24     .text.ENCODER_Init:00000000 ENCODER_Init
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:79     .text.ENCODER_Init:00000038 $d
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:85     .text.ENCODER_READ:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:91     .text.ENCODER_READ:00000000 ENCODER_READ
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:270    .text.ENCODER_READ:000000b0 $d
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:290    .bss.cou:00000000 cou
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:283    .bss.KUP:00000000 KUP
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:284    .bss.KUP:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccmIa0Qv.s:286    .bss.cou:00000000 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_ReadInputDataBit
+delay_us
+delay_ms

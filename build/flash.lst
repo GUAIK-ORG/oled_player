@@ -1,0 +1,134 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"flash.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.FLASH_W,"ax",%progbits
+  18              		.align	1
+  19              		.global	FLASH_W
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	FLASH_W:
+  25              	.LVL0:
+  26              	.LFB29:
+  27              		.file 1 "BASIC/flash/flash.c"
+   1:BASIC/flash/flash.c **** #include "flash.h"
+   2:BASIC/flash/flash.c **** 
+   3:BASIC/flash/flash.c **** #include <stm32f10x_flash.h>
+   4:BASIC/flash/flash.c **** 
+   5:BASIC/flash/flash.c **** void FLASH_W(u32 add, u16 dat) {
+  28              		.loc 1 5 32 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 5 32 is_stmt 0 view .LVU1
+  33 0000 38B5     		push	{r3, r4, r5, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 16
+  36              		.cfi_offset 3, -16
+  37              		.cfi_offset 4, -12
+  38              		.cfi_offset 5, -8
+  39              		.cfi_offset 14, -4
+  40 0002 0446     		mov	r4, r0
+  41 0004 0D46     		mov	r5, r1
+   6:BASIC/flash/flash.c ****   FLASH_Unlock();
+  42              		.loc 1 6 3 is_stmt 1 view .LVU2
+  43 0006 FFF7FEFF 		bl	FLASH_Unlock
+  44              	.LVL1:
+   7:BASIC/flash/flash.c ****   FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGERR |
+  45              		.loc 1 7 3 view .LVU3
+  46 000a 3520     		movs	r0, #53
+  47 000c FFF7FEFF 		bl	FLASH_ClearFlag
+  48              	.LVL2:
+   8:BASIC/flash/flash.c ****                   FLASH_FLAG_WRPRTERR);
+   9:BASIC/flash/flash.c ****   FLASH_ErasePage(add);
+  49              		.loc 1 9 3 view .LVU4
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s 			page 2
+
+
+  50 0010 2046     		mov	r0, r4
+  51 0012 FFF7FEFF 		bl	FLASH_ErasePage
+  52              	.LVL3:
+  10:BASIC/flash/flash.c ****   FLASH_ProgramHalfWord(add, dat);
+  53              		.loc 1 10 3 view .LVU5
+  54 0016 2946     		mov	r1, r5
+  55 0018 2046     		mov	r0, r4
+  56 001a FFF7FEFF 		bl	FLASH_ProgramHalfWord
+  57              	.LVL4:
+  11:BASIC/flash/flash.c ****   FLASH_ClearFlag(FLASH_FLAG_BSY | FLASH_FLAG_EOP | FLASH_FLAG_PGERR |
+  58              		.loc 1 11 3 view .LVU6
+  59 001e 3520     		movs	r0, #53
+  60 0020 FFF7FEFF 		bl	FLASH_ClearFlag
+  61              	.LVL5:
+  12:BASIC/flash/flash.c ****                   FLASH_FLAG_WRPRTERR);
+  13:BASIC/flash/flash.c ****   FLASH_Lock();
+  62              		.loc 1 13 3 view .LVU7
+  63 0024 FFF7FEFF 		bl	FLASH_Lock
+  64              	.LVL6:
+  14:BASIC/flash/flash.c **** }
+  65              		.loc 1 14 1 is_stmt 0 view .LVU8
+  66 0028 38BD     		pop	{r3, r4, r5, pc}
+  67              		.loc 1 14 1 view .LVU9
+  68              		.cfi_endproc
+  69              	.LFE29:
+  71              		.section	.text.FLASH_R,"ax",%progbits
+  72              		.align	1
+  73              		.global	FLASH_R
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	FLASH_R:
+  79              	.LVL7:
+  80              	.LFB30:
+  15:BASIC/flash/flash.c **** 
+  16:BASIC/flash/flash.c **** u16 FLASH_R(u32 add) { return *((u16*)add); }...
+  81              		.loc 1 16 22 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  85              		@ link register save eliminated.
+  86              		.loc 1 16 24 view .LVU11
+  87              		.loc 1 16 45 is_stmt 0 view .LVU12
+  88 0000 0088     		ldrh	r0, [r0]
+  89              	.LVL8:
+  90              		.loc 1 16 45 view .LVU13
+  91 0002 7047     		bx	lr
+  92              		.cfi_endproc
+  93              	.LFE30:
+  95              		.text
+  96              	.Letext0:
+  97              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+  98              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+  99              		.file 4 "CMSIS/stm32f10x.h"
+ 100              		.file 5 "LIB/inc/stm32f10x_flash.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 flash.c
+C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s:18     .text.FLASH_W:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s:24     .text.FLASH_W:00000000 FLASH_W
+C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s:72     .text.FLASH_R:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccKHxQtP.s:78     .text.FLASH_R:00000000 FLASH_R
+
+UNDEFINED SYMBOLS
+FLASH_Unlock
+FLASH_ClearFlag
+FLASH_ErasePage
+FLASH_ProgramHalfWord
+FLASH_Lock

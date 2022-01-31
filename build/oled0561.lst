@@ -1,0 +1,1946 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"oled0561.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.OLED_DISPLAY_ON,"ax",%progbits
+  18              		.align	1
+  19              		.global	OLED_DISPLAY_ON
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	OLED_DISPLAY_ON:
+  25              	.LFB30:
+  26              		.file 1 "Hardware/OLED0561/oled0561.c"
+   1:Hardware/OLED0561/oled0561.c **** #include "oled0561.h"
+   2:Hardware/OLED0561/oled0561.c **** 
+   3:Hardware/OLED0561/oled0561.c **** #include "ASCII_8x16.h"
+   4:Hardware/OLED0561/oled0561.c **** #include "CHS_16x16.h"
+   5:Hardware/OLED0561/oled0561.c **** #include "PIC.h"
+   6:Hardware/OLED0561/oled0561.c **** 
+   7:Hardware/OLED0561/oled0561.c **** void OLED0561_Init(void) {
+   8:Hardware/OLED0561/oled0561.c ****   OLED_DISPLAY_OFF();
+   9:Hardware/OLED0561/oled0561.c ****   OLED_DISPLAY_CLEAR();
+  10:Hardware/OLED0561/oled0561.c ****   OLED_DISPLAY_ON();
+  11:Hardware/OLED0561/oled0561.c **** }
+  12:Hardware/OLED0561/oled0561.c **** 
+  13:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_ON(void) {
+  27              		.loc 1 13 28 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 32
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  36 0002 88B0     		sub	sp, sp, #32
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 40
+  14:Hardware/OLED0561/oled0561.c ****   u8 buf[28] = {
+  39              		.loc 1 14 3 view .LVU1
+  40              		.loc 1 14 6 is_stmt 0 view .LVU2
+  41 0004 0DF1040C 		add	ip, sp, #4
+  42 0008 074C     		ldr	r4, .L3
+  43 000a 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+  44 000c ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 2
+
+
+  45 0010 94E80700 		ldm	r4, {r0, r1, r2}
+  46 0014 8CE80700 		stm	ip, {r0, r1, r2}
+  15:Hardware/OLED0561/oled0561.c ****       0xae,        // 0xae:关显示，0xaf:开显示
+  16:Hardware/OLED0561/oled0561.c ****       0x00, 0x10,  // 开始地址（双字节）
+  17:Hardware/OLED0561/oled0561.c ****       0xd5, 0x80,  // 显示时钟频率？
+  18:Hardware/OLED0561/oled0561.c ****       0xa8, 0x3f,  // 复用率？
+  19:Hardware/OLED0561/oled0561.c ****       0xd3, 0x00,  // 显示偏移？
+  20:Hardware/OLED0561/oled0561.c ****       0xb0,        // 写入页位置（0xB0~7）
+  21:Hardware/OLED0561/oled0561.c ****       0x40,        // 显示开始线
+  22:Hardware/OLED0561/oled0561.c ****       0x8d, 0x14,  // VCC电源
+  23:Hardware/OLED0561/oled0561.c ****       0xa1,        // 设置段重新映射？
+  24:Hardware/OLED0561/oled0561.c ****       0xc8,        // COM输出方式？
+  25:Hardware/OLED0561/oled0561.c ****       0xda, 0x12,  // COM输出方式？
+  26:Hardware/OLED0561/oled0561.c ****       0x81, 0xff,  // 对比度，指令：0x81，数据：0~255（255最高）
+  27:Hardware/OLED0561/oled0561.c ****       0xd9, 0xf1,  // 充电周期？
+  28:Hardware/OLED0561/oled0561.c ****       0xdb, 0x30,  // VCC电压输出
+  29:Hardware/OLED0561/oled0561.c ****       0x20, 0x00,  // 水平寻址设置
+  30:Hardware/OLED0561/oled0561.c ****       0xa4,        // 0xa4:正常显示，0xa5:整体点亮
+  31:Hardware/OLED0561/oled0561.c ****       0xa6,        // 0xa6:正常显示，0xa7:反色显示
+  32:Hardware/OLED0561/oled0561.c ****       0xaf         // 0xae:关显示，0xaf:开显示
+  33:Hardware/OLED0561/oled0561.c ****   };               //
+  34:Hardware/OLED0561/oled0561.c ****   I2C_SEND_BUFFER(OLED0561_ADDR, COM, buf, 28);
+  47              		.loc 1 34 3 is_stmt 1 view .LVU3
+  48 0018 1C23     		movs	r3, #28
+  49 001a 01AA     		add	r2, sp, #4
+  50 001c 0021     		movs	r1, #0
+  51 001e 7820     		movs	r0, #120
+  52 0020 FFF7FEFF 		bl	I2C_SEND_BUFFER
+  53              	.LVL0:
+  35:Hardware/OLED0561/oled0561.c **** }
+  54              		.loc 1 35 1 is_stmt 0 view .LVU4
+  55 0024 08B0     		add	sp, sp, #32
+  56              	.LCFI2:
+  57              		.cfi_def_cfa_offset 8
+  58              		@ sp needed
+  59 0026 10BD     		pop	{r4, pc}
+  60              	.L4:
+  61              		.align	2
+  62              	.L3:
+  63 0028 00000000 		.word	.LANCHOR0
+  64              		.cfi_endproc
+  65              	.LFE30:
+  67              		.section	.rodata.OLED_DISPLAY_OFF.str1.4,"aMS",%progbits,1
+  68              		.align	2
+  69              	.LC1:
+  70 0000 AE8D1000 		.ascii	"\256\215\020\000"
+  71              		.section	.text.OLED_DISPLAY_OFF,"ax",%progbits
+  72              		.align	1
+  73              		.global	OLED_DISPLAY_OFF
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	OLED_DISPLAY_OFF:
+  79              	.LFB31:
+  36:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_OFF(void) {
+  80              		.loc 1 36 29 is_stmt 1 view -0
+  81              		.cfi_startproc
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 3
+
+
+  82              		@ args = 0, pretend = 0, frame = 8
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84 0000 00B5     		push	{lr}
+  85              	.LCFI3:
+  86              		.cfi_def_cfa_offset 4
+  87              		.cfi_offset 14, -4
+  88 0002 83B0     		sub	sp, sp, #12
+  89              	.LCFI4:
+  90              		.cfi_def_cfa_offset 16
+  37:Hardware/OLED0561/oled0561.c ****   u8 buf[3] = {
+  91              		.loc 1 37 3 view .LVU6
+  92              		.loc 1 37 6 is_stmt 0 view .LVU7
+  93 0004 074B     		ldr	r3, .L7
+  94 0006 1B68     		ldr	r3, [r3]
+  95 0008 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  96 000c 1B0C     		lsrs	r3, r3, #16
+  97 000e 8DF80630 		strb	r3, [sp, #6]
+  38:Hardware/OLED0561/oled0561.c ****       0xae,        // 0xae:关显示，0xaf:开显示
+  39:Hardware/OLED0561/oled0561.c ****       0x8d, 0x10,  // VCC电源
+  40:Hardware/OLED0561/oled0561.c ****   };               //
+  41:Hardware/OLED0561/oled0561.c ****   I2C_SEND_BUFFER(OLED0561_ADDR, COM, buf, 3);
+  98              		.loc 1 41 3 is_stmt 1 view .LVU8
+  99 0012 0323     		movs	r3, #3
+ 100 0014 01AA     		add	r2, sp, #4
+ 101 0016 0021     		movs	r1, #0
+ 102 0018 7820     		movs	r0, #120
+ 103 001a FFF7FEFF 		bl	I2C_SEND_BUFFER
+ 104              	.LVL1:
+  42:Hardware/OLED0561/oled0561.c **** }
+ 105              		.loc 1 42 1 is_stmt 0 view .LVU9
+ 106 001e 03B0     		add	sp, sp, #12
+ 107              	.LCFI5:
+ 108              		.cfi_def_cfa_offset 4
+ 109              		@ sp needed
+ 110 0020 5DF804FB 		ldr	pc, [sp], #4
+ 111              	.L8:
+ 112              		.align	2
+ 113              	.L7:
+ 114 0024 00000000 		.word	.LC1
+ 115              		.cfi_endproc
+ 116              	.LFE31:
+ 118              		.section	.text.OLED_DISPLAY_LIT,"ax",%progbits
+ 119              		.align	1
+ 120              		.global	OLED_DISPLAY_LIT
+ 121              		.syntax unified
+ 122              		.thumb
+ 123              		.thumb_func
+ 125              	OLED_DISPLAY_LIT:
+ 126              	.LVL2:
+ 127              	.LFB32:
+  43:Hardware/OLED0561/oled0561.c **** 
+  44:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_LIT(u8 x) {
+ 128              		.loc 1 44 29 is_stmt 1 view -0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132              		.loc 1 44 29 is_stmt 0 view .LVU11
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 4
+
+
+ 133 0000 10B5     		push	{r4, lr}
+ 134              	.LCFI6:
+ 135              		.cfi_def_cfa_offset 8
+ 136              		.cfi_offset 4, -8
+ 137              		.cfi_offset 14, -4
+ 138 0002 0446     		mov	r4, r0
+  45:Hardware/OLED0561/oled0561.c ****   I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x81);
+ 139              		.loc 1 45 3 is_stmt 1 view .LVU12
+ 140 0004 8122     		movs	r2, #129
+ 141 0006 0021     		movs	r1, #0
+ 142 0008 7820     		movs	r0, #120
+ 143              	.LVL3:
+ 144              		.loc 1 45 3 is_stmt 0 view .LVU13
+ 145 000a FFF7FEFF 		bl	I2C_SEND_BYTE
+ 146              	.LVL4:
+  46:Hardware/OLED0561/oled0561.c ****   I2C_SEND_BYTE(OLED0561_ADDR, COM, x);  //亮度值
+ 147              		.loc 1 46 3 is_stmt 1 view .LVU14
+ 148 000e 2246     		mov	r2, r4
+ 149 0010 0021     		movs	r1, #0
+ 150 0012 7820     		movs	r0, #120
+ 151 0014 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 152              	.LVL5:
+  47:Hardware/OLED0561/oled0561.c **** }
+ 153              		.loc 1 47 1 is_stmt 0 view .LVU15
+ 154 0018 10BD     		pop	{r4, pc}
+ 155              		.cfi_endproc
+ 156              	.LFE32:
+ 158              		.section	.text.OLED_DISPLAY_CLEAR,"ax",%progbits
+ 159              		.align	1
+ 160              		.global	OLED_DISPLAY_CLEAR
+ 161              		.syntax unified
+ 162              		.thumb
+ 163              		.thumb_func
+ 165              	OLED_DISPLAY_CLEAR:
+ 166              	.LFB33:
+  48:Hardware/OLED0561/oled0561.c **** 
+  49:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_CLEAR(void) {
+ 167              		.loc 1 49 31 is_stmt 1 view -0
+ 168              		.cfi_startproc
+ 169              		@ args = 0, pretend = 0, frame = 0
+ 170              		@ frame_needed = 0, uses_anonymous_args = 0
+ 171 0000 38B5     		push	{r3, r4, r5, lr}
+ 172              	.LCFI7:
+ 173              		.cfi_def_cfa_offset 16
+ 174              		.cfi_offset 3, -16
+ 175              		.cfi_offset 4, -12
+ 176              		.cfi_offset 5, -8
+ 177              		.cfi_offset 14, -4
+  50:Hardware/OLED0561/oled0561.c ****   u8 j, t;
+ 178              		.loc 1 50 3 view .LVU17
+  51:Hardware/OLED0561/oled0561.c ****   for (t = 0xb0; t < 0xb8; t++) {             //设置起始页地址为0xB0
+ 179              		.loc 1 51 3 view .LVU18
+ 180              	.LVL6:
+ 181              		.loc 1 51 10 is_stmt 0 view .LVU19
+ 182 0002 B025     		movs	r5, #176
+ 183              		.loc 1 51 3 view .LVU20
+ 184 0004 0AE0     		b	.L12
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 5
+
+
+ 185              	.LVL7:
+ 186              	.L14:
+  52:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, t);     //页地址（从0xB0到0xB7）
+  53:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x10);  //起始列地址的高4位
+  54:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x00);  //起始列地址的低4位
+  55:Hardware/OLED0561/oled0561.c ****     for (j = 0; j < 132; j++) {               //整页内容填充
+  56:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 187              		.loc 1 56 7 is_stmt 1 discriminator 3 view .LVU21
+ 188 0006 0022     		movs	r2, #0
+ 189 0008 4021     		movs	r1, #64
+ 190 000a 7820     		movs	r0, #120
+ 191 000c FFF7FEFF 		bl	I2C_SEND_BYTE
+ 192              	.LVL8:
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 193              		.loc 1 55 26 discriminator 3 view .LVU22
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 194              		.loc 1 55 27 is_stmt 0 discriminator 3 view .LVU23
+ 195 0010 0134     		adds	r4, r4, #1
+ 196              	.LVL9:
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 197              		.loc 1 55 27 discriminator 3 view .LVU24
+ 198 0012 E4B2     		uxtb	r4, r4
+ 199              	.LVL10:
+ 200              	.L13:
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 201              		.loc 1 55 17 is_stmt 1 discriminator 1 view .LVU25
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 202              		.loc 1 55 5 is_stmt 0 discriminator 1 view .LVU26
+ 203 0014 832C     		cmp	r4, #131
+ 204 0016 F6D9     		bls	.L14
+  51:Hardware/OLED0561/oled0561.c ****   for (t = 0xb0; t < 0xb8; t++) {             //设置起始页地址为0xB0
+ 205              		.loc 1 51 28 is_stmt 1 discriminator 2 view .LVU27
+  51:Hardware/OLED0561/oled0561.c ****   for (t = 0xb0; t < 0xb8; t++) {             //设置起始页地址为0xB0
+ 206              		.loc 1 51 29 is_stmt 0 discriminator 2 view .LVU28
+ 207 0018 0135     		adds	r5, r5, #1
+ 208              	.LVL11:
+  51:Hardware/OLED0561/oled0561.c ****   for (t = 0xb0; t < 0xb8; t++) {             //设置起始页地址为0xB0
+ 209              		.loc 1 51 29 discriminator 2 view .LVU29
+ 210 001a EDB2     		uxtb	r5, r5
+ 211              	.LVL12:
+ 212              	.L12:
+  51:Hardware/OLED0561/oled0561.c ****   for (t = 0xb0; t < 0xb8; t++) {             //设置起始页地址为0xB0
+ 213              		.loc 1 51 18 is_stmt 1 discriminator 1 view .LVU30
+  51:Hardware/OLED0561/oled0561.c ****   for (t = 0xb0; t < 0xb8; t++) {             //设置起始页地址为0xB0
+ 214              		.loc 1 51 3 is_stmt 0 discriminator 1 view .LVU31
+ 215 001c B72D     		cmp	r5, #183
+ 216 001e 10D8     		bhi	.L17
+  52:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, t);     //页地址（从0xB0到0xB7）
+ 217              		.loc 1 52 5 is_stmt 1 view .LVU32
+ 218 0020 2A46     		mov	r2, r5
+ 219 0022 0021     		movs	r1, #0
+ 220 0024 7820     		movs	r0, #120
+ 221 0026 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 222              	.LVL13:
+  53:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x00);  //起始列地址的低4位
+ 223              		.loc 1 53 5 view .LVU33
+ 224 002a 1022     		movs	r2, #16
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 6
+
+
+ 225 002c 0021     		movs	r1, #0
+ 226 002e 7820     		movs	r0, #120
+ 227 0030 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 228              	.LVL14:
+  54:Hardware/OLED0561/oled0561.c ****     for (j = 0; j < 132; j++) {               //整页内容填充
+ 229              		.loc 1 54 5 view .LVU34
+ 230 0034 0022     		movs	r2, #0
+ 231 0036 1146     		mov	r1, r2
+ 232 0038 7820     		movs	r0, #120
+ 233 003a FFF7FEFF 		bl	I2C_SEND_BYTE
+ 234              	.LVL15:
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 235              		.loc 1 55 5 view .LVU35
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 236              		.loc 1 55 12 is_stmt 0 view .LVU36
+ 237 003e 0024     		movs	r4, #0
+  55:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, 0x00);
+ 238              		.loc 1 55 5 view .LVU37
+ 239 0040 E8E7     		b	.L13
+ 240              	.LVL16:
+ 241              	.L17:
+  57:Hardware/OLED0561/oled0561.c ****     }
+  58:Hardware/OLED0561/oled0561.c ****   }
+  59:Hardware/OLED0561/oled0561.c **** }
+ 242              		.loc 1 59 1 view .LVU38
+ 243 0042 38BD     		pop	{r3, r4, r5, pc}
+ 244              		.loc 1 59 1 view .LVU39
+ 245              		.cfi_endproc
+ 246              	.LFE33:
+ 248              		.section	.text.OLED0561_Init,"ax",%progbits
+ 249              		.align	1
+ 250              		.global	OLED0561_Init
+ 251              		.syntax unified
+ 252              		.thumb
+ 253              		.thumb_func
+ 255              	OLED0561_Init:
+ 256              	.LFB29:
+   7:Hardware/OLED0561/oled0561.c ****   OLED_DISPLAY_OFF();
+ 257              		.loc 1 7 26 is_stmt 1 view -0
+ 258              		.cfi_startproc
+ 259              		@ args = 0, pretend = 0, frame = 0
+ 260              		@ frame_needed = 0, uses_anonymous_args = 0
+ 261 0000 08B5     		push	{r3, lr}
+ 262              	.LCFI8:
+ 263              		.cfi_def_cfa_offset 8
+ 264              		.cfi_offset 3, -8
+ 265              		.cfi_offset 14, -4
+   8:Hardware/OLED0561/oled0561.c ****   OLED_DISPLAY_CLEAR();
+ 266              		.loc 1 8 3 view .LVU41
+ 267 0002 FFF7FEFF 		bl	OLED_DISPLAY_OFF
+ 268              	.LVL17:
+   9:Hardware/OLED0561/oled0561.c ****   OLED_DISPLAY_ON();
+ 269              		.loc 1 9 3 view .LVU42
+ 270 0006 FFF7FEFF 		bl	OLED_DISPLAY_CLEAR
+ 271              	.LVL18:
+  10:Hardware/OLED0561/oled0561.c **** }
+ 272              		.loc 1 10 3 view .LVU43
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 7
+
+
+ 273 000a FFF7FEFF 		bl	OLED_DISPLAY_ON
+ 274              	.LVL19:
+  11:Hardware/OLED0561/oled0561.c **** 
+ 275              		.loc 1 11 1 is_stmt 0 view .LVU44
+ 276 000e 08BD     		pop	{r3, pc}
+ 277              		.cfi_endproc
+ 278              	.LFE29:
+ 280              		.section	.text.OLED_DISPLAY_8x16,"ax",%progbits
+ 281              		.align	1
+ 282              		.global	OLED_DISPLAY_8x16
+ 283              		.syntax unified
+ 284              		.thumb
+ 285              		.thumb_func
+ 287              	OLED_DISPLAY_8x16:
+ 288              	.LVL20:
+ 289              	.LFB34:
+  60:Hardware/OLED0561/oled0561.c **** 
+  61:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_8x16(u8 x, u8 y, u16 w) {
+ 290              		.loc 1 61 43 is_stmt 1 view -0
+ 291              		.cfi_startproc
+ 292              		@ args = 0, pretend = 0, frame = 0
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ 294              		.loc 1 61 43 is_stmt 0 view .LVU46
+ 295 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 296              	.LCFI9:
+ 297              		.cfi_def_cfa_offset 32
+ 298              		.cfi_offset 3, -32
+ 299              		.cfi_offset 4, -28
+ 300              		.cfi_offset 5, -24
+ 301              		.cfi_offset 6, -20
+ 302              		.cfi_offset 7, -16
+ 303              		.cfi_offset 8, -12
+ 304              		.cfi_offset 9, -8
+ 305              		.cfi_offset 14, -4
+ 306 0004 0746     		mov	r7, r0
+ 307 0006 1646     		mov	r6, r2
+  62:Hardware/OLED0561/oled0561.c ****   u8 j, t, c = 0;
+ 308              		.loc 1 62 3 is_stmt 1 view .LVU47
+ 309              	.LVL21:
+  63:Hardware/OLED0561/oled0561.c ****   // 因OLED屏的内置驱动芯片是从0x02列作为屏上最左一列，所以要加上偏移�
+  64:Hardware/OLED0561/oled0561.c ****   y = y + 2;
+ 310              		.loc 1 64 3 view .LVU48
+ 311              		.loc 1 64 5 is_stmt 0 view .LVU49
+ 312 0008 0231     		adds	r1, r1, #2
+ 313              	.LVL22:
+ 314              		.loc 1 64 5 view .LVU50
+ 315 000a 5FFA81F9 		uxtb	r9, r1
+ 316              	.LVL23:
+  65:Hardware/OLED0561/oled0561.c ****   for (t = 0; t < 2; t++) {
+ 317              		.loc 1 65 3 is_stmt 1 view .LVU51
+  62:Hardware/OLED0561/oled0561.c ****   u8 j, t, c = 0;
+ 318              		.loc 1 62 12 is_stmt 0 view .LVU52
+ 319 000e 0025     		movs	r5, #0
+ 320              		.loc 1 65 10 view .LVU53
+ 321 0010 A846     		mov	r8, r5
+ 322              		.loc 1 65 3 view .LVU54
+ 323 0012 15E0     		b	.L21
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 8
+
+
+ 324              	.LVL24:
+ 325              	.L23:
+  66:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  //页地址（从0xB0到0xB7）
+  67:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y / 16 + 0x10);  //起始列地址的高4位
+  68:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y % 16);  //起始列地址的低4位
+  69:Hardware/OLED0561/oled0561.c ****     for (j = 0; j < 8; j++) {                   //整页内容填充
+  70:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 326              		.loc 1 70 7 is_stmt 1 discriminator 3 view .LVU55
+  71:Hardware/OLED0561/oled0561.c ****                     ASCII_8x16[(w * 16) + c - 512]);  //为了和ASII表对应要减512
+ 327              		.loc 1 71 41 is_stmt 0 discriminator 3 view .LVU56
+ 328 0014 05EB0613 		add	r3, r5, r6, lsl #4
+ 329              		.loc 1 71 45 discriminator 3 view .LVU57
+ 330 0018 A3F50073 		sub	r3, r3, #512
+  70:Hardware/OLED0561/oled0561.c ****                     ASCII_8x16[(w * 16) + c - 512]);  //为了和ASII表对应要减512
+ 331              		.loc 1 70 7 discriminator 3 view .LVU58
+ 332 001c 164A     		ldr	r2, .L27
+ 333 001e D25C     		ldrb	r2, [r2, r3]	@ zero_extendqisi2
+ 334 0020 4021     		movs	r1, #64
+ 335 0022 7820     		movs	r0, #120
+ 336 0024 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 337              	.LVL25:
+  72:Hardware/OLED0561/oled0561.c ****       c++;
+ 338              		.loc 1 72 7 is_stmt 1 discriminator 3 view .LVU59
+ 339              		.loc 1 72 8 is_stmt 0 discriminator 3 view .LVU60
+ 340 0028 0135     		adds	r5, r5, #1
+ 341              	.LVL26:
+ 342              		.loc 1 72 8 discriminator 3 view .LVU61
+ 343 002a EDB2     		uxtb	r5, r5
+ 344              	.LVL27:
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 345              		.loc 1 69 24 is_stmt 1 discriminator 3 view .LVU62
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 346              		.loc 1 69 25 is_stmt 0 discriminator 3 view .LVU63
+ 347 002c 0134     		adds	r4, r4, #1
+ 348              	.LVL28:
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 349              		.loc 1 69 25 discriminator 3 view .LVU64
+ 350 002e E4B2     		uxtb	r4, r4
+ 351              	.LVL29:
+ 352              	.L22:
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 353              		.loc 1 69 17 is_stmt 1 discriminator 1 view .LVU65
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 354              		.loc 1 69 5 is_stmt 0 discriminator 1 view .LVU66
+ 355 0030 072C     		cmp	r4, #7
+ 356 0032 EFD9     		bls	.L23
+  73:Hardware/OLED0561/oled0561.c ****     }
+  74:Hardware/OLED0561/oled0561.c ****     x++;  //页地址加1
+ 357              		.loc 1 74 5 is_stmt 1 discriminator 2 view .LVU67
+ 358              		.loc 1 74 6 is_stmt 0 discriminator 2 view .LVU68
+ 359 0034 0137     		adds	r7, r7, #1
+ 360              	.LVL30:
+ 361              		.loc 1 74 6 discriminator 2 view .LVU69
+ 362 0036 FFB2     		uxtb	r7, r7
+ 363              	.LVL31:
+  65:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  //页地址（从0xB0到0xB7）
+ 364              		.loc 1 65 22 is_stmt 1 discriminator 2 view .LVU70
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 9
+
+
+  65:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  //页地址（从0xB0到0xB7）
+ 365              		.loc 1 65 23 is_stmt 0 discriminator 2 view .LVU71
+ 366 0038 08F10108 		add	r8, r8, #1
+ 367              	.LVL32:
+  65:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  //页地址（从0xB0到0xB7）
+ 368              		.loc 1 65 23 discriminator 2 view .LVU72
+ 369 003c 5FFA88F8 		uxtb	r8, r8
+ 370              	.LVL33:
+ 371              	.L21:
+  65:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  //页地址（从0xB0到0xB7）
+ 372              		.loc 1 65 15 is_stmt 1 discriminator 1 view .LVU73
+  65:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  //页地址（从0xB0到0xB7）
+ 373              		.loc 1 65 3 is_stmt 0 discriminator 1 view .LVU74
+ 374 0040 B8F1010F 		cmp	r8, #1
+ 375 0044 15D8     		bhi	.L26
+  66:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y / 16 + 0x10);  //起始列地址的高4位
+ 376              		.loc 1 66 5 is_stmt 1 view .LVU75
+ 377 0046 A7F15002 		sub	r2, r7, #80
+ 378 004a D2B2     		uxtb	r2, r2
+ 379 004c 0021     		movs	r1, #0
+ 380 004e 7820     		movs	r0, #120
+ 381 0050 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 382              	.LVL34:
+  67:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y % 16);  //起始列地址的低4位
+ 383              		.loc 1 67 5 view .LVU76
+ 384 0054 4FEA1912 		lsr	r2, r9, #4
+ 385 0058 1032     		adds	r2, r2, #16
+ 386 005a 0021     		movs	r1, #0
+ 387 005c 7820     		movs	r0, #120
+ 388 005e FFF7FEFF 		bl	I2C_SEND_BYTE
+ 389              	.LVL35:
+  68:Hardware/OLED0561/oled0561.c ****     for (j = 0; j < 8; j++) {                   //整页内容填充
+ 390              		.loc 1 68 5 view .LVU77
+ 391 0062 09F00F02 		and	r2, r9, #15
+ 392 0066 0021     		movs	r1, #0
+ 393 0068 7820     		movs	r0, #120
+ 394 006a FFF7FEFF 		bl	I2C_SEND_BYTE
+ 395              	.LVL36:
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 396              		.loc 1 69 5 view .LVU78
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 397              		.loc 1 69 12 is_stmt 0 view .LVU79
+ 398 006e 0024     		movs	r4, #0
+  69:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT,
+ 399              		.loc 1 69 5 view .LVU80
+ 400 0070 DEE7     		b	.L22
+ 401              	.LVL37:
+ 402              	.L26:
+  75:Hardware/OLED0561/oled0561.c ****   }
+  76:Hardware/OLED0561/oled0561.c **** }
+ 403              		.loc 1 76 1 view .LVU81
+ 404 0072 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 405              	.LVL38:
+ 406              	.L28:
+ 407              		.loc 1 76 1 view .LVU82
+ 408 0076 00BF     		.align	2
+ 409              	.L27:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 10
+
+
+ 410 0078 00000000 		.word	.LANCHOR1
+ 411              		.cfi_endproc
+ 412              	.LFE34:
+ 414              		.section	.text.OLED_DISPLAY_8x16_BUFFER,"ax",%progbits
+ 415              		.align	1
+ 416              		.global	OLED_DISPLAY_8x16_BUFFER
+ 417              		.syntax unified
+ 418              		.thumb
+ 419              		.thumb_func
+ 421              	OLED_DISPLAY_8x16_BUFFER:
+ 422              	.LVL39:
+ 423              	.LFB35:
+  77:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_8x16_BUFFER(u8 row, u8* str) {
+ 424              		.loc 1 77 48 is_stmt 1 view -0
+ 425              		.cfi_startproc
+ 426              		@ args = 0, pretend = 0, frame = 0
+ 427              		@ frame_needed = 0, uses_anonymous_args = 0
+ 428              		.loc 1 77 48 is_stmt 0 view .LVU84
+ 429 0000 70B5     		push	{r4, r5, r6, lr}
+ 430              	.LCFI10:
+ 431              		.cfi_def_cfa_offset 16
+ 432              		.cfi_offset 4, -16
+ 433              		.cfi_offset 5, -12
+ 434              		.cfi_offset 6, -8
+ 435              		.cfi_offset 14, -4
+ 436 0002 0646     		mov	r6, r0
+ 437 0004 0D46     		mov	r5, r1
+  78:Hardware/OLED0561/oled0561.c ****   u8 r = 0;
+ 438              		.loc 1 78 3 is_stmt 1 view .LVU85
+ 439              	.LVL40:
+  79:Hardware/OLED0561/oled0561.c ****   while (*str != '\0') {
+ 440              		.loc 1 79 3 view .LVU86
+  78:Hardware/OLED0561/oled0561.c ****   u8 r = 0;
+ 441              		.loc 1 78 6 is_stmt 0 view .LVU87
+ 442 0006 0024     		movs	r4, #0
+ 443              		.loc 1 79 9 view .LVU88
+ 444 0008 08E0     		b	.L30
+ 445              	.LVL41:
+ 446              	.L31:
+  80:Hardware/OLED0561/oled0561.c ****     OLED_DISPLAY_8x16(row, r * 8, *str++);
+ 447              		.loc 1 80 5 is_stmt 1 view .LVU89
+ 448              		.loc 1 80 39 is_stmt 0 view .LVU90
+ 449 000a 0135     		adds	r5, r5, #1
+ 450              	.LVL42:
+ 451              		.loc 1 80 5 view .LVU91
+ 452 000c E100     		lsls	r1, r4, #3
+ 453 000e 01F0F801 		and	r1, r1, #248
+ 454 0012 3046     		mov	r0, r6
+ 455 0014 FFF7FEFF 		bl	OLED_DISPLAY_8x16
+ 456              	.LVL43:
+  81:Hardware/OLED0561/oled0561.c ****     r++;
+ 457              		.loc 1 81 5 is_stmt 1 view .LVU92
+ 458              		.loc 1 81 6 is_stmt 0 view .LVU93
+ 459 0018 0134     		adds	r4, r4, #1
+ 460              	.LVL44:
+ 461              		.loc 1 81 6 view .LVU94
+ 462 001a E4B2     		uxtb	r4, r4
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 11
+
+
+ 463              	.LVL45:
+ 464              	.L30:
+  79:Hardware/OLED0561/oled0561.c ****   while (*str != '\0') {
+ 465              		.loc 1 79 9 is_stmt 1 view .LVU95
+  79:Hardware/OLED0561/oled0561.c ****   while (*str != '\0') {
+ 466              		.loc 1 79 10 is_stmt 0 view .LVU96
+ 467 001c 2A78     		ldrb	r2, [r5]	@ zero_extendqisi2
+  79:Hardware/OLED0561/oled0561.c ****   while (*str != '\0') {
+ 468              		.loc 1 79 9 view .LVU97
+ 469 001e 002A     		cmp	r2, #0
+ 470 0020 F3D1     		bne	.L31
+  82:Hardware/OLED0561/oled0561.c ****   }
+  83:Hardware/OLED0561/oled0561.c **** }
+ 471              		.loc 1 83 1 view .LVU98
+ 472 0022 70BD     		pop	{r4, r5, r6, pc}
+ 473              		.loc 1 83 1 view .LVU99
+ 474              		.cfi_endproc
+ 475              	.LFE35:
+ 477              		.section	.text.OLED_DISPLAY_16x16,"ax",%progbits
+ 478              		.align	1
+ 479              		.global	OLED_DISPLAY_16x16
+ 480              		.syntax unified
+ 481              		.thumb
+ 482              		.thumb_func
+ 484              	OLED_DISPLAY_16x16:
+ 485              	.LVL46:
+ 486              	.LFB36:
+  84:Hardware/OLED0561/oled0561.c **** 
+  85:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_16x16(u8 x, u8 y, u16 w) {
+ 487              		.loc 1 85 44 is_stmt 1 view -0
+ 488              		.cfi_startproc
+ 489              		@ args = 0, pretend = 0, frame = 0
+ 490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 491              		.loc 1 85 44 is_stmt 0 view .LVU101
+ 492 0000 2DE9F843 		push	{r3, r4, r5, r6, r7, r8, r9, lr}
+ 493              	.LCFI11:
+ 494              		.cfi_def_cfa_offset 32
+ 495              		.cfi_offset 3, -32
+ 496              		.cfi_offset 4, -28
+ 497              		.cfi_offset 5, -24
+ 498              		.cfi_offset 6, -20
+ 499              		.cfi_offset 7, -16
+ 500              		.cfi_offset 8, -12
+ 501              		.cfi_offset 9, -8
+ 502              		.cfi_offset 14, -4
+ 503 0004 0746     		mov	r7, r0
+ 504 0006 8946     		mov	r9, r1
+ 505 0008 1646     		mov	r6, r2
+  86:Hardware/OLED0561/oled0561.c ****   u8 j, t, c = 0;
+ 506              		.loc 1 86 3 is_stmt 1 view .LVU102
+ 507              	.LVL47:
+  87:Hardware/OLED0561/oled0561.c ****   for (t = 0; t < 2; t++) {
+ 508              		.loc 1 87 3 view .LVU103
+  86:Hardware/OLED0561/oled0561.c ****   u8 j, t, c = 0;
+ 509              		.loc 1 86 12 is_stmt 0 view .LVU104
+ 510 000a 0025     		movs	r5, #0
+ 511              		.loc 1 87 10 view .LVU105
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 12
+
+
+ 512 000c A846     		mov	r8, r5
+ 513              		.loc 1 87 3 view .LVU106
+ 514 000e 13E0     		b	.L34
+ 515              	.LVL48:
+ 516              	.L36:
+  88:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  // 页地址（0xb0 到 0xb7）
+  89:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y / 16 + 0x10);  // 起始列地址的高4位
+  90:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y % 16);         // 起始列的低4位
+  91:Hardware/OLED0561/oled0561.c ****     for (j = 0; j < 16; j++) {
+  92:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 517              		.loc 1 92 7 is_stmt 1 discriminator 3 view .LVU107
+ 518              		.loc 1 92 56 is_stmt 0 discriminator 3 view .LVU108
+ 519 0010 05EB4613 		add	r3, r5, r6, lsl #5
+ 520              		.loc 1 92 7 discriminator 3 view .LVU109
+ 521 0014 184A     		ldr	r2, .L40
+ 522 0016 D25C     		ldrb	r2, [r2, r3]	@ zero_extendqisi2
+ 523 0018 4021     		movs	r1, #64
+ 524 001a 7820     		movs	r0, #120
+ 525 001c FFF7FEFF 		bl	I2C_SEND_BYTE
+ 526              	.LVL49:
+  93:Hardware/OLED0561/oled0561.c ****       c++;
+ 527              		.loc 1 93 7 is_stmt 1 discriminator 3 view .LVU110
+ 528              		.loc 1 93 8 is_stmt 0 discriminator 3 view .LVU111
+ 529 0020 0135     		adds	r5, r5, #1
+ 530              	.LVL50:
+ 531              		.loc 1 93 8 discriminator 3 view .LVU112
+ 532 0022 EDB2     		uxtb	r5, r5
+ 533              	.LVL51:
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 534              		.loc 1 91 25 is_stmt 1 discriminator 3 view .LVU113
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 535              		.loc 1 91 26 is_stmt 0 discriminator 3 view .LVU114
+ 536 0024 0134     		adds	r4, r4, #1
+ 537              	.LVL52:
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 538              		.loc 1 91 26 discriminator 3 view .LVU115
+ 539 0026 E4B2     		uxtb	r4, r4
+ 540              	.LVL53:
+ 541              	.L35:
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 542              		.loc 1 91 17 is_stmt 1 discriminator 1 view .LVU116
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 543              		.loc 1 91 5 is_stmt 0 discriminator 1 view .LVU117
+ 544 0028 0F2C     		cmp	r4, #15
+ 545 002a F1D9     		bls	.L36
+  94:Hardware/OLED0561/oled0561.c ****     }
+  95:Hardware/OLED0561/oled0561.c ****     x++;
+ 546              		.loc 1 95 5 is_stmt 1 discriminator 2 view .LVU118
+ 547              		.loc 1 95 6 is_stmt 0 discriminator 2 view .LVU119
+ 548 002c 0137     		adds	r7, r7, #1
+ 549              	.LVL54:
+ 550              		.loc 1 95 6 discriminator 2 view .LVU120
+ 551 002e FFB2     		uxtb	r7, r7
+ 552              	.LVL55:
+  87:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  // 页地址（0xb0 到 0xb7）
+ 553              		.loc 1 87 22 is_stmt 1 discriminator 2 view .LVU121
+  87:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  // 页地址（0xb0 到 0xb7）
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 13
+
+
+ 554              		.loc 1 87 23 is_stmt 0 discriminator 2 view .LVU122
+ 555 0030 08F10108 		add	r8, r8, #1
+ 556              	.LVL56:
+  87:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  // 页地址（0xb0 到 0xb7）
+ 557              		.loc 1 87 23 discriminator 2 view .LVU123
+ 558 0034 5FFA88F8 		uxtb	r8, r8
+ 559              	.LVL57:
+ 560              	.L34:
+  87:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  // 页地址（0xb0 到 0xb7）
+ 561              		.loc 1 87 15 is_stmt 1 discriminator 1 view .LVU124
+  87:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + x);  // 页地址（0xb0 到 0xb7）
+ 562              		.loc 1 87 3 is_stmt 0 discriminator 1 view .LVU125
+ 563 0038 B8F1010F 		cmp	r8, #1
+ 564 003c 15D8     		bhi	.L39
+  88:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y / 16 + 0x10);  // 起始列地址的高4位
+ 565              		.loc 1 88 5 is_stmt 1 view .LVU126
+ 566 003e A7F15002 		sub	r2, r7, #80
+ 567 0042 D2B2     		uxtb	r2, r2
+ 568 0044 0021     		movs	r1, #0
+ 569 0046 7820     		movs	r0, #120
+ 570 0048 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 571              	.LVL58:
+  89:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, y % 16);         // 起始列的低4位
+ 572              		.loc 1 89 5 view .LVU127
+ 573 004c 4FEA1912 		lsr	r2, r9, #4
+ 574 0050 1032     		adds	r2, r2, #16
+ 575 0052 0021     		movs	r1, #0
+ 576 0054 7820     		movs	r0, #120
+ 577 0056 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 578              	.LVL59:
+  90:Hardware/OLED0561/oled0561.c ****     for (j = 0; j < 16; j++) {
+ 579              		.loc 1 90 5 view .LVU128
+ 580 005a 09F00F02 		and	r2, r9, #15
+ 581 005e 0021     		movs	r1, #0
+ 582 0060 7820     		movs	r0, #120
+ 583 0062 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 584              	.LVL60:
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 585              		.loc 1 91 5 view .LVU129
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 586              		.loc 1 91 12 is_stmt 0 view .LVU130
+ 587 0066 0024     		movs	r4, #0
+  91:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, GB_16[(w * 32) + c]);
+ 588              		.loc 1 91 5 view .LVU131
+ 589 0068 DEE7     		b	.L35
+ 590              	.LVL61:
+ 591              	.L39:
+  96:Hardware/OLED0561/oled0561.c ****   }
+  97:Hardware/OLED0561/oled0561.c ****   I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xAF);  // 开显示
+ 592              		.loc 1 97 3 is_stmt 1 view .LVU132
+ 593 006a AF22     		movs	r2, #175
+ 594 006c 0021     		movs	r1, #0
+ 595 006e 7820     		movs	r0, #120
+ 596 0070 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 597              	.LVL62:
+  98:Hardware/OLED0561/oled0561.c **** }
+ 598              		.loc 1 98 1 is_stmt 0 view .LVU133
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 14
+
+
+ 599 0074 BDE8F883 		pop	{r3, r4, r5, r6, r7, r8, r9, pc}
+ 600              	.LVL63:
+ 601              	.L41:
+ 602              		.loc 1 98 1 view .LVU134
+ 603              		.align	2
+ 604              	.L40:
+ 605 0078 00000000 		.word	.LANCHOR2
+ 606              		.cfi_endproc
+ 607              	.LFE36:
+ 609              		.section	.text.OLED_DISPLAY_PIC,"ax",%progbits
+ 610              		.align	1
+ 611              		.global	OLED_DISPLAY_PIC
+ 612              		.syntax unified
+ 613              		.thumb
+ 614              		.thumb_func
+ 616              	OLED_DISPLAY_PIC:
+ 617              	.LFB37:
+  99:Hardware/OLED0561/oled0561.c **** 
+ 100:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_PIC(void) {
+ 618              		.loc 1 100 29 is_stmt 1 view -0
+ 619              		.cfi_startproc
+ 620              		@ args = 0, pretend = 0, frame = 0
+ 621              		@ frame_needed = 0, uses_anonymous_args = 0
+ 622 0000 38B5     		push	{r3, r4, r5, lr}
+ 623              	.LCFI12:
+ 624              		.cfi_def_cfa_offset 16
+ 625              		.cfi_offset 3, -16
+ 626              		.cfi_offset 4, -12
+ 627              		.cfi_offset 5, -8
+ 628              		.cfi_offset 14, -4
+ 101:Hardware/OLED0561/oled0561.c ****   u8 m, i;
+ 629              		.loc 1 101 3 view .LVU136
+ 102:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 630              		.loc 1 102 3 view .LVU137
+ 631              	.LVL64:
+ 632              		.loc 1 102 10 is_stmt 0 view .LVU138
+ 633 0002 0025     		movs	r5, #0
+ 634              		.loc 1 102 3 view .LVU139
+ 635 0004 0EE0     		b	.L43
+ 636              	.LVL65:
+ 637              	.L45:
+ 103:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + m);
+ 104:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x10);
+ 105:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x02);
+ 106:Hardware/OLED0561/oled0561.c ****     for (i = 0; i < 128; i++) {
+ 107:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 638              		.loc 1 107 7 is_stmt 1 discriminator 3 view .LVU140
+ 639              		.loc 1 107 53 is_stmt 0 discriminator 3 view .LVU141
+ 640 0006 04EBC513 		add	r3, r4, r5, lsl #7
+ 641              		.loc 1 107 7 discriminator 3 view .LVU142
+ 642 000a 114A     		ldr	r2, .L49
+ 643 000c D25C     		ldrb	r2, [r2, r3]	@ zero_extendqisi2
+ 644 000e 4021     		movs	r1, #64
+ 645 0010 7820     		movs	r0, #120
+ 646 0012 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 647              	.LVL66:
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 15
+
+
+ 648              		.loc 1 106 26 is_stmt 1 discriminator 3 view .LVU143
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 649              		.loc 1 106 27 is_stmt 0 discriminator 3 view .LVU144
+ 650 0016 0134     		adds	r4, r4, #1
+ 651              	.LVL67:
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 652              		.loc 1 106 27 discriminator 3 view .LVU145
+ 653 0018 E4B2     		uxtb	r4, r4
+ 654              	.LVL68:
+ 655              	.L44:
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 656              		.loc 1 106 17 is_stmt 1 discriminator 1 view .LVU146
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 657              		.loc 1 106 5 is_stmt 0 discriminator 1 view .LVU147
+ 658 001a 14F0800F 		tst	r4, #128
+ 659 001e F2D0     		beq	.L45
+ 102:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 660              		.loc 1 102 22 is_stmt 1 discriminator 2 view .LVU148
+ 102:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 661              		.loc 1 102 23 is_stmt 0 discriminator 2 view .LVU149
+ 662 0020 0135     		adds	r5, r5, #1
+ 663              	.LVL69:
+ 102:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 664              		.loc 1 102 23 discriminator 2 view .LVU150
+ 665 0022 EDB2     		uxtb	r5, r5
+ 666              	.LVL70:
+ 667              	.L43:
+ 102:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 668              		.loc 1 102 15 is_stmt 1 discriminator 1 view .LVU151
+ 102:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 669              		.loc 1 102 3 is_stmt 0 discriminator 1 view .LVU152
+ 670 0024 072D     		cmp	r5, #7
+ 671 0026 12D8     		bhi	.L48
+ 103:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + m);
+ 672              		.loc 1 103 5 is_stmt 1 view .LVU153
+ 673 0028 A5F15002 		sub	r2, r5, #80
+ 674 002c D2B2     		uxtb	r2, r2
+ 675 002e 0021     		movs	r1, #0
+ 676 0030 7820     		movs	r0, #120
+ 677 0032 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 678              	.LVL71:
+ 104:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x02);
+ 679              		.loc 1 104 5 view .LVU154
+ 680 0036 1022     		movs	r2, #16
+ 681 0038 0021     		movs	r1, #0
+ 682 003a 7820     		movs	r0, #120
+ 683 003c FFF7FEFF 		bl	I2C_SEND_BYTE
+ 684              	.LVL72:
+ 105:Hardware/OLED0561/oled0561.c ****     for (i = 0; i < 128; i++) {
+ 685              		.loc 1 105 5 view .LVU155
+ 686 0040 0222     		movs	r2, #2
+ 687 0042 0021     		movs	r1, #0
+ 688 0044 7820     		movs	r0, #120
+ 689 0046 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 690              	.LVL73:
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 691              		.loc 1 106 5 view .LVU156
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 16
+
+
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 692              		.loc 1 106 12 is_stmt 0 view .LVU157
+ 693 004a 0024     		movs	r4, #0
+ 106:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, PIC[m * 128 + i]);
+ 694              		.loc 1 106 5 view .LVU158
+ 695 004c E5E7     		b	.L44
+ 696              	.LVL74:
+ 697              	.L48:
+ 108:Hardware/OLED0561/oled0561.c ****     }
+ 109:Hardware/OLED0561/oled0561.c ****   }
+ 110:Hardware/OLED0561/oled0561.c **** }
+ 698              		.loc 1 110 1 view .LVU159
+ 699 004e 38BD     		pop	{r3, r4, r5, pc}
+ 700              	.LVL75:
+ 701              	.L50:
+ 702              		.loc 1 110 1 view .LVU160
+ 703              		.align	2
+ 704              	.L49:
+ 705 0050 00000000 		.word	.LANCHOR3
+ 706              		.cfi_endproc
+ 707              	.LFE37:
+ 709              		.section	.text.OLED_DISPLAY_VIDEO,"ax",%progbits
+ 710              		.align	1
+ 711              		.global	OLED_DISPLAY_VIDEO
+ 712              		.syntax unified
+ 713              		.thumb
+ 714              		.thumb_func
+ 716              	OLED_DISPLAY_VIDEO:
+ 717              	.LVL76:
+ 718              	.LFB38:
+ 111:Hardware/OLED0561/oled0561.c **** 
+ 112:Hardware/OLED0561/oled0561.c **** void OLED_DISPLAY_VIDEO(u8* addr) {
+ 719              		.loc 1 112 35 is_stmt 1 view -0
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 0
+ 722              		@ frame_needed = 0, uses_anonymous_args = 0
+ 723              		.loc 1 112 35 is_stmt 0 view .LVU162
+ 724 0000 70B5     		push	{r4, r5, r6, lr}
+ 725              	.LCFI13:
+ 726              		.cfi_def_cfa_offset 16
+ 727              		.cfi_offset 4, -16
+ 728              		.cfi_offset 5, -12
+ 729              		.cfi_offset 6, -8
+ 730              		.cfi_offset 14, -4
+ 731 0002 0646     		mov	r6, r0
+ 113:Hardware/OLED0561/oled0561.c ****   u8 m, i;
+ 732              		.loc 1 113 3 is_stmt 1 view .LVU163
+ 114:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 733              		.loc 1 114 3 view .LVU164
+ 734              	.LVL77:
+ 735              		.loc 1 114 10 is_stmt 0 view .LVU165
+ 736 0004 0025     		movs	r5, #0
+ 737              		.loc 1 114 3 view .LVU166
+ 738 0006 0DE0     		b	.L52
+ 739              	.LVL78:
+ 740              	.L54:
+ 115:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + m);
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 17
+
+
+ 116:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x10);
+ 117:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x02);
+ 118:Hardware/OLED0561/oled0561.c ****     for (i = 0; i < 128; i++) {
+ 119:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 741              		.loc 1 119 7 is_stmt 1 discriminator 3 view .LVU167
+ 742              		.loc 1 119 54 is_stmt 0 discriminator 3 view .LVU168
+ 743 0008 04EBC513 		add	r3, r4, r5, lsl #7
+ 744              		.loc 1 119 7 discriminator 3 view .LVU169
+ 745 000c F25C     		ldrb	r2, [r6, r3]	@ zero_extendqisi2
+ 746 000e 4021     		movs	r1, #64
+ 747 0010 7820     		movs	r0, #120
+ 748 0012 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 749              	.LVL79:
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 750              		.loc 1 118 26 is_stmt 1 discriminator 3 view .LVU170
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 751              		.loc 1 118 27 is_stmt 0 discriminator 3 view .LVU171
+ 752 0016 0134     		adds	r4, r4, #1
+ 753              	.LVL80:
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 754              		.loc 1 118 27 discriminator 3 view .LVU172
+ 755 0018 E4B2     		uxtb	r4, r4
+ 756              	.LVL81:
+ 757              	.L53:
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 758              		.loc 1 118 17 is_stmt 1 discriminator 1 view .LVU173
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 759              		.loc 1 118 5 is_stmt 0 discriminator 1 view .LVU174
+ 760 001a 14F0800F 		tst	r4, #128
+ 761 001e F3D0     		beq	.L54
+ 114:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 762              		.loc 1 114 22 is_stmt 1 discriminator 2 view .LVU175
+ 114:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 763              		.loc 1 114 23 is_stmt 0 discriminator 2 view .LVU176
+ 764 0020 0135     		adds	r5, r5, #1
+ 765              	.LVL82:
+ 114:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 766              		.loc 1 114 23 discriminator 2 view .LVU177
+ 767 0022 EDB2     		uxtb	r5, r5
+ 768              	.LVL83:
+ 769              	.L52:
+ 114:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 770              		.loc 1 114 15 is_stmt 1 discriminator 1 view .LVU178
+ 114:Hardware/OLED0561/oled0561.c ****   for (m = 0; m < 8; m++) {
+ 771              		.loc 1 114 3 is_stmt 0 discriminator 1 view .LVU179
+ 772 0024 072D     		cmp	r5, #7
+ 773 0026 12D8     		bhi	.L57
+ 115:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0xb0 + m);
+ 774              		.loc 1 115 5 is_stmt 1 view .LVU180
+ 775 0028 A5F15002 		sub	r2, r5, #80
+ 776 002c D2B2     		uxtb	r2, r2
+ 777 002e 0021     		movs	r1, #0
+ 778 0030 7820     		movs	r0, #120
+ 779 0032 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 780              	.LVL84:
+ 116:Hardware/OLED0561/oled0561.c ****     I2C_SEND_BYTE(OLED0561_ADDR, COM, 0x02);
+ 781              		.loc 1 116 5 view .LVU181
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 18
+
+
+ 782 0036 1022     		movs	r2, #16
+ 783 0038 0021     		movs	r1, #0
+ 784 003a 7820     		movs	r0, #120
+ 785 003c FFF7FEFF 		bl	I2C_SEND_BYTE
+ 786              	.LVL85:
+ 117:Hardware/OLED0561/oled0561.c ****     for (i = 0; i < 128; i++) {
+ 787              		.loc 1 117 5 view .LVU182
+ 788 0040 0222     		movs	r2, #2
+ 789 0042 0021     		movs	r1, #0
+ 790 0044 7820     		movs	r0, #120
+ 791 0046 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 792              	.LVL86:
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 793              		.loc 1 118 5 view .LVU183
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 794              		.loc 1 118 12 is_stmt 0 view .LVU184
+ 795 004a 0024     		movs	r4, #0
+ 118:Hardware/OLED0561/oled0561.c ****       I2C_SEND_BYTE(OLED0561_ADDR, DAT, addr[m * 128 + i]);
+ 796              		.loc 1 118 5 view .LVU185
+ 797 004c E5E7     		b	.L53
+ 798              	.LVL87:
+ 799              	.L57:
+ 120:Hardware/OLED0561/oled0561.c ****     }
+ 121:Hardware/OLED0561/oled0561.c ****   }
+ 122:Hardware/OLED0561/oled0561.c **** }...
+ 800              		.loc 1 122 1 view .LVU186
+ 801 004e 70BD     		pop	{r4, r5, r6, pc}
+ 802              		.loc 1 122 1 view .LVU187
+ 803              		.cfi_endproc
+ 804              	.LFE38:
+ 806              		.global	PIC
+ 807              		.global	GB_16
+ 808              		.global	ASCII_8x16
+ 809              		.section	.rodata
+ 810              		.align	2
+ 811              		.set	.LANCHOR0,. + 0
+ 812              	.LC0:
+ 813 0000 AE0010D5 		.ascii	"\256\000\020\325\200\250?\323\000\260@\215\024\241\310"
+ 813      80A83FD3 
+ 813      00B0408D 
+ 813      14A1C8
+ 814 000f DA1281FF 		.ascii	"\332\022\201\377\331\361\3330 \000\244\246\257"
+ 814      D9F1DB30 
+ 814      2000A4A6 
+ 814      AF
+ 815              		.section	.data.PIC,"aw"
+ 816              		.align	2
+ 817              		.set	.LANCHOR3,. + 0
+ 820              	PIC:
+ 821 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 821      00000000 
+ 821      00000000 
+ 821      00
+ 822 000d 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 822      00000000 
+ 822      00000000 
+ 822      00
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 19
+
+
+ 823 001a 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 823      00000000 
+ 823      00000000 
+ 823      00
+ 824 0027 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 824      00000000 
+ 824      00000000 
+ 824      00
+ 825 0034 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 825      00000000 
+ 825      00000000 
+ 825      00
+ 826 0041 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 826      00000000 
+ 826      00000000 
+ 826      00
+ 827 004e 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 827      00000000 
+ 827      00000000 
+ 827      00
+ 828 005b 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 828      00000000 
+ 828      00000000 
+ 828      00
+ 829 0068 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 829      00000000 
+ 829      00000000 
+ 829      00
+ 830 0075 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 830      00000000 
+ 830      00000000 
+ 830      00
+ 831 0082 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 831      00000000 
+ 831      00000000 
+ 831      00
+ 832 008f 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 832      00000000 
+ 832      00000000 
+ 832      00
+ 833 009c 00000000 		.ascii	"\000\000\000\000\000\000\200\000\000\000\000\000\200"
+ 833      00008000 
+ 833      00000000 
+ 833      80
+ 834 00a9 C0C0E0C0 		.ascii	"\300\300\340\300\200\340\360\340\300\340\360\360\360"
+ 834      80E0F0E0 
+ 834      C0E0F0F0 
+ 834      F0
+ 835 00b6 F0F0E0F4 		.ascii	"\360\360\340\364\350\360\340\340\340\360\360\340\340"
+ 835      E8F0E0E0 
+ 835      E0F0F0E0 
+ 835      E0
+ 836 00c3 F0D0E0C0 		.ascii	"\360\320\340\300\300\340\340\340\340\300\340\200\200"
+ 836      C0E0E0E0 
+ 836      E0C0E080 
+ 836      80
+ 837 00d0 80004080 		.ascii	"\200\000@\200\000\200\000\000\000\000\000\000\000\000"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 20
+
+
+ 837      00800000 
+ 837      00000000 
+ 837      0000
+ 838 00de 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 838      00000000 
+ 838      00000000 
+ 838      00
+ 839 00eb 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 839      00000000 
+ 839      00000000 
+ 839      00
+ 840 00f8 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 840      00000000 
+ 840      00000000 
+ 840      00
+ 841 0105 00000000 		.ascii	"\000\000\000\000\000\000\000\000P\000\000\000\200\000"
+ 841      00000000 
+ 841      50000000 
+ 841      8000
+ 842 0113 00800080 		.ascii	"\000\200\000\200\300\300\320\300\344\344\360\360\374"
+ 842      C0C0D0C0 
+ 842      E4E4F0F0 
+ 842      FC
+ 843 0120 FCFCFCFE 		.ascii	"\374\374\374\376\377\377\377\377\377\377\377\377\377"
+ 843      FFFFFFFF 
+ 843      FFFFFFFF 
+ 843      FF
+ 844 012d FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 844      FFFFFFFF 
+ 844      FFFFFFFF 
+ 844      FF
+ 845 013a FFFF7F7F 		.ascii	"\377\377\177\177\177\177\177\177\377\177\177\377\377"
+ 845      7F7F7F7F 
+ 845      FF7F7FFF 
+ 845      FF
+ 846 0147 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 846      FFFFFFFF 
+ 846      FFFFFFFF 
+ 846      FF
+ 847 0154 FFFFFFFF 		.ascii	"\377\377\377\377\376\374\376\377\376\375\374\374\376"
+ 847      FEFCFEFF 
+ 847      FEFDFCFC 
+ 847      FE
+ 848 0161 F4F8F0F8 		.ascii	"\364\370\360\370\374\374\360\360\300\350\340\340\300"
+ 848      FCFCF0F0 
+ 848      C0E8E0E0 
+ 848      C0
+ 849 016e C0E08000 		.ascii	"\300\340\200\000\000\000\000\000\000\000\000\000\000"
+ 849      00000000 
+ 849      00000000 
+ 849      00
+ 850 017b 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 850      00000000 
+ 850      00000000 
+ 850      00
+ 851 0188 8000A000 		.ascii	"\200\000\240\000\200\320\360\370\374\370\377\373\377"
+ 851      80D0F0F8 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 21
+
+
+ 851      FCF8FFFB 
+ 851      FF
+ 852 0195 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 852      FFFFFFFF 
+ 852      FFFFFFFF 
+ 852      FF
+ 853 01a2 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 853      FFFFFFFF 
+ 853      FFFFFFFF 
+ 853      FF
+ 854 01af 1F0F0F07 		.ascii	"\037\017\017\007\003\003\001\001\001\000\000\000\000"
+ 854      03030101 
+ 854      01000000 
+ 854      00
+ 855 01bc 00000000 		.ascii	"\000\000\000\000\340\200\000\000\000\000\000\000\000"
+ 855      E0800000 
+ 855      00000000 
+ 855      00
+ 856 01c9 00000000 		.ascii	"\000\000\000\000\000\001\001\001\003\003\007\017?\177"
+ 856      00010101 
+ 856      0303070F 
+ 856      3F7F
+ 857 01d7 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\367\360\360\360\360\360"
+ 857      FFFFFFF7 
+ 857      F0F0F0F0 
+ 857      F0
+ 858 01e4 F0FFFFFF 		.ascii	"\360\377\377\377\377\377\377\377\377\377\377\377\376"
+ 858      FFFFFFFF 
+ 858      FFFFFFFF 
+ 858      FE
+ 859 01f1 FEFAFAF8 		.ascii	"\376\372\372\370\336\362\340\240\240 \200\200\000\000"
+ 859      DEF2E0A0 
+ 859      A0208080 
+ 859      0000
+ 860 01ff 20008000 		.ascii	" \000\200\000\200\004`\363\360\371\376\374\377\377\377"
+ 860      800460F3 
+ 860      F0F9FEFC 
+ 860      FFFFFF
+ 861 020e FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 861      FFFFFFFF 
+ 861      FFFFFFFF 
+ 861      FF
+ 862 021b FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 862      FFFFFFFF 
+ 862      FFFFFFFF 
+ 862      FF
+ 863 0228 FFFF7F3F 		.ascii	"\377\377\177?\017\003\001\000\000\200\200\000\340\364"
+ 863      0F030100 
+ 863      00808000 
+ 863      E0F4
+ 864 0236 F0B4BCFC 		.ascii	"\360\264\274\374\370\360\270\376\374\374\374\377\377"
+ 864      F8F0B8FE 
+ 864      FCFCFCFF 
+ 864      FF
+ 865 0243 F6DCD8D8 		.ascii	"\366\334\330\330\330\360\360\360\360\260@\000\240\340"
+ 865      D8F0F0F0 
+ 865      F0B04000 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 22
+
+
+ 865      A0E0
+ 866 0251 40000000 		.ascii	"@\000\000\000\000\000\000\003\017?\377\377\377\377\377"
+ 866      00000003 
+ 866      0F3FFFFF 
+ 866      FFFFFF
+ 867 0260 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 867      FFFFFFFF 
+ 867      FFFFFFFF 
+ 867      FF
+ 868 026d FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 868      FFFFFFFF 
+ 868      FFFFFFFF 
+ 868      FF
+ 869 027a FEFFFFFF 		.ascii	"\376\377\377\377\377\377\000\200\244l}\326\277\377\377"
+ 869      FFFF0080 
+ 869      A46C7DD6 
+ 869      BFFFFF
+ 870 0289 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 870      FFFFFFFF 
+ 870      FFFFFFFF 
+ 870      FF
+ 871 0296 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\177\177??\037\037\017"
+ 871      FFFFFFFF 
+ 871      7F7F3F3F 
+ 871      1F1F0F
+ 872 02a5 0F070703 		.ascii	"\017\007\007\003\001\000\000\000\000\000\000\000\000"
+ 872      01000000 
+ 872      00000000 
+ 872      00
+ 873 02b2 00001F7F 		.ascii	"\000\000\037\177\377\377\377\377\377\377\377\177\377"
+ 873      FFFFFFFF 
+ 873      FFFFFF7F 
+ 873      FF
+ 874 02bf FFFFF7F7 		.ascii	"\377\377\367\367\377\377\377\377\377\377\377\377\377"
+ 874      FFFFFFFF 
+ 874      FFFFFFFF 
+ 874      FF
+ 875 02cc 3F000E07 		.ascii	"?\000\016\007\003\000\000\000\000\000\000\000\000\000"
+ 875      03000000 
+ 875      00000000 
+ 875      0000
+ 876 02da 00000103 		.ascii	"\000\000\001\003\007\017\037\037??\177\177\377\377\377"
+ 876      070F1F1F 
+ 876      3F3F7F7F 
+ 876      FFFFFF
+ 877 02e9 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\377\377\377"
+ 877      FFFFFFFF 
+ 877      FFFFFFFF 
+ 877      FF
+ 878 02f6 FFFFFFFF 		.ascii	"\377\377\377\377\377\377\377\377\377\377\000\000\001"
+ 878      FFFFFFFF 
+ 878      FFFF0000 
+ 878      01
+ 879 0303 03000B1F 		.ascii	"\003\000\013\037\037\037\017/\017WgoOOO_\177_\017\017"
+ 879      1F1F0F2F 
+ 879      0F57676F 
+ 879      4F4F4F5F 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 23
+
+
+ 879      7F5F0F0F 
+ 880 0317 07038301 		.ascii	"\007\003\203\001\201\200\300`@\300``\340pp\3608h88\030"
+ 880      8180C060 
+ 880      40C06060 
+ 880      E07070F0 
+ 880      38683838 
+ 881 032c 18080800 		.ascii	"\030\010\010\000\000\000\000\000\000\000\001\001\003"
+ 881      00000000 
+ 881      00000101 
+ 881      03
+ 882 0339 07878F8F 		.ascii	"\007\207\217\217\237\037\037\237\237\237\237\317\317"
+ 882      9F1F1F9F 
+ 882      9F9F9FCF 
+ 882      CF
+ 883 0346 CFC7E7E3 		.ascii	"\317\307\347\343#\300\000\000\000\000\000\000\000\000"
+ 883      23C00000 
+ 883      00000000 
+ 883      0000
+ 884 0354 00000202 		.ascii	"\000\000\002\002\006\004\034\024<\020P\370x\260\260"
+ 884      06041C14 
+ 884      3C1050F8 
+ 884      78B0B0
+ 885 0363 B020E0C0 		.ascii	"\260 \340\300\200\201\201\203\003\007\007\007\003CC"
+ 885      80818183 
+ 885      03070707 
+ 885      034343
+ 886 0372 43434747 		.ascii	"CCGGO____\037\037\177\377\377\000\000\000\000\000\000"
+ 886      4F5F5F5F 
+ 886      5F1F1F7F 
+ 886      FFFF0000 
+ 886      00000000 
+ 887 0386 00000C0C 		.ascii	"\000\000\014\014\014\014\014\014\010\010\210\010\310"
+ 887      0C0C0C0C 
+ 887      08088808 
+ 887      C8
+ 888 0393 68A0A0BC 		.ascii	"h\240\240\274\266\377\377\370\021\037\035\235\337?\256"
+ 888      B6FFFFF8 
+ 888      111F1D9D 
+ 888      DF3FAE
+ 889 03a2 AFAFE9E8 		.ascii	"\257\257\351\350\330\020\020\020\020\020\000\000\000"
+ 889      D8101010 
+ 889      10100000 
+ 889      00
+ 890 03af 00400000 		.ascii	"\000@\000\000\000\000\000\000\300@\300\000\007\037?"
+ 890      00000000 
+ 890      C040C000 
+ 890      071F3F
+ 891 03be 7FFFFFFF 		.ascii	"\177\377\377\377\377\377\377\377\377\377?\017\007\003"
+ 891      FFFFFFFF 
+ 891      FFFF3F0F 
+ 891      0703
+ 892 03cc 40604000 		.ascii	"@`@\000 \000\000\000\000\000\000\000\000\000\000\000"
+ 892      20000000 
+ 892      00000000 
+ 892      00000000 
+ 893 03dc 00000008 		.ascii	"\000\000\000\010\354\355\177_]\337\337\354\314\377\274"
+ 893      ECED7F5F 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 24
+
+
+ 893      5DDFDFEC 
+ 893      CCFFBC
+ 894 03eb BC3E8EBC 		.ascii	"\274>\216\274(\340\341\305\305\305\305\305\305\305\305"
+ 894      28E0E1C5 
+ 894      C5C5C5C5 
+ 894      C5C5C5
+ 895 03fa C5C5C5C4 		.ascii	"\305\305\305\304\300\301"
+ 895      C0C1
+ 896              		.section	.rodata.ASCII_8x16,"a"
+ 897              		.align	2
+ 898              		.set	.LANCHOR1,. + 0
+ 901              	ASCII_8x16:
+ 902 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 902      00000000 
+ 902      00000000 
+ 902      00
+ 903 000d 00000000 		.ascii	"\000\000\000\000\0008\374\3748\000\000\000\000\000\015"
+ 903      0038FCFC 
+ 903      38000000 
+ 903      00000D
+ 904 001c 0D000000 		.ascii	"\015\000\000\000\000\016\036\000\000\036\016\000\000"
+ 904      000E1E00 
+ 904      001E0E00 
+ 904      00
+ 905 0029 00000000 		.ascii	"\000\000\000\000\000\000\000 \370\370 \370\370 \000"
+ 905      00000020 
+ 905      F8F820F8 
+ 905      F82000
+ 906 0038 020F0F02 		.ascii	"\002\017\017\002\017\017\002\0008|DGG\314\230\000\003"
+ 906      0F0F0200 
+ 906      387C4447 
+ 906      47CC9800 
+ 906      03
+ 907 0049 06041C1C 		.ascii	"\006\004\034\034\007\003\00000\000\200\300`0\000\014"
+ 907      07030030 
+ 907      300080C0 
+ 907      6030000C 
+ 908 0059 06030100 		.ascii	"\006\003\001\000\014\014\000\200\330|\344\274\330@\000"
+ 908      0C0C0080 
+ 908      D87CE4BC 
+ 908      D84000
+ 909 0068 070F0808 		.ascii	"\007\017\010\010\007\017\010\000\000\020\036\016\000"
+ 909      070F0800 
+ 909      00101E0E 
+ 909      00
+ 910 0075 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 910      00000000 
+ 910      00000000 
+ 910      00
+ 911 0082 F0F80C04 		.ascii	"\360\370\014\004\000\000\000\000\003\007\014\010\000"
+ 911      00000000 
+ 911      03070C08 
+ 911      00
+ 912 008f 00000004 		.ascii	"\000\000\000\004\014\370\360\000\000\000\000\010\014"
+ 912      0CF8F000 
+ 912      00000008 
+ 912      0C
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 25
+
+
+ 913 009c 07030000 		.ascii	"\007\003\000\000\200\240\340\300\300\340\240\200\000"
+ 913      80A0E0C0 
+ 913      C0E0A080 
+ 913      00
+ 914 00a9 02030101 		.ascii	"\002\003\001\001\003\002\000\000\200\200\340\340\200"
+ 914      03020000 
+ 914      8080E0E0 
+ 914      80
+ 915 00b6 80000000 		.ascii	"\200\000\000\000\000\003\003\000\000\000\000\000\000"
+ 915      00030300 
+ 915      00000000 
+ 915      00
+ 916 00c3 00000000 		.ascii	"\000\000\000\000\000\000\000\020\036\016\000\000\000"
+ 916      00000010 
+ 916      1E0E0000 
+ 916      00
+ 917 00d0 80808080 		.ascii	"\200\200\200\200\200\200\200\000\000\000\000\000\000"
+ 917      80808000 
+ 917      00000000 
+ 917      00
+ 918 00dd 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 918      00000000 
+ 918      00000000 
+ 918      00
+ 919 00ea 000C0C00 		.ascii	"\000\014\014\000\000\000\000\000\000\200\300`0\000\014"
+ 919      00000000 
+ 919      0080C060 
+ 919      30000C
+ 920 00f9 06030100 		.ascii	"\006\003\001\000\000\000\000\370\374\004\304$\374\370"
+ 920      000000F8 
+ 920      FC04C424 
+ 920      FCF8
+ 921 0107 00070F09 		.ascii	"\000\007\017\011\010\010\017\007\000\000\020\030\374"
+ 921      08080F07 
+ 921      00001018 
+ 921      FC
+ 922 0114 FC000000 		.ascii	"\374\000\000\000\000\010\010\017\017\010\010\000\010"
+ 922      0008080F 
+ 922      0F080800 
+ 922      08
+ 923 0121 0C84C464 		.ascii	"\014\204\304d<\030\000\016\017\011\010\010\014\014\000"
+ 923      3C18000E 
+ 923      0F090808 
+ 923      0C0C00
+ 924 0130 080C4444 		.ascii	"\010\014DDD\374\270\000\004\014\010\010\010\017\007"
+ 924      44FCB800 
+ 924      040C0808 
+ 924      080F07
+ 925 013f 00C0E0B0 		.ascii	"\000\300\340\260\230\374\374\200\000\000\000\000\010"
+ 925      98FCFC80 
+ 925      00000000 
+ 925      08
+ 926 014c 0F0F0800 		.ascii	"\017\017\010\000||DD\304\304\204\000\004\014\010\010"
+ 926      7C7C4444 
+ 926      C4C48400 
+ 926      040C0808 
+ 927 015c 080F0700 		.ascii	"\010\017\007\000\360\370LDD\300\200\000\007\017\010"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 26
+
+
+ 927      F0F84C44 
+ 927      44C08000 
+ 927      070F08
+ 928 016b 08080F07 		.ascii	"\010\010\017\007\000\014\014\004\204\304|<\000\000\000"
+ 928      000C0C04 
+ 928      84C47C3C 
+ 928      000000
+ 929 017a 0F0F0000 		.ascii	"\017\017\000\000\000\000\270\374DDD\374\270\000\007"
+ 929      0000B8FC 
+ 929      444444FC 
+ 929      B80007
+ 930 0189 0F080808 		.ascii	"\017\010\010\010\017\007\0008|DDD\374\370\000\000\010"
+ 930      0F070038 
+ 930      7C444444 
+ 930      FCF80000 
+ 930      08
+ 931 019a 08080C07 		.ascii	"\010\010\014\007\003\000\000\000\00000\000\000\000\000"
+ 931      03000000 
+ 931      00303000 
+ 931      000000
+ 932 01a9 00000606 		.ascii	"\000\000\006\006\000\000\000\000\000\00000\000\000\000"
+ 932      00000000 
+ 932      00003030 
+ 932      000000
+ 933 01b8 0000080E 		.ascii	"\000\000\010\016\006\000\000\000\000\200\300`0\030\010"
+ 933      06000000 
+ 933      0080C060 
+ 933      301808
+ 934 01c7 00000001 		.ascii	"\000\000\000\001\003\006\014\010\000@@@@@@@\000\002"
+ 934      03060C08 
+ 934      00404040 
+ 934      40404040 
+ 934      0002
+ 935 01d9 02020202 		.ascii	"\002\002\002\002\002\002\000\000\010\0300`\300\200\000"
+ 935      02020000 
+ 935      08183060 
+ 935      C08000
+ 936 01e8 00080C06 		.ascii	"\000\010\014\006\003\001\000\000\030\034\004\304\344"
+ 936      03010000 
+ 936      181C04C4 
+ 936      E4
+ 937 01f5 3C180000 		.ascii	"<\030\000\000\000\000\015\015\000\000\000\360\370\010"
+ 937      00000D0D 
+ 937      000000F0 
+ 937      F808
+ 938 0203 C8C8F8F0 		.ascii	"\310\310\370\360\000\007\017\010\013\013\013\001\000"
+ 938      00070F08 
+ 938      0B0B0B01 
+ 938      00
+ 939 0210 E0F0988C 		.ascii	"\340\360\230\214\230\360\340\000\017\017\000\000\000"
+ 939      98F0E000 
+ 939      0F0F0000 
+ 939      00
+ 940 021d 0F0F0004 		.ascii	"\017\017\000\004\374\374DD\374\270\000\010\017\017\010"
+ 940      FCFC4444 
+ 940      FCB80008 
+ 940      0F0F08
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 27
+
+
+ 941 022c 080F0700 		.ascii	"\010\017\007\000\360\370\014\004\004\014\030\000\003"
+ 941      F0F80C04 
+ 941      040C1800 
+ 941      03
+ 942 0239 070C0808 		.ascii	"\007\014\010\010\014\006\000\004\374\374\004\014\370"
+ 942      0C060004 
+ 942      FCFC040C 
+ 942      F8
+ 943 0246 F000080F 		.ascii	"\360\000\010\017\017\010\014\007\003\000\004\374\374"
+ 943      0F080C07 
+ 943      030004FC 
+ 943      FC
+ 944 0253 44E40C1C 		.ascii	"D\344\014\034\000\010\017\017\010\010\014\016\000\004"
+ 944      00080F0F 
+ 944      08080C0E 
+ 944      0004
+ 945 0261 FCFC44E4 		.ascii	"\374\374D\344\014\034\000\010\017\017\010\000\000\000"
+ 945      0C1C0008 
+ 945      0F0F0800 
+ 945      0000
+ 946 026f 00F0F80C 		.ascii	"\000\360\370\014\204\204\214\230\000\003\007\014\010"
+ 946      84848C98 
+ 946      0003070C 
+ 946      08
+ 947 027c 08070F00 		.ascii	"\010\007\017\000\374\374@@@\374\374\000\017\017\000"
+ 947      FCFC4040 
+ 947      40FCFC00 
+ 947      0F0F00
+ 948 028b 00000F0F 		.ascii	"\000\000\017\017\000\000\000\004\374\374\004\000\000"
+ 948      00000004 
+ 948      FCFC0400 
+ 948      00
+ 949 0298 0000080F 		.ascii	"\000\000\010\017\017\010\000\000\000\000\000\004\374"
+ 949      0F080000 
+ 949      00000004 
+ 949      FC
+ 950 02a5 FC040007 		.ascii	"\374\004\000\007\017\010\010\017\007\000\000\004\374"
+ 950      0F08080F 
+ 950      07000004 
+ 950      FC
+ 951 02b2 FCC0F03C 		.ascii	"\374\300\360<\014\000\010\017\017\000\001\017\016\000"
+ 951      0C00080F 
+ 951      0F00010F 
+ 951      0E00
+ 952 02c0 04FCFC04 		.ascii	"\004\374\374\004\000\000\000\000\010\017\017\010\010"
+ 952      00000000 
+ 952      080F0F08 
+ 952      08
+ 953 02cd 0C0E00FC 		.ascii	"\014\016\000\374\3748p8\374\374\000\017\017\000\000"
+ 953      FC387038 
+ 953      FCFC000F 
+ 953      0F0000
+ 954 02dc 000F0F00 		.ascii	"\000\017\017\000\374\3748p\340\374\374\000\017\017\000"
+ 954      FCFC3870 
+ 954      E0FCFC00 
+ 954      0F0F00
+ 955 02eb 00000F0F 		.ascii	"\000\000\017\017\000\360\370\014\004\014\370\360\000"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 28
+
+
+ 955      00F0F80C 
+ 955      040CF8F0 
+ 955      00
+ 956 02f8 03070C08 		.ascii	"\003\007\014\010\014\007\003\000\004\374\374DD|8\000"
+ 956      0C070300 
+ 956      04FCFC44 
+ 956      447C3800 
+ 957 0308 080F0F08 		.ascii	"\010\017\017\010\000\000\000\000\370\374\004\004\004"
+ 957      00000000 
+ 957      F8FC0404 
+ 957      04
+ 958 0315 FCF80007 		.ascii	"\374\370\000\007\017\010\016<?'\000\004\374\374D\304"
+ 958      0F080E3C 
+ 958      3F270004 
+ 958      FCFC44C4 
+ 959 0325 FC380008 		.ascii	"\3748\000\010\017\017\000\000\017\017\000\030<dD\304"
+ 959      0F0F0000 
+ 959      0F0F0018 
+ 959      3C6444C4 
+ 960 0335 9C180006 		.ascii	"\234\030\000\006\016\010\010\010\017\007\000\000\034"
+ 960      0E080808 
+ 960      0F070000 
+ 960      1C
+ 961 0342 0CFCFC0C 		.ascii	"\014\374\374\014\034\000\000\000\010\017\017\010\000"
+ 961      1C000000 
+ 961      080F0F08 
+ 961      00
+ 962 034f 00FCFC00 		.ascii	"\000\374\374\000\000\000\374\374\000\007\017\010\010"
+ 962      0000FCFC 
+ 962      00070F08 
+ 962      08
+ 963 035c 080F0700 		.ascii	"\010\017\007\000\374\374\000\000\000\374\374\000\001"
+ 963      FCFC0000 
+ 963      00FCFC00 
+ 963      01
+ 964 0369 03060C06 		.ascii	"\003\006\014\006\003\001\000\374\374\000\200\000\374"
+ 964      030100FC 
+ 964      FC008000 
+ 964      FC
+ 965 0376 FC00030F 		.ascii	"\374\000\003\017\016\003\016\017\003\000\014<\360\300"
+ 965      0E030E0F 
+ 965      03000C3C 
+ 965      F0C0
+ 966 0384 F03C0C00 		.ascii	"\360<\014\000\014\017\003\000\003\017\014\000\000<|"
+ 966      0C0F0300 
+ 966      030F0C00 
+ 966      003C7C
+ 967 0393 C0C07C3C 		.ascii	"\300\300|<\000\000\000\010\017\017\010\000\000\034\014"
+ 967      00000008 
+ 967      0F0F0800 
+ 967      001C0C
+ 968 03a2 84C4643C 		.ascii	"\204\304d<\034\000\016\017\011\010\010\014\016\000\000"
+ 968      1C000E0F 
+ 968      0908080C 
+ 968      0E0000
+ 969 03b1 00FCFC04 		.ascii	"\000\374\374\004\004\000\000\000\000\017\017\010\010"
+ 969      04000000 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 29
+
+
+ 969      000F0F08 
+ 969      08
+ 970 03be 00003870 		.ascii	"\000\0008p\340\300\200\000\000\000\000\000\000\001\003"
+ 970      E0C08000 
+ 970      00000000 
+ 970      000103
+ 971 03cd 070E0000 		.ascii	"\007\016\000\000\000\004\004\374\374\000\000\000\000"
+ 971      000404FC 
+ 971      FC000000 
+ 971      00
+ 972 03da 08080F0F 		.ascii	"\010\010\017\017\000\000\010\014\006\003\006\014\010"
+ 972      0000080C 
+ 972      0603060C 
+ 972      08
+ 973 03e7 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\000\000\000"
+ 973      00000000 
+ 973      00000000 
+ 973      00
+ 974 03f4 00000000 		.ascii	"\000\000\000\000        \000\000\003\007\004\000\000"
+ 974      20202020 
+ 974      20202020 
+ 974      00000307 
+ 974      040000
+ 975 0407 00000000 		.ascii	"\000\000\000\000\000\000\000\000\000\000\240\240\240"
+ 975      00000000 
+ 975      0000A0A0 
+ 975      A0
+ 976 0414 E0C00000 		.ascii	"\340\300\000\000\007\017\010\010\007\017\010\000\004"
+ 976      070F0808 
+ 976      070F0800 
+ 976      04
+ 977 0421 FCFC2060 		.ascii	"\374\374 `\300\200\000\010\017\007\010\010\017\007\000"
+ 977      C0800008 
+ 977      0F070808 
+ 977      0F0700
+ 978 0430 C0E02020 		.ascii	"\300\340   `@\000\007\017\010\010\010\014\004\000\200"
+ 978      20604000 
+ 978      070F0808 
+ 978      080C0400 
+ 978      80
+ 979 0441 C06024FC 		.ascii	"\300`$\374\374\000\000\007\017\010\010\007\017\010\000"
+ 979      FC000007 
+ 979      0F080807 
+ 979      0F0800
+ 980 0450 C0E0A0A0 		.ascii	"\300\340\240\240\240\340\300\000\007\017\010\010\010"
+ 980      A0E0C000 
+ 980      070F0808 
+ 980      08
+ 981 045d 0C040040 		.ascii	"\014\004\000@\370\374D\014\030\000\000\010\017\017\010"
+ 981      F8FC440C 
+ 981      18000008 
+ 981      0F0F08
+ 982 046c 00000000 		.ascii	"\000\000\000\000\300\340  \300\340 \000'oHH\177?\000"
+ 982      C0E02020 
+ 982      C0E02000 
+ 982      276F4848 
+ 982      7F3F00
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 30
+
+
+ 983 047f 0004FCFC 		.ascii	"\000\004\374\374@ \340\300\000\010\017\017\000\000\017"
+ 983      4020E0C0 
+ 983      00080F0F 
+ 983      00000F
+ 984 048e 0F000000 		.ascii	"\017\000\000\000 \354\354\000\000\000\000\000\010\017"
+ 984      20ECEC00 
+ 984      00000000 
+ 984      080F
+ 985 049c 0F080000 		.ascii	"\017\010\000\000\000\000\000\000 \354\354\000\0000p"
+ 985      00000000 
+ 985      20ECEC00 
+ 985      003070
+ 986 04ab 40407F3F 		.ascii	"@@\177?\000\004\374\374\200\300` \000\010\017\017\001"
+ 986      0004FCFC 
+ 986      80C06020 
+ 986      00080F0F 
+ 986      01
+ 987 04bc 030E0C00 		.ascii	"\003\016\014\000\000\000\004\374\374\000\000\000\000"
+ 987      000004FC 
+ 987      FC000000 
+ 987      00
+ 988 04c9 00080F0F 		.ascii	"\000\010\017\017\010\000\000\340\340`\300`\340\300\000"
+ 988      080000E0 
+ 988      E060C060 
+ 988      E0C000
+ 989 04d8 0F0F000F 		.ascii	"\017\017\000\017\000\017\017\000 \340\300  \340\300"
+ 989      000F0F00 
+ 989      20E0C020 
+ 989      20E0C0
+ 990 04e7 00000F0F 		.ascii	"\000\000\017\017\000\000\017\017\000\300\340   \340"
+ 990      00000F0F 
+ 990      00C0E020 
+ 990      2020E0
+ 991 04f6 C000070F 		.ascii	"\300\000\007\017\010\010\010\017\007\000 \340\300  "
+ 991      0808080F 
+ 991      070020E0 
+ 991      C02020
+ 992 0505 E0C00040 		.ascii	"\340\300\000@\177\177H\010\017\007\000\300\340  \300"
+ 992      7F7F4808 
+ 992      0F0700C0 
+ 992      E02020C0 
+ 993 0515 E0200007 		.ascii	"\340 \000\007\017\010H\177\177@\000 \340\300` `\300"
+ 993      0F08487F 
+ 993      7F400020 
+ 993      E0C06020 
+ 993      60C0
+ 994 0527 00080F0F 		.ascii	"\000\010\017\017\010\000\000\000\000@\340\240  `@\000"
+ 994      08000000 
+ 994      0040E0A0 
+ 994      20206040 
+ 994      00
+ 995 0538 040C0909 		.ascii	"\004\014\011\011\013\016\004\000  \370\374  \000\000"
+ 995      0B0E0400 
+ 995      2020F8FC 
+ 995      20200000 
+ 996 0548 0000070F 		.ascii	"\000\000\007\017\010\014\004\000\340\340\000\000\340"
+ 996      080C0400 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 31
+
+
+ 996      E0E00000 
+ 996      E0
+ 997 0555 E0000007 		.ascii	"\340\000\000\007\017\010\010\007\017\010\000\000\340"
+ 997      0F080807 
+ 997      0F080000 
+ 997      E0
+ 998 0562 E00000E0 		.ascii	"\340\000\000\340\340\000\000\003\007\014\014\007\003"
+ 998      E0000003 
+ 998      070C0C07 
+ 998      03
+ 999 056f 00E0E000 		.ascii	"\000\340\340\000\000\000\340\340\000\007\017\014\007"
+ 999      0000E0E0 
+ 999      00070F0C 
+ 999      07
+ 1000 057c 0C0F0700 		.ascii	"\014\017\007\000 `\300\200\300` \000\010\014\007\003"
+ 1000      2060C080 
+ 1000      C0602000 
+ 1000      080C0703 
+ 1001 058c 070C0800 		.ascii	"\007\014\010\000\340\340\000\000\000\340\340\000GOH"
+ 1001      E0E00000 
+ 1001      00E0E000 
+ 1001      474F48
+ 1002 059b 48683F1F 		.ascii	"Hh?\037\000`` \240\340` \000\014\016\013\011\010\014"
+ 1002      00606020 
+ 1002      A0E06020 
+ 1002      000C0E0B 
+ 1002      09080C
+ 1003 05ae 0C000040 		.ascii	"\014\000\000@@\370\274\004\004\000\000\000\000\007\017"
+ 1003      40F8BC04 
+ 1003      04000000 
+ 1003      00070F
+ 1004 05bd 08080000 		.ascii	"\010\010\000\000\000\000\274\274\000\000\000\000\000"
+ 1004      0000BCBC 
+ 1004      00000000 
+ 1004      00
+ 1005 05ca 000F0F00 		.ascii	"\000\017\017\000\000\000\000\004\004\274\370@@\000\000"
+ 1005      00000004 
+ 1005      04BCF840 
+ 1005      400000
+ 1006 05d9 08080F07 		.ascii	"\010\010\017\007\000\000\000\010\014\004\014\010\014"
+ 1006      00000008 
+ 1006      0C040C08 
+ 1006      0C
+ 1007 05e6 04000000 		.ascii	"\004\000\000\000\000\000\000\000\000\000\200\300`0`"
+ 1007      00000000 
+ 1007      000080C0 
+ 1007      603060
+ 1008 05f5 C0800007 		.ascii	"\300\200\000\007\007\004\004\004\007\007\000"
+ 1008      07040404 
+ 1008      070700
+ 1009              		.section	.rodata.GB_16,"a"
+ 1010              		.align	2
+ 1011              		.set	.LANCHOR2,. + 0
+ 1014              	GB_16:
+ 1015 0000 1022640C 		.ascii	"\020\"d\014\200\010IJL\370LJI\010\000\000\004\004\376"
+ 1015      8008494A 
+ 1015      4CF84C4A 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 32
+
+
+ 1015      49080000 
+ 1015      0404FE
+ 1016 0013 01040404 		.ascii	"\001\004\004\004\004\004\377\004\004\004\006\004\000"
+ 1016      0404FF04 
+ 1016      04040604 
+ 1016      00
+ 1017 0020 1010D0FF 		.ascii	"\020\020\320\377P\220 @\377\000\377@ 0\000\000\004\003"
+ 1017      50902040 
+ 1017      FF00FF40 
+ 1017      20300000 
+ 1017      0403
+ 1018 0032 00FF8044 		.ascii	"\000\377\200D\"\031\007\000?AF@p\000\000\370HHHH\377"
+ 1018      22190700 
+ 1018      3F414640 
+ 1018      700000F8 
+ 1018      48484848 
+ 1019 0047 48484848 		.ascii	"HHHH\374\010\000\000\000\000\007\002\002\002\002?BB"
+ 1019      FC080000 
+ 1019      00000702 
+ 1019      0202023F 
+ 1019      4242
+ 1020 0059 42424740 		.ascii	"BBG@p\000\000\200\200\202\202\202\202\202\342\242\222"
+ 1020      70000080 
+ 1020      80828282 
+ 1020      8282E2A2 
+ 1020      92
+ 1021 006a 8A8680C0 		.ascii	"\212\206\200\300\200\000\000\000\000\000\000@\200\177"
+ 1021      80000000 
+ 1021      00000040 
+ 1021      807F
+ 1022 0078 00000000 		.ascii	"\000\000\000\000\000\000\000\000"
+ 1022      00000000 
+ 1023              		.text
+ 1024              	.Letext0:
+ 1025              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 1026              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 1027              		.file 4 "CMSIS/stm32f10x.h"
+ 1028              		.file 5 "Hardware/OLED0561/ASCII_8x16.h"
+ 1029              		.file 6 "Hardware/OLED0561/CHS_16x16.h"
+ 1030              		.file 7 "Hardware/OLED0561/PIC.h"
+ 1031              		.file 8 "BASIC/i2c/i2c.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s 			page 33
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 oled0561.c
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:18     .text.OLED_DISPLAY_ON:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:24     .text.OLED_DISPLAY_ON:00000000 OLED_DISPLAY_ON
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:63     .text.OLED_DISPLAY_ON:00000028 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:68     .rodata.OLED_DISPLAY_OFF.str1.4:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:72     .text.OLED_DISPLAY_OFF:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:78     .text.OLED_DISPLAY_OFF:00000000 OLED_DISPLAY_OFF
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:114    .text.OLED_DISPLAY_OFF:00000024 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:119    .text.OLED_DISPLAY_LIT:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:125    .text.OLED_DISPLAY_LIT:00000000 OLED_DISPLAY_LIT
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:159    .text.OLED_DISPLAY_CLEAR:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:165    .text.OLED_DISPLAY_CLEAR:00000000 OLED_DISPLAY_CLEAR
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:249    .text.OLED0561_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:255    .text.OLED0561_Init:00000000 OLED0561_Init
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:281    .text.OLED_DISPLAY_8x16:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:287    .text.OLED_DISPLAY_8x16:00000000 OLED_DISPLAY_8x16
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:410    .text.OLED_DISPLAY_8x16:00000078 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:415    .text.OLED_DISPLAY_8x16_BUFFER:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:421    .text.OLED_DISPLAY_8x16_BUFFER:00000000 OLED_DISPLAY_8x16_BUFFER
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:478    .text.OLED_DISPLAY_16x16:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:484    .text.OLED_DISPLAY_16x16:00000000 OLED_DISPLAY_16x16
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:605    .text.OLED_DISPLAY_16x16:00000078 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:610    .text.OLED_DISPLAY_PIC:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:616    .text.OLED_DISPLAY_PIC:00000000 OLED_DISPLAY_PIC
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:705    .text.OLED_DISPLAY_PIC:00000050 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:710    .text.OLED_DISPLAY_VIDEO:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:716    .text.OLED_DISPLAY_VIDEO:00000000 OLED_DISPLAY_VIDEO
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:820    .data.PIC:00000000 PIC
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:1014   .rodata.GB_16:00000000 GB_16
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:901    .rodata.ASCII_8x16:00000000 ASCII_8x16
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:810    .rodata:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:816    .data.PIC:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:897    .rodata.ASCII_8x16:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\cceuW1Vb.s:1010   .rodata.GB_16:00000000 $d
+
+UNDEFINED SYMBOLS
+I2C_SEND_BUFFER
+I2C_SEND_BYTE

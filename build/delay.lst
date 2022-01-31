@@ -1,0 +1,228 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"delay.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.delay_us,"ax",%progbits
+  18              		.align	1
+  19              		.global	delay_us
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	delay_us:
+  25              	.LVL0:
+  26              	.LFB29:
+  27              		.file 1 "BASIC/delay/delay.c"
+   1:BASIC/delay/delay.c **** #include "delay.h"
+   2:BASIC/delay/delay.c **** 
+   3:BASIC/delay/delay.c **** #define AHB_INPUT 72
+   4:BASIC/delay/delay.c **** 
+   5:BASIC/delay/delay.c **** void delay_us(u32 uS)
+   6:BASIC/delay/delay.c **** {
+  28              		.loc 1 6 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   7:BASIC/delay/delay.c **** 	SysTick->LOAD = AHB_INPUT * uS;
+  33              		.loc 1 7 2 view .LVU1
+  34              		.loc 1 7 28 is_stmt 0 view .LVU2
+  35 0000 00EBC000 		add	r0, r0, r0, lsl #3
+  36              	.LVL1:
+  37              		.loc 1 7 28 view .LVU3
+  38 0004 C000     		lsls	r0, r0, #3
+  39              		.loc 1 7 16 view .LVU4
+  40 0006 4FF0E023 		mov	r3, #-536813568
+  41 000a 5861     		str	r0, [r3, #20]
+   8:BASIC/delay/delay.c **** 	SysTick->VAL = 0x00;
+  42              		.loc 1 8 2 is_stmt 1 view .LVU5
+  43              		.loc 1 8 15 is_stmt 0 view .LVU6
+  44 000c 0022     		movs	r2, #0
+  45 000e 9A61     		str	r2, [r3, #24]
+   9:BASIC/delay/delay.c **** 	SysTick->CTRL = 0x00000005;
+  46              		.loc 1 9 2 is_stmt 1 view .LVU7
+  47              		.loc 1 9 16 is_stmt 0 view .LVU8
+  48 0010 0522     		movs	r2, #5
+  49 0012 1A61     		str	r2, [r3, #16]
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s 			page 2
+
+
+  10:BASIC/delay/delay.c **** 	while (!(SysTick->CTRL & 0x00010000))
+  50              		.loc 1 10 2 is_stmt 1 view .LVU9
+  51              	.L2:
+  11:BASIC/delay/delay.c **** 		;
+  52              		.loc 1 11 3 discriminator 1 view .LVU10
+  10:BASIC/delay/delay.c **** 	while (!(SysTick->CTRL & 0x00010000))
+  53              		.loc 1 10 8 discriminator 1 view .LVU11
+  10:BASIC/delay/delay.c **** 	while (!(SysTick->CTRL & 0x00010000))
+  54              		.loc 1 10 18 is_stmt 0 discriminator 1 view .LVU12
+  55 0014 4FF0E023 		mov	r3, #-536813568
+  56 0018 1B69     		ldr	r3, [r3, #16]
+  10:BASIC/delay/delay.c **** 	while (!(SysTick->CTRL & 0x00010000))
+  57              		.loc 1 10 8 discriminator 1 view .LVU13
+  58 001a 13F4803F 		tst	r3, #65536
+  59 001e F9D0     		beq	.L2
+  12:BASIC/delay/delay.c **** 	SysTick->CTRL = 0x00000004;
+  60              		.loc 1 12 2 is_stmt 1 view .LVU14
+  61              		.loc 1 12 16 is_stmt 0 view .LVU15
+  62 0020 4FF0E023 		mov	r3, #-536813568
+  63 0024 0422     		movs	r2, #4
+  64 0026 1A61     		str	r2, [r3, #16]
+  13:BASIC/delay/delay.c **** }
+  65              		.loc 1 13 1 view .LVU16
+  66 0028 7047     		bx	lr
+  67              		.cfi_endproc
+  68              	.LFE29:
+  70              		.section	.text.delay_ms,"ax",%progbits
+  71              		.align	1
+  72              		.global	delay_ms
+  73              		.syntax unified
+  74              		.thumb
+  75              		.thumb_func
+  77              	delay_ms:
+  78              	.LVL2:
+  79              	.LFB30:
+  14:BASIC/delay/delay.c **** 
+  15:BASIC/delay/delay.c **** void delay_ms(u16 ms)
+  16:BASIC/delay/delay.c **** {
+  80              		.loc 1 16 1 is_stmt 1 view -0
+  81              		.cfi_startproc
+  82              		@ args = 0, pretend = 0, frame = 0
+  83              		@ frame_needed = 0, uses_anonymous_args = 0
+  84              		.loc 1 16 1 is_stmt 0 view .LVU18
+  85 0000 10B5     		push	{r4, lr}
+  86              	.LCFI0:
+  87              		.cfi_def_cfa_offset 8
+  88              		.cfi_offset 4, -8
+  89              		.cfi_offset 14, -4
+  17:BASIC/delay/delay.c **** 	while (ms-- != 0)
+  90              		.loc 1 17 2 is_stmt 1 view .LVU19
+  91              		.loc 1 17 8 is_stmt 0 view .LVU20
+  92 0002 04E0     		b	.L4
+  93              	.LVL3:
+  94              	.L5:
+  18:BASIC/delay/delay.c **** 	{
+  19:BASIC/delay/delay.c **** 		delay_us(1000);
+  95              		.loc 1 19 3 is_stmt 1 view .LVU21
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s 			page 3
+
+
+  96 0004 4FF47A70 		mov	r0, #1000
+  97 0008 FFF7FEFF 		bl	delay_us
+  98              	.LVL4:
+  17:BASIC/delay/delay.c **** 	while (ms-- != 0)
+  99              		.loc 1 17 11 is_stmt 0 view .LVU22
+ 100 000c 2046     		mov	r0, r4
+ 101              	.LVL5:
+ 102              	.L4:
+  17:BASIC/delay/delay.c **** 	while (ms-- != 0)
+ 103              		.loc 1 17 8 is_stmt 1 view .LVU23
+  17:BASIC/delay/delay.c **** 	while (ms-- != 0)
+ 104              		.loc 1 17 11 is_stmt 0 view .LVU24
+ 105 000e 431E     		subs	r3, r0, #1
+ 106 0010 9CB2     		uxth	r4, r3
+ 107              	.LVL6:
+  17:BASIC/delay/delay.c **** 	while (ms-- != 0)
+ 108              		.loc 1 17 8 view .LVU25
+ 109 0012 0028     		cmp	r0, #0
+ 110 0014 F6D1     		bne	.L5
+  20:BASIC/delay/delay.c **** 	}
+  21:BASIC/delay/delay.c **** }
+ 111              		.loc 1 21 1 view .LVU26
+ 112 0016 10BD     		pop	{r4, pc}
+ 113              		.loc 1 21 1 view .LVU27
+ 114              		.cfi_endproc
+ 115              	.LFE30:
+ 117              		.section	.text.delay_s,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	delay_s
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 124              	delay_s:
+ 125              	.LVL7:
+ 126              	.LFB31:
+  22:BASIC/delay/delay.c **** 
+  23:BASIC/delay/delay.c **** void delay_s(u16 s)
+  24:BASIC/delay/delay.c **** {
+ 127              		.loc 1 24 1 is_stmt 1 view -0
+ 128              		.cfi_startproc
+ 129              		@ args = 0, pretend = 0, frame = 0
+ 130              		@ frame_needed = 0, uses_anonymous_args = 0
+ 131              		.loc 1 24 1 is_stmt 0 view .LVU29
+ 132 0000 10B5     		push	{r4, lr}
+ 133              	.LCFI1:
+ 134              		.cfi_def_cfa_offset 8
+ 135              		.cfi_offset 4, -8
+ 136              		.cfi_offset 14, -4
+  25:BASIC/delay/delay.c **** 	while (s-- != 0)
+ 137              		.loc 1 25 2 is_stmt 1 view .LVU30
+ 138              		.loc 1 25 8 is_stmt 0 view .LVU31
+ 139 0002 04E0     		b	.L8
+ 140              	.LVL8:
+ 141              	.L9:
+  26:BASIC/delay/delay.c **** 	{
+  27:BASIC/delay/delay.c **** 		delay_ms(1000);
+ 142              		.loc 1 27 3 is_stmt 1 view .LVU32
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s 			page 4
+
+
+ 143 0004 4FF47A70 		mov	r0, #1000
+ 144 0008 FFF7FEFF 		bl	delay_ms
+ 145              	.LVL9:
+  25:BASIC/delay/delay.c **** 	while (s-- != 0)
+ 146              		.loc 1 25 10 is_stmt 0 view .LVU33
+ 147 000c 2046     		mov	r0, r4
+ 148              	.LVL10:
+ 149              	.L8:
+  25:BASIC/delay/delay.c **** 	while (s-- != 0)
+ 150              		.loc 1 25 8 is_stmt 1 view .LVU34
+  25:BASIC/delay/delay.c **** 	while (s-- != 0)
+ 151              		.loc 1 25 10 is_stmt 0 view .LVU35
+ 152 000e 431E     		subs	r3, r0, #1
+ 153 0010 9CB2     		uxth	r4, r3
+ 154              	.LVL11:
+  25:BASIC/delay/delay.c **** 	while (s-- != 0)
+ 155              		.loc 1 25 8 view .LVU36
+ 156 0012 0028     		cmp	r0, #0
+ 157 0014 F6D1     		bne	.L9
+  28:BASIC/delay/delay.c **** 	}
+  29:BASIC/delay/delay.c **** }
+ 158              		.loc 1 29 1 view .LVU37
+ 159 0016 10BD     		pop	{r4, pc}
+ 160              		.loc 1 29 1 view .LVU38
+ 161              		.cfi_endproc
+ 162              	.LFE31:
+ 164              		.text
+ 165              	.Letext0:
+ 166              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 167              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 168              		.file 4 "CMSIS/core_cm3.h"
+ 169              		.file 5 "CMSIS/stm32f10x.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 delay.c
+C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s:18     .text.delay_us:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s:24     .text.delay_us:00000000 delay_us
+C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s:71     .text.delay_ms:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s:77     .text.delay_ms:00000000 delay_ms
+C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s:118    .text.delay_s:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccMmPJCD.s:124    .text.delay_s:00000000 delay_s
+
+NO UNDEFINED SYMBOLS

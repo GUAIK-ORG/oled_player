@@ -1,0 +1,102 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc9xFtLM.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"key.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.KEY_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	KEY_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	KEY_Init:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/KEY/key.c"
+   1:Hardware/KEY/key.c **** #include "key.h"
+   2:Hardware/KEY/key.c **** 
+   3:Hardware/KEY/key.c **** void KEY_Init(void)
+   4:Hardware/KEY/key.c **** {
+  27              		.loc 1 4 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 00B5     		push	{lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 14, -4
+  35 0002 83B0     		sub	sp, sp, #12
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_offset 16
+   5:Hardware/KEY/key.c ****     GPIO_InitTypeDef GPIO_InitStructure;
+  38              		.loc 1 5 5 view .LVU1
+   6:Hardware/KEY/key.c ****     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+  39              		.loc 1 6 5 view .LVU2
+  40 0004 0121     		movs	r1, #1
+  41 0006 0420     		movs	r0, #4
+  42 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  43              	.LVL0:
+   7:Hardware/KEY/key.c ****     GPIO_InitStructure.GPIO_Pin = KEY1 | KEY2;
+  44              		.loc 1 7 5 view .LVU3
+  45              		.loc 1 7 33 is_stmt 0 view .LVU4
+  46 000c 0323     		movs	r3, #3
+  47 000e ADF80430 		strh	r3, [sp, #4]	@ movhi
+   8:Hardware/KEY/key.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  48              		.loc 1 8 5 is_stmt 1 view .LVU5
+  49              		.loc 1 8 34 is_stmt 0 view .LVU6
+  50 0012 4823     		movs	r3, #72
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc9xFtLM.s 			page 2
+
+
+  51 0014 8DF80730 		strb	r3, [sp, #7]
+   9:Hardware/KEY/key.c ****     GPIO_Init(KEYPORT, &GPIO_InitStructure);
+  52              		.loc 1 9 5 is_stmt 1 view .LVU7
+  53 0018 01A9     		add	r1, sp, #4
+  54 001a 0348     		ldr	r0, .L3
+  55 001c FFF7FEFF 		bl	GPIO_Init
+  56              	.LVL1:
+  10:Hardware/KEY/key.c **** }...
+  57              		.loc 1 10 1 is_stmt 0 view .LVU8
+  58 0020 03B0     		add	sp, sp, #12
+  59              	.LCFI2:
+  60              		.cfi_def_cfa_offset 4
+  61              		@ sp needed
+  62 0022 5DF804FB 		ldr	pc, [sp], #4
+  63              	.L4:
+  64 0026 00BF     		.align	2
+  65              	.L3:
+  66 0028 00080140 		.word	1073809408
+  67              		.cfi_endproc
+  68              	.LFE29:
+  70              		.text
+  71              	.Letext0:
+  72              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+  73              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+  74              		.file 4 "CMSIS/stm32f10x.h"
+  75              		.file 5 "LIB/inc/stm32f10x_gpio.h"
+  76              		.file 6 "LIB/inc/stm32f10x_rcc.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc9xFtLM.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 key.c
+C:\Users\Rick\AppData\Local\Temp\cc9xFtLM.s:18     .text.KEY_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cc9xFtLM.s:24     .text.KEY_Init:00000000 KEY_Init
+C:\Users\Rick\AppData\Local\Temp\cc9xFtLM.s:66     .text.KEY_Init:00000028 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init

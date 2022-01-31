@@ -1,0 +1,260 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"sys.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.NVIC_Configuration,"ax",%progbits
+  18              		.align	1
+  19              		.global	NVIC_Configuration
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	NVIC_Configuration:
+  25              	.LFB29:
+  26              		.file 1 "BASIC/sys/sys.c"
+   1:BASIC/sys/sys.c **** #include "sys.h"
+   2:BASIC/sys/sys.c **** 
+   3:BASIC/sys/sys.c **** void NVIC_Configuration(void) {  //嵌套中断向量控制器 的设置
+  27              		.loc 1 3 31 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+   4:BASIC/sys/sys.c ****   NVIC_PriorityGroupConfig(
+  36              		.loc 1 4 3 view .LVU1
+  37 0002 4FF4A060 		mov	r0, #1280
+  38 0006 FFF7FEFF 		bl	NVIC_PriorityGroupConfig
+  39              	.LVL0:
+   5:BASIC/sys/sys.c ****       NVIC_PriorityGroup_2);  //设置NVIC中断分组2:2位抢占优先级，2位响应优先级
+   6:BASIC/sys/sys.c **** }
+  40              		.loc 1 6 1 is_stmt 0 view .LVU2
+  41 000a 08BD     		pop	{r3, pc}
+  42              		.cfi_endproc
+  43              	.LFE29:
+  45              		.section	.text.RCC_Configuration,"ax",%progbits
+  46              		.align	1
+  47              		.global	RCC_Configuration
+  48              		.syntax unified
+  49              		.thumb
+  50              		.thumb_func
+  52              	RCC_Configuration:
+  53              	.LFB30:
+   7:BASIC/sys/sys.c **** 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s 			page 2
+
+
+   8:BASIC/sys/sys.c **** void RCC_Configuration(void) {  // RCC时钟的设置
+  54              		.loc 1 8 30 is_stmt 1 view -0
+  55              		.cfi_startproc
+  56              		@ args = 0, pretend = 0, frame = 0
+  57              		@ frame_needed = 0, uses_anonymous_args = 0
+  58 0000 08B5     		push	{r3, lr}
+  59              	.LCFI1:
+  60              		.cfi_def_cfa_offset 8
+  61              		.cfi_offset 3, -8
+  62              		.cfi_offset 14, -4
+   9:BASIC/sys/sys.c ****   ErrorStatus HSEStartUpStatus;
+  63              		.loc 1 9 3 view .LVU4
+  10:BASIC/sys/sys.c ****   RCC_DeInit(); /* RCC system reset(for debug purpose) RCC寄存器恢复初始化值*/
+  64              		.loc 1 10 3 view .LVU5
+  65 0002 FFF7FEFF 		bl	RCC_DeInit
+  66              	.LVL1:
+  11:BASIC/sys/sys.c ****   RCC_HSEConfig(RCC_HSE_ON); /* Enable HSE 使能外部高速晶振*/
+  67              		.loc 1 11 3 view .LVU6
+  68 0006 4FF48030 		mov	r0, #65536
+  69 000a FFF7FEFF 		bl	RCC_HSEConfig
+  70              	.LVL2:
+  12:BASIC/sys/sys.c ****   HSEStartUpStatus = RCC_WaitForHSEStartUp(); /* Wait till HSE is ready
+  71              		.loc 1 12 3 view .LVU7
+  72              		.loc 1 12 22 is_stmt 0 view .LVU8
+  73 000e FFF7FEFF 		bl	RCC_WaitForHSEStartUp
+  74              	.LVL3:
+  13:BASIC/sys/sys.c ****                                                  等待外部高速晶振使能完成*/
+  14:BASIC/sys/sys.c ****   if (HSEStartUpStatus == SUCCESS) {
+  75              		.loc 1 14 3 is_stmt 1 view .LVU9
+  76              		.loc 1 14 6 is_stmt 0 view .LVU10
+  77 0012 0128     		cmp	r0, #1
+  78 0014 00D0     		beq	.L8
+  79              	.LVL4:
+  80              	.L3:
+  15:BASIC/sys/sys.c ****     /*设置PLL时钟源及倍频系数*/
+  16:BASIC/sys/sys.c ****     RCC_PLLConfig(
+  17:BASIC/sys/sys.c ****         RCC_PLLSource_HSE_Div1,
+  18:BASIC/sys/sys.c ****         RCC_PLLMul_9);  // RCC_PLLMul_x（枚举2~16）是倍频值。当HSE=8MHZ,RCC_PLLMul_9时PL
+  19:BASIC/sys/sys.c ****     /*设置AHB时钟（HCLK）*/
+  20:BASIC/sys/sys.c ****     RCC_HCLKConfig(
+  21:BASIC/sys/sys.c ****         RCC_SYSCLK_Div1);  // RCC_SYSCLK_Div1——AHB时钟 = 系统时钟(SYSCLK) =
+  22:BASIC/sys/sys.c ****                            // 72MHZ（外部晶振8HMZ）
+  23:BASIC/sys/sys.c ****     /*注意此处的设置，如果使用SYSTICK做延时程序，此时SYSTICK(Cortex System
+  24:BASIC/sys/sys.c ****      * timer)=HCLK/8=9MHZ*/
+  25:BASIC/sys/sys.c ****     RCC_PCLK1Config(
+  26:BASIC/sys/sys.c ****         RCC_HCLK_Div2);  //设置低速AHB时钟（PCLK1）,RCC_HCLK_Div2——APB1时钟
+  27:BASIC/sys/sys.c ****                          //= HCLK/2 = 36MHZ（外部晶振8HMZ）
+  28:BASIC/sys/sys.c ****     RCC_PCLK2Config(
+  29:BASIC/sys/sys.c ****         RCC_HCLK_Div1);  //设置高速AHB时钟（PCLK2）,RCC_HCLK_Div1——APB2时钟
+  30:BASIC/sys/sys.c ****                          //= HCLK = 72MHZ（外部晶振8HMZ）
+  31:BASIC/sys/sys.c ****     /*注：AHB主要负责外部存储器时钟。APB2负责AD，I/O，高级TIM，串口1。APB1�
+  32:BASIC/sys/sys.c ****      */
+  33:BASIC/sys/sys.c ****     FLASH_SetLatency(FLASH_Latency_2);  //设置FLASH存储器延时时钟周期数
+  34:BASIC/sys/sys.c ****     /*FLASH时序延迟几个周期，等待总线同步操作。
+  35:BASIC/sys/sys.c ****     推荐按照单片机系统运行频率：
+  36:BASIC/sys/sys.c ****     0—24MHz时，取Latency_0；
+  37:BASIC/sys/sys.c ****     24—48MHz时，取Latency_1；
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s 			page 3
+
+
+  38:BASIC/sys/sys.c ****     48~72MHz时，取Latency_2*/
+  39:BASIC/sys/sys.c ****     FLASH_PrefetchBufferCmd(
+  40:BASIC/sys/sys.c ****         FLASH_PrefetchBuffer_Enable);  //选择FLASH预取指缓存的模式，预取指缓存使�
+  41:BASIC/sys/sys.c ****     RCC_PLLCmd(ENABLE);  //使能PLL
+  42:BASIC/sys/sys.c ****     while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+  43:BASIC/sys/sys.c ****       ;                                         //等待PLL输出稳定
+  44:BASIC/sys/sys.c ****     RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);  //选择SYSCLK时钟源为PLL
+  45:BASIC/sys/sys.c ****     while (RCC_GetSYSCLKSource() != 0x08)
+  46:BASIC/sys/sys.c ****       ;  //等待PLL成为SYSCLK时钟源
+  47:BASIC/sys/sys.c ****   }
+  48:BASIC/sys/sys.c ****   /*开始使能程序中需要使用的外设时钟*/
+  49:BASIC/sys/sys.c ****   //	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA |
+  50:BASIC/sys/sys.c ****   // RCC_APB2Periph_GPIOB | 	RCC_APB2Periph_GPIOC | RCC_APB2Periph_GPIOD |
+  51:BASIC/sys/sys.c ****   // RCC_APB2Periph_GPIOE, ENABLE); //APB2外设时钟使能
+  52:BASIC/sys/sys.c ****   //	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
+  53:BASIC/sys/sys.c ****   ////APB1外设时钟使能 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+  54:BASIC/sys/sys.c ****   //	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
+  55:BASIC/sys/sys.c ****   //	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+  56:BASIC/sys/sys.c **** }...
+  81              		.loc 1 56 1 view .LVU11
+  82 0016 08BD     		pop	{r3, pc}
+  83              	.LVL5:
+  84              	.L8:
+  16:BASIC/sys/sys.c ****     RCC_PLLConfig(
+  85              		.loc 1 16 5 is_stmt 1 view .LVU12
+  86 0018 4FF4E011 		mov	r1, #1835008
+  87 001c 4FF48030 		mov	r0, #65536
+  88              	.LVL6:
+  16:BASIC/sys/sys.c ****     RCC_PLLConfig(
+  89              		.loc 1 16 5 is_stmt 0 view .LVU13
+  90 0020 FFF7FEFF 		bl	RCC_PLLConfig
+  91              	.LVL7:
+  20:BASIC/sys/sys.c ****     RCC_HCLKConfig(
+  92              		.loc 1 20 5 is_stmt 1 view .LVU14
+  93 0024 0020     		movs	r0, #0
+  94 0026 FFF7FEFF 		bl	RCC_HCLKConfig
+  95              	.LVL8:
+  25:BASIC/sys/sys.c ****     RCC_PCLK1Config(
+  96              		.loc 1 25 5 view .LVU15
+  97 002a 4FF48060 		mov	r0, #1024
+  98 002e FFF7FEFF 		bl	RCC_PCLK1Config
+  99              	.LVL9:
+  28:BASIC/sys/sys.c ****     RCC_PCLK2Config(
+ 100              		.loc 1 28 5 view .LVU16
+ 101 0032 0020     		movs	r0, #0
+ 102 0034 FFF7FEFF 		bl	RCC_PCLK2Config
+ 103              	.LVL10:
+  33:BASIC/sys/sys.c ****     FLASH_SetLatency(FLASH_Latency_2);  //设置FLASH存储器延时时钟周期数
+ 104              		.loc 1 33 5 view .LVU17
+ 105 0038 0220     		movs	r0, #2
+ 106 003a FFF7FEFF 		bl	FLASH_SetLatency
+ 107              	.LVL11:
+  39:BASIC/sys/sys.c ****     FLASH_PrefetchBufferCmd(
+ 108              		.loc 1 39 5 view .LVU18
+ 109 003e 1020     		movs	r0, #16
+ 110 0040 FFF7FEFF 		bl	FLASH_PrefetchBufferCmd
+ 111              	.LVL12:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s 			page 4
+
+
+  41:BASIC/sys/sys.c ****     RCC_PLLCmd(ENABLE);  //使能PLL
+ 112              		.loc 1 41 5 view .LVU19
+ 113 0044 0120     		movs	r0, #1
+ 114 0046 FFF7FEFF 		bl	RCC_PLLCmd
+ 115              	.LVL13:
+  42:BASIC/sys/sys.c ****     while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+ 116              		.loc 1 42 5 view .LVU20
+ 117              	.L5:
+  43:BASIC/sys/sys.c ****       ;                                         //等待PLL输出稳定
+ 118              		.loc 1 43 7 discriminator 1 view .LVU21
+  42:BASIC/sys/sys.c ****     while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+ 119              		.loc 1 42 11 discriminator 1 view .LVU22
+  42:BASIC/sys/sys.c ****     while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+ 120              		.loc 1 42 12 is_stmt 0 discriminator 1 view .LVU23
+ 121 004a 3920     		movs	r0, #57
+ 122 004c FFF7FEFF 		bl	RCC_GetFlagStatus
+ 123              	.LVL14:
+  42:BASIC/sys/sys.c ****     while (RCC_GetFlagStatus(RCC_FLAG_PLLRDY) == RESET)
+ 124              		.loc 1 42 11 discriminator 1 view .LVU24
+ 125 0050 0028     		cmp	r0, #0
+ 126 0052 FAD0     		beq	.L5
+  44:BASIC/sys/sys.c ****     RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);  //选择SYSCLK时钟源为PLL
+ 127              		.loc 1 44 5 is_stmt 1 view .LVU25
+ 128 0054 0220     		movs	r0, #2
+ 129 0056 FFF7FEFF 		bl	RCC_SYSCLKConfig
+ 130              	.LVL15:
+  45:BASIC/sys/sys.c ****     while (RCC_GetSYSCLKSource() != 0x08)
+ 131              		.loc 1 45 5 view .LVU26
+ 132              	.L6:
+  46:BASIC/sys/sys.c ****       ;  //等待PLL成为SYSCLK时钟源
+ 133              		.loc 1 46 7 discriminator 1 view .LVU27
+  45:BASIC/sys/sys.c ****     while (RCC_GetSYSCLKSource() != 0x08)
+ 134              		.loc 1 45 11 discriminator 1 view .LVU28
+  45:BASIC/sys/sys.c ****     while (RCC_GetSYSCLKSource() != 0x08)
+ 135              		.loc 1 45 12 is_stmt 0 discriminator 1 view .LVU29
+ 136 005a FFF7FEFF 		bl	RCC_GetSYSCLKSource
+ 137              	.LVL16:
+  45:BASIC/sys/sys.c ****     while (RCC_GetSYSCLKSource() != 0x08)
+ 138              		.loc 1 45 11 discriminator 1 view .LVU30
+ 139 005e 0828     		cmp	r0, #8
+ 140 0060 FBD1     		bne	.L6
+ 141 0062 D8E7     		b	.L3
+ 142              		.cfi_endproc
+ 143              	.LFE30:
+ 145              		.text
+ 146              	.Letext0:
+ 147              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 148              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 149              		.file 4 "CMSIS/stm32f10x.h"
+ 150              		.file 5 "LIB/inc/stm32f10x_rcc.h"
+ 151              		.file 6 "LIB/inc/stm32f10x_flash.h"
+ 152              		.file 7 "LIB/inc/misc.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 sys.c
+C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s:18     .text.NVIC_Configuration:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s:24     .text.NVIC_Configuration:00000000 NVIC_Configuration
+C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s:46     .text.RCC_Configuration:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccQybX3r.s:52     .text.RCC_Configuration:00000000 RCC_Configuration
+
+UNDEFINED SYMBOLS
+NVIC_PriorityGroupConfig
+RCC_DeInit
+RCC_HSEConfig
+RCC_WaitForHSEStartUp
+RCC_PLLConfig
+RCC_HCLKConfig
+RCC_PCLK1Config
+RCC_PCLK2Config
+FLASH_SetLatency
+FLASH_PrefetchBufferCmd
+RCC_PLLCmd
+RCC_GetFlagStatus
+RCC_SYSCLKConfig
+RCC_GetSYSCLKSource

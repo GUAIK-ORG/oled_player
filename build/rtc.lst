@@ -1,0 +1,1382 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"rtc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.RTC_First_Config,"ax",%progbits
+  18              		.align	1
+  19              		.global	RTC_First_Config
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	RTC_First_Config:
+  25              	.LFB29:
+  26              		.file 1 "BASIC/rtc/rtc.c"
+   1:BASIC/rtc/rtc.c **** #include "rtc.h"
+   2:BASIC/rtc/rtc.c **** 
+   3:BASIC/rtc/rtc.c **** #include <stm32f10x_bkp.h>
+   4:BASIC/rtc/rtc.c **** #include <stm32f10x_pwr.h>
+   5:BASIC/rtc/rtc.c **** #include <stm32f10x_rcc.h>
+   6:BASIC/rtc/rtc.c **** #include <stm32f10x_rtc.h>
+   7:BASIC/rtc/rtc.c **** 
+   8:BASIC/rtc/rtc.c **** u16 ryear;
+   9:BASIC/rtc/rtc.c **** u8 rmon, rday, rhour, rmin, rsec, rweek;
+  10:BASIC/rtc/rtc.c **** 
+  11:BASIC/rtc/rtc.c **** void RTC_First_Config(void) {
+  27              		.loc 1 11 29 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 3, -8
+  35              		.cfi_offset 14, -4
+  12:BASIC/rtc/rtc.c ****   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP,
+  36              		.loc 1 12 3 view .LVU1
+  37 0002 0121     		movs	r1, #1
+  38 0004 4FF0C050 		mov	r0, #402653184
+  39 0008 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+  40              	.LVL0:
+  13:BASIC/rtc/rtc.c ****                          ENABLE);  //启用PWR和BKP的时钟（from APB1）
+  14:BASIC/rtc/rtc.c ****   PWR_BackupAccessCmd(ENABLE);     //后备域解锁
+  41              		.loc 1 14 3 view .LVU2
+  42 000c 0120     		movs	r0, #1
+  43 000e FFF7FEFF 		bl	PWR_BackupAccessCmd
+  44              	.LVL1:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 2
+
+
+  15:BASIC/rtc/rtc.c ****   BKP_DeInit();                    //备份寄存器模块复位
+  45              		.loc 1 15 3 view .LVU3
+  46 0012 FFF7FEFF 		bl	BKP_DeInit
+  47              	.LVL2:
+  16:BASIC/rtc/rtc.c ****   RCC_LSEConfig(RCC_LSE_ON);       //外部32.768KHZ晶振开启
+  48              		.loc 1 16 3 view .LVU4
+  49 0016 0120     		movs	r0, #1
+  50 0018 FFF7FEFF 		bl	RCC_LSEConfig
+  51              	.LVL3:
+  17:BASIC/rtc/rtc.c ****   while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
+  52              		.loc 1 17 3 view .LVU5
+  53              	.L2:
+  18:BASIC/rtc/rtc.c ****     ;  //等待稳定
+  54              		.loc 1 18 5 discriminator 1 view .LVU6
+  17:BASIC/rtc/rtc.c ****   while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
+  55              		.loc 1 17 9 discriminator 1 view .LVU7
+  17:BASIC/rtc/rtc.c ****   while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
+  56              		.loc 1 17 10 is_stmt 0 discriminator 1 view .LVU8
+  57 001c 4120     		movs	r0, #65
+  58 001e FFF7FEFF 		bl	RCC_GetFlagStatus
+  59              	.LVL4:
+  17:BASIC/rtc/rtc.c ****   while (RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET)
+  60              		.loc 1 17 9 discriminator 1 view .LVU9
+  61 0022 0028     		cmp	r0, #0
+  62 0024 FAD0     		beq	.L2
+  19:BASIC/rtc/rtc.c ****   RCC_RTCCLKConfig(
+  63              		.loc 1 19 3 is_stmt 1 view .LVU10
+  64 0026 4FF48070 		mov	r0, #256
+  65 002a FFF7FEFF 		bl	RCC_RTCCLKConfig
+  66              	.LVL5:
+  20:BASIC/rtc/rtc.c ****       RCC_RTCCLKSource_LSE);  // RTC时钟源配置成LSE（外部低速晶振32.768KHZ）
+  21:BASIC/rtc/rtc.c ****   RCC_RTCCLKCmd(ENABLE);  // RTC开启
+  67              		.loc 1 21 3 view .LVU11
+  68 002e 0120     		movs	r0, #1
+  69 0030 FFF7FEFF 		bl	RCC_RTCCLKCmd
+  70              	.LVL6:
+  22:BASIC/rtc/rtc.c ****   RTC_WaitForSynchro();  //开启后需要等待APB1时钟与RTC时钟同步，才能读写寄存�
+  71              		.loc 1 22 3 view .LVU12
+  72 0034 FFF7FEFF 		bl	RTC_WaitForSynchro
+  73              	.LVL7:
+  23:BASIC/rtc/rtc.c ****   RTC_WaitForLastTask();  //读写寄存器前，要确定上一个操作已经结束
+  74              		.loc 1 23 3 view .LVU13
+  75 0038 FFF7FEFF 		bl	RTC_WaitForLastTask
+  76              	.LVL8:
+  24:BASIC/rtc/rtc.c ****   RTC_SetPrescaler(32767);  //设置RTC分频器，使RTC时钟为1Hz,RTC period =
+  77              		.loc 1 24 3 view .LVU14
+  78 003c 47F6FF70 		movw	r0, #32767
+  79 0040 FFF7FEFF 		bl	RTC_SetPrescaler
+  80              	.LVL9:
+  25:BASIC/rtc/rtc.c ****                             // RTCCLK/RTC_PR = (32.768 KHz)/(32767+1)
+  26:BASIC/rtc/rtc.c ****   RTC_WaitForLastTask();  //等待寄存器写入完成
+  81              		.loc 1 26 3 view .LVU15
+  82 0044 FFF7FEFF 		bl	RTC_WaitForLastTask
+  83              	.LVL10:
+  27:BASIC/rtc/rtc.c ****                           //当不使用RTC秒中断，可以屏蔽下面2条
+  28:BASIC/rtc/rtc.c ****   //    RTC_ITConfig(RTC_IT_SEC, ENABLE);//使能秒中断
+  29:BASIC/rtc/rtc.c ****   //    RTC_WaitForLastTask();//等待写入完成
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 3
+
+
+  30:BASIC/rtc/rtc.c **** }
+  84              		.loc 1 30 1 is_stmt 0 view .LVU16
+  85 0048 08BD     		pop	{r3, pc}
+  86              		.cfi_endproc
+  87              	.LFE29:
+  89              		.section	.text.RTC_Config,"ax",%progbits
+  90              		.align	1
+  91              		.global	RTC_Config
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	RTC_Config:
+  97              	.LFB30:
+  31:BASIC/rtc/rtc.c **** 
+  32:BASIC/rtc/rtc.c **** void RTC_Config(void) {
+  98              		.loc 1 32 23 is_stmt 1 view -0
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 0
+ 101              		@ frame_needed = 0, uses_anonymous_args = 0
+ 102 0000 08B5     		push	{r3, lr}
+ 103              	.LCFI1:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 3, -8
+ 106              		.cfi_offset 14, -4
+  33:BASIC/rtc/rtc.c ****   //在BKP的后备寄存器1中，存了一个特殊字符0xA5A5
+  34:BASIC/rtc/rtc.c ****   //第一次上电或后备电源掉电后，该寄存器数据丢失，表明RTC数据丢失，�
+  35:BASIC/rtc/rtc.c ****   if (BKP_ReadBackupRegister(BKP_DR1) != 0xA5A5) {  //判断寄存数据是否丢失
+ 107              		.loc 1 35 3 view .LVU18
+ 108              		.loc 1 35 7 is_stmt 0 view .LVU19
+ 109 0002 0420     		movs	r0, #4
+ 110 0004 FFF7FEFF 		bl	BKP_ReadBackupRegister
+ 111              	.LVL11:
+ 112              		.loc 1 35 6 view .LVU20
+ 113 0008 4AF2A553 		movw	r3, #42405
+ 114 000c 9842     		cmp	r0, r3
+ 115 000e 07D0     		beq	.L5
+  36:BASIC/rtc/rtc.c ****     RTC_First_Config();                             //重新配置RTC
+ 116              		.loc 1 36 5 is_stmt 1 view .LVU21
+ 117 0010 FFF7FEFF 		bl	RTC_First_Config
+ 118              	.LVL12:
+  37:BASIC/rtc/rtc.c ****     BKP_WriteBackupRegister(
+ 119              		.loc 1 37 5 view .LVU22
+ 120 0014 4AF2A551 		movw	r1, #42405
+ 121 0018 0420     		movs	r0, #4
+ 122 001a FFF7FEFF 		bl	BKP_WriteBackupRegister
+ 123              	.LVL13:
+ 124              	.L4:
+  38:BASIC/rtc/rtc.c ****         BKP_DR1, 0xA5A5);  //配置完成后，向后备寄存器中写特殊字符0xA5A5
+  39:BASIC/rtc/rtc.c ****   } else {
+  40:BASIC/rtc/rtc.c ****     //若后备寄存器没有掉电，则无需重新配置RTC
+  41:BASIC/rtc/rtc.c ****     //这里我们可以利用RCC_GetFlagStatus()函数查看本次复位类型
+  42:BASIC/rtc/rtc.c ****     if (RCC_GetFlagStatus(RCC_FLAG_PORRST) != RESET) {
+  43:BASIC/rtc/rtc.c ****       //这是上电复位
+  44:BASIC/rtc/rtc.c ****     } else if (RCC_GetFlagStatus(RCC_FLAG_PINRST) != RESET) {
+  45:BASIC/rtc/rtc.c ****       //这是外部RST管脚复位
+  46:BASIC/rtc/rtc.c ****     }
+  47:BASIC/rtc/rtc.c ****     RCC_ClearFlag();  //清除RCC中复位标志
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 4
+
+
+  48:BASIC/rtc/rtc.c **** 
+  49:BASIC/rtc/rtc.c ****     //虽然RTC模块不需要重新配置，且掉电后依靠后备电池依然运行
+  50:BASIC/rtc/rtc.c ****     //但是每次上电后，还是要使能RTCCLK
+  51:BASIC/rtc/rtc.c ****     RCC_RTCCLKCmd(ENABLE);  //使能RTCCLK
+  52:BASIC/rtc/rtc.c ****     RTC_WaitForSynchro();   //等待RTC时钟与APB1时钟同步
+  53:BASIC/rtc/rtc.c **** 
+  54:BASIC/rtc/rtc.c ****     //当不使用RTC秒中断，可以屏蔽下面2条
+  55:BASIC/rtc/rtc.c ****     //        RTC_ITConfig(RTC_IT_SEC, ENABLE);//使能秒中断
+  56:BASIC/rtc/rtc.c ****     //        RTC_WaitForLastTask();//等待操作完成
+  57:BASIC/rtc/rtc.c ****   }
+  58:BASIC/rtc/rtc.c **** #ifdef RTCClockOutput_Enable
+  59:BASIC/rtc/rtc.c ****   RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR | RCC_APB1Periph_BKP, ENABLE);
+  60:BASIC/rtc/rtc.c ****   PWR_BackupAccessCmd(ENABLE);
+  61:BASIC/rtc/rtc.c ****   BKP_TamperPinCmd(DISABLE);
+  62:BASIC/rtc/rtc.c ****   BKP_RTCOutputConfig(BKP_RTCOutputSource_CalibClock);
+  63:BASIC/rtc/rtc.c **** #endif
+  64:BASIC/rtc/rtc.c **** }
+ 125              		.loc 1 64 1 is_stmt 0 view .LVU23
+ 126 001e 08BD     		pop	{r3, pc}
+ 127              	.L5:
+  42:BASIC/rtc/rtc.c ****       //这是上电复位
+ 128              		.loc 1 42 5 is_stmt 1 view .LVU24
+  42:BASIC/rtc/rtc.c ****       //这是上电复位
+ 129              		.loc 1 42 9 is_stmt 0 view .LVU25
+ 130 0020 7B20     		movs	r0, #123
+ 131 0022 FFF7FEFF 		bl	RCC_GetFlagStatus
+ 132              	.LVL14:
+  42:BASIC/rtc/rtc.c ****       //这是上电复位
+ 133              		.loc 1 42 8 view .LVU26
+ 134 0026 38B1     		cbz	r0, .L9
+ 135              	.L7:
+  46:BASIC/rtc/rtc.c ****     RCC_ClearFlag();  //清除RCC中复位标志
+ 136              		.loc 1 46 5 is_stmt 1 view .LVU27
+  47:BASIC/rtc/rtc.c **** 
+ 137              		.loc 1 47 5 view .LVU28
+ 138 0028 FFF7FEFF 		bl	RCC_ClearFlag
+ 139              	.LVL15:
+  51:BASIC/rtc/rtc.c ****     RTC_WaitForSynchro();   //等待RTC时钟与APB1时钟同步
+ 140              		.loc 1 51 5 view .LVU29
+ 141 002c 0120     		movs	r0, #1
+ 142 002e FFF7FEFF 		bl	RCC_RTCCLKCmd
+ 143              	.LVL16:
+  52:BASIC/rtc/rtc.c **** 
+ 144              		.loc 1 52 5 view .LVU30
+ 145 0032 FFF7FEFF 		bl	RTC_WaitForSynchro
+ 146              	.LVL17:
+ 147              		.loc 1 64 1 is_stmt 0 view .LVU31
+ 148 0036 F2E7     		b	.L4
+ 149              	.L9:
+  44:BASIC/rtc/rtc.c ****       //这是外部RST管脚复位
+ 150              		.loc 1 44 12 is_stmt 1 view .LVU32
+  44:BASIC/rtc/rtc.c ****       //这是外部RST管脚复位
+ 151              		.loc 1 44 16 is_stmt 0 view .LVU33
+ 152 0038 7A20     		movs	r0, #122
+ 153 003a FFF7FEFF 		bl	RCC_GetFlagStatus
+ 154              	.LVL18:
+ 155 003e F3E7     		b	.L7
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 5
+
+
+ 156              		.cfi_endproc
+ 157              	.LFE30:
+ 159              		.section	.text.RTC_IRQHandler,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	RTC_IRQHandler
+ 162              		.syntax unified
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	RTC_IRQHandler:
+ 167              	.LFB31:
+  65:BASIC/rtc/rtc.c **** 
+  66:BASIC/rtc/rtc.c **** void RTC_IRQHandler(void) {  // RTC时钟1秒触发中断函数（名称固定不可修改）
+ 168              		.loc 1 66 27 is_stmt 1 view -0
+ 169              		.cfi_startproc
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172 0000 08B5     		push	{r3, lr}
+ 173              	.LCFI2:
+ 174              		.cfi_def_cfa_offset 8
+ 175              		.cfi_offset 3, -8
+ 176              		.cfi_offset 14, -4
+  67:BASIC/rtc/rtc.c ****   if (RTC_GetITStatus(RTC_IT_SEC) != RESET) {
+ 177              		.loc 1 67 3 view .LVU35
+ 178              		.loc 1 67 7 is_stmt 0 view .LVU36
+ 179 0002 0120     		movs	r0, #1
+ 180 0004 FFF7FEFF 		bl	RTC_GetITStatus
+ 181              	.LVL19:
+  68:BASIC/rtc/rtc.c ****   }
+ 182              		.loc 1 68 3 is_stmt 1 view .LVU37
+  69:BASIC/rtc/rtc.c ****   RTC_ClearITPendingBit(RTC_IT_SEC);
+ 183              		.loc 1 69 3 view .LVU38
+ 184 0008 0120     		movs	r0, #1
+ 185 000a FFF7FEFF 		bl	RTC_ClearITPendingBit
+ 186              	.LVL20:
+  70:BASIC/rtc/rtc.c ****   RTC_WaitForLastTask();
+ 187              		.loc 1 70 3 view .LVU39
+ 188 000e FFF7FEFF 		bl	RTC_WaitForLastTask
+ 189              	.LVL21:
+  71:BASIC/rtc/rtc.c **** }
+ 190              		.loc 1 71 1 is_stmt 0 view .LVU40
+ 191 0012 08BD     		pop	{r3, pc}
+ 192              		.cfi_endproc
+ 193              	.LFE31:
+ 195              		.section	.text.RTCAlarm_IRQHandler,"ax",%progbits
+ 196              		.align	1
+ 197              		.global	RTCAlarm_IRQHandler
+ 198              		.syntax unified
+ 199              		.thumb
+ 200              		.thumb_func
+ 202              	RTCAlarm_IRQHandler:
+ 203              	.LFB32:
+  72:BASIC/rtc/rtc.c **** 
+  73:BASIC/rtc/rtc.c **** void RTCAlarm_IRQHandler(void) {  //闹钟中断处理（启用时必须调高其优先级）
+ 204              		.loc 1 73 32 is_stmt 1 view -0
+ 205              		.cfi_startproc
+ 206              		@ args = 0, pretend = 0, frame = 0
+ 207              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 6
+
+
+ 208 0000 08B5     		push	{r3, lr}
+ 209              	.LCFI3:
+ 210              		.cfi_def_cfa_offset 8
+ 211              		.cfi_offset 3, -8
+ 212              		.cfi_offset 14, -4
+  74:BASIC/rtc/rtc.c ****   if (RTC_GetITStatus(RTC_IT_ALR) != RESET) {
+ 213              		.loc 1 74 3 view .LVU42
+ 214              		.loc 1 74 7 is_stmt 0 view .LVU43
+ 215 0002 0220     		movs	r0, #2
+ 216 0004 FFF7FEFF 		bl	RTC_GetITStatus
+ 217              	.LVL22:
+  75:BASIC/rtc/rtc.c ****   }
+ 218              		.loc 1 75 3 is_stmt 1 view .LVU44
+  76:BASIC/rtc/rtc.c ****   RTC_ClearITPendingBit(RTC_IT_ALR);
+ 219              		.loc 1 76 3 view .LVU45
+ 220 0008 0220     		movs	r0, #2
+ 221 000a FFF7FEFF 		bl	RTC_ClearITPendingBit
+ 222              	.LVL23:
+  77:BASIC/rtc/rtc.c ****   RTC_WaitForLastTask();
+ 223              		.loc 1 77 3 view .LVU46
+ 224 000e FFF7FEFF 		bl	RTC_WaitForLastTask
+ 225              	.LVL24:
+  78:BASIC/rtc/rtc.c **** }
+ 226              		.loc 1 78 1 is_stmt 0 view .LVU47
+ 227 0012 08BD     		pop	{r3, pc}
+ 228              		.cfi_endproc
+ 229              	.LFE32:
+ 231              		.section	.text.Is_Leap_Year,"ax",%progbits
+ 232              		.align	1
+ 233              		.global	Is_Leap_Year
+ 234              		.syntax unified
+ 235              		.thumb
+ 236              		.thumb_func
+ 238              	Is_Leap_Year:
+ 239              	.LVL25:
+ 240              	.LFB33:
+  79:BASIC/rtc/rtc.c **** 
+  80:BASIC/rtc/rtc.c **** //判断是否是闰年函数
+  81:BASIC/rtc/rtc.c **** //月份   1  2  3  4  5  6  7  8  9  10 11 12
+  82:BASIC/rtc/rtc.c **** //闰年   31 29 31 30 31 30 31 31 30 31 30 31
+  83:BASIC/rtc/rtc.c **** //非闰年 31 28 31 30 31 30 31 31 30 31 30 31
+  84:BASIC/rtc/rtc.c **** //输入:年份
+  85:BASIC/rtc/rtc.c **** //输出:该年份是不是闰年.1,是.0,不是
+  86:BASIC/rtc/rtc.c **** u8 Is_Leap_Year(u16 year) {
+ 241              		.loc 1 86 27 is_stmt 1 view -0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245              		@ link register save eliminated.
+  87:BASIC/rtc/rtc.c ****   if (year % 4 == 0) {  //必须能被4整除
+ 246              		.loc 1 87 3 view .LVU49
+ 247              		.loc 1 87 6 is_stmt 0 view .LVU50
+ 248 0000 10F0030F 		tst	r0, #3
+ 249 0004 14D1     		bne	.L16
+  88:BASIC/rtc/rtc.c ****     if (year % 100 == 0) {
+ 250              		.loc 1 88 5 is_stmt 1 view .LVU51
+ 251              		.loc 1 88 20 is_stmt 0 view .LVU52
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 7
+
+
+ 252 0006 0D4B     		ldr	r3, .L19
+ 253 0008 A3FB0023 		umull	r2, r3, r3, r0
+ 254 000c 5B09     		lsrs	r3, r3, #5
+ 255 000e 6422     		movs	r2, #100
+ 256 0010 02FB1303 		mls	r3, r2, r3, r0
+ 257 0014 9BB2     		uxth	r3, r3
+ 258              		.loc 1 88 8 view .LVU53
+ 259 0016 6BB9     		cbnz	r3, .L17
+  89:BASIC/rtc/rtc.c ****       if (year % 400 == 0)
+ 260              		.loc 1 89 7 is_stmt 1 view .LVU54
+ 261              		.loc 1 89 22 is_stmt 0 view .LVU55
+ 262 0018 084B     		ldr	r3, .L19
+ 263 001a A3FB0023 		umull	r2, r3, r3, r0
+ 264 001e DB09     		lsrs	r3, r3, #7
+ 265 0020 4FF4C872 		mov	r2, #400
+ 266 0024 02FB1300 		mls	r0, r2, r3, r0
+ 267              	.LVL26:
+ 268              		.loc 1 89 22 view .LVU56
+ 269 0028 80B2     		uxth	r0, r0
+ 270              		.loc 1 89 10 view .LVU57
+ 271 002a 28B9     		cbnz	r0, .L18
+  90:BASIC/rtc/rtc.c ****         return 1;  //如果以00结尾,还要能被400整除
+ 272              		.loc 1 90 16 view .LVU58
+ 273 002c 0120     		movs	r0, #1
+ 274 002e 7047     		bx	lr
+ 275              	.LVL27:
+ 276              	.L16:
+  91:BASIC/rtc/rtc.c ****       else
+  92:BASIC/rtc/rtc.c ****         return 0;
+  93:BASIC/rtc/rtc.c ****     } else
+  94:BASIC/rtc/rtc.c ****       return 1;
+  95:BASIC/rtc/rtc.c ****   } else
+  96:BASIC/rtc/rtc.c ****     return 0;
+ 277              		.loc 1 96 12 view .LVU59
+ 278 0030 0020     		movs	r0, #0
+ 279              	.LVL28:
+ 280              		.loc 1 96 12 view .LVU60
+ 281 0032 7047     		bx	lr
+ 282              	.LVL29:
+ 283              	.L17:
+  94:BASIC/rtc/rtc.c ****   } else
+ 284              		.loc 1 94 14 view .LVU61
+ 285 0034 0120     		movs	r0, #1
+ 286              	.LVL30:
+  94:BASIC/rtc/rtc.c ****   } else
+ 287              		.loc 1 94 14 view .LVU62
+ 288 0036 7047     		bx	lr
+ 289              	.L18:
+  92:BASIC/rtc/rtc.c ****     } else
+ 290              		.loc 1 92 16 view .LVU63
+ 291 0038 0020     		movs	r0, #0
+  97:BASIC/rtc/rtc.c **** }
+ 292              		.loc 1 97 1 view .LVU64
+ 293 003a 7047     		bx	lr
+ 294              	.L20:
+ 295              		.align	2
+ 296              	.L19:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 8
+
+
+ 297 003c 1F85EB51 		.word	1374389535
+ 298              		.cfi_endproc
+ 299              	.LFE33:
+ 301              		.section	.text.RTC_Set,"ax",%progbits
+ 302              		.align	1
+ 303              		.global	RTC_Set
+ 304              		.syntax unified
+ 305              		.thumb
+ 306              		.thumb_func
+ 308              	RTC_Set:
+ 309              	.LVL31:
+ 310              	.LFB34:
+  98:BASIC/rtc/rtc.c **** //设置时钟
+  99:BASIC/rtc/rtc.c **** //把输入的时钟转换为秒钟
+ 100:BASIC/rtc/rtc.c **** //以1970年1月1日为基准
+ 101:BASIC/rtc/rtc.c **** // 1970~2099年为合法年份
+ 102:BASIC/rtc/rtc.c **** 
+ 103:BASIC/rtc/rtc.c **** //月份数据表
+ 104:BASIC/rtc/rtc.c **** u8 const table_week[12] = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};  //月修正数据表
+ 105:BASIC/rtc/rtc.c **** const u8 mon_table[12] = {31, 28, 31, 30, 31, 30,
+ 106:BASIC/rtc/rtc.c ****                           31, 31, 30, 31, 30, 31};  //平年的月份日期表
+ 107:BASIC/rtc/rtc.c **** 
+ 108:BASIC/rtc/rtc.c **** //写入时间
+ 109:BASIC/rtc/rtc.c **** u8 RTC_Set(u16 syear, u8 smon, u8 sday, u8 hour, u8 min,
+ 110:BASIC/rtc/rtc.c ****            u8 sec) {  //写入当前时间（1970~2099年有效），
+ 311              		.loc 1 110 20 is_stmt 1 view -0
+ 312              		.cfi_startproc
+ 313              		@ args = 8, pretend = 0, frame = 0
+ 314              		@ frame_needed = 0, uses_anonymous_args = 0
+ 315              		.loc 1 110 20 is_stmt 0 view .LVU66
+ 316 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 317              	.LCFI4:
+ 318              		.cfi_def_cfa_offset 32
+ 319              		.cfi_offset 4, -32
+ 320              		.cfi_offset 5, -28
+ 321              		.cfi_offset 6, -24
+ 322              		.cfi_offset 7, -20
+ 323              		.cfi_offset 8, -16
+ 324              		.cfi_offset 9, -12
+ 325              		.cfi_offset 10, -8
+ 326              		.cfi_offset 14, -4
+ 327 0004 9846     		mov	r8, r3
+ 328 0006 9DF82070 		ldrb	r7, [sp, #32]	@ zero_extendqisi2
+ 111:BASIC/rtc/rtc.c ****   u16 t;
+ 329              		.loc 1 111 3 is_stmt 1 view .LVU67
+ 112:BASIC/rtc/rtc.c ****   u32 seccount = 0;
+ 330              		.loc 1 112 3 view .LVU68
+ 331              	.LVL32:
+ 113:BASIC/rtc/rtc.c ****   if (syear < 2000 || syear > 2099)
+ 332              		.loc 1 113 3 view .LVU69
+ 333              		.loc 1 113 20 is_stmt 0 view .LVU70
+ 334 000a A0F5FA63 		sub	r3, r0, #2000
+ 335              	.LVL33:
+ 336              		.loc 1 113 20 view .LVU71
+ 337 000e 9BB2     		uxth	r3, r3
+ 338              		.loc 1 113 6 view .LVU72
+ 339 0010 632B     		cmp	r3, #99
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 9
+
+
+ 340 0012 56D8     		bhi	.L30
+ 341 0014 0646     		mov	r6, r0
+ 342 0016 8A46     		mov	r10, r1
+ 343 0018 9146     		mov	r9, r2
+ 112:BASIC/rtc/rtc.c ****   u32 seccount = 0;
+ 344              		.loc 1 112 7 view .LVU73
+ 345 001a 0024     		movs	r4, #0
+ 114:BASIC/rtc/rtc.c ****     return 1;  // syear范围1970-2099，此处设置范围为2000-2099
+ 115:BASIC/rtc/rtc.c ****   for (t = 1970; t < syear; t++) {  //把所有年份的秒钟相加
+ 346              		.loc 1 115 10 view .LVU74
+ 347 001c 40F2B275 		movw	r5, #1970
+ 348 0020 07E0     		b	.L23
+ 349              	.LVL34:
+ 350              	.L24:
+ 116:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 117:BASIC/rtc/rtc.c ****       seccount += 31622400;  //闰年的秒钟数
+ 118:BASIC/rtc/rtc.c ****     else
+ 119:BASIC/rtc/rtc.c ****       seccount += 31536000;  //平年的秒钟数
+ 351              		.loc 1 119 7 is_stmt 1 view .LVU75
+ 352              		.loc 1 119 16 is_stmt 0 view .LVU76
+ 353 0022 04F1F074 		add	r4, r4, #31457280
+ 354              	.LVL35:
+ 355              		.loc 1 119 16 view .LVU77
+ 356 0026 04F59934 		add	r4, r4, #78336
+ 357              	.LVL36:
+ 358              		.loc 1 119 16 view .LVU78
+ 359 002a 04F5C074 		add	r4, r4, #384
+ 360              	.LVL37:
+ 361              	.L25:
+ 115:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 362              		.loc 1 115 29 is_stmt 1 discriminator 2 view .LVU79
+ 115:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 363              		.loc 1 115 30 is_stmt 0 discriminator 2 view .LVU80
+ 364 002e 0135     		adds	r5, r5, #1
+ 365              	.LVL38:
+ 115:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 366              		.loc 1 115 30 discriminator 2 view .LVU81
+ 367 0030 ADB2     		uxth	r5, r5
+ 368              	.LVL39:
+ 369              	.L23:
+ 115:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 370              		.loc 1 115 18 is_stmt 1 discriminator 1 view .LVU82
+ 115:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 371              		.loc 1 115 3 is_stmt 0 discriminator 1 view .LVU83
+ 372 0032 B542     		cmp	r5, r6
+ 373 0034 09D2     		bcs	.L32
+ 116:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 374              		.loc 1 116 5 is_stmt 1 view .LVU84
+ 116:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 375              		.loc 1 116 9 is_stmt 0 view .LVU85
+ 376 0036 2846     		mov	r0, r5
+ 377 0038 FFF7FEFF 		bl	Is_Leap_Year
+ 378              	.LVL40:
+ 116:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(t))
+ 379              		.loc 1 116 8 view .LVU86
+ 380 003c 0028     		cmp	r0, #0
+ 381 003e F0D0     		beq	.L24
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 10
+
+
+ 117:BASIC/rtc/rtc.c ****     else
+ 382              		.loc 1 117 7 is_stmt 1 view .LVU87
+ 117:BASIC/rtc/rtc.c ****     else
+ 383              		.loc 1 117 16 is_stmt 0 view .LVU88
+ 384 0040 04F1F174 		add	r4, r4, #31588352
+ 385              	.LVL41:
+ 117:BASIC/rtc/rtc.c ****     else
+ 386              		.loc 1 117 16 view .LVU89
+ 387 0044 04F50544 		add	r4, r4, #34048
+ 388              	.LVL42:
+ 117:BASIC/rtc/rtc.c ****     else
+ 389              		.loc 1 117 16 view .LVU90
+ 390 0048 F1E7     		b	.L25
+ 391              	.L32:
+ 120:BASIC/rtc/rtc.c ****   }
+ 121:BASIC/rtc/rtc.c ****   smon -= 1;
+ 392              		.loc 1 121 3 is_stmt 1 view .LVU91
+ 393              		.loc 1 121 8 is_stmt 0 view .LVU92
+ 394 004a 0AF1FF3A 		add	r10, r10, #-1
+ 395 004e 5FFA8AFA 		uxtb	r10, r10
+ 396              	.LVL43:
+ 122:BASIC/rtc/rtc.c ****   for (t = 0; t < smon; t++) {              //把前面月份的秒钟数相加
+ 397              		.loc 1 122 3 is_stmt 1 view .LVU93
+ 398              		.loc 1 122 10 is_stmt 0 view .LVU94
+ 399 0052 0025     		movs	r5, #0
+ 400              		.loc 1 122 3 view .LVU95
+ 401 0054 01E0     		b	.L27
+ 402              	.LVL44:
+ 403              	.L28:
+ 404              		.loc 1 122 25 is_stmt 1 discriminator 2 view .LVU96
+ 405              		.loc 1 122 26 is_stmt 0 discriminator 2 view .LVU97
+ 406 0056 0135     		adds	r5, r5, #1
+ 407              	.LVL45:
+ 408              		.loc 1 122 26 discriminator 2 view .LVU98
+ 409 0058 ADB2     		uxth	r5, r5
+ 410              	.LVL46:
+ 411              	.L27:
+ 412              		.loc 1 122 15 is_stmt 1 discriminator 1 view .LVU99
+ 413              		.loc 1 122 17 is_stmt 0 discriminator 1 view .LVU100
+ 414 005a 1FFA8AF3 		uxth	r3, r10
+ 415              		.loc 1 122 3 discriminator 1 view .LVU101
+ 416 005e AB42     		cmp	r3, r5
+ 417 0060 10D9     		bls	.L33
+ 123:BASIC/rtc/rtc.c ****     seccount += (u32)mon_table[t] * 86400;  //月份秒钟数相加
+ 418              		.loc 1 123 5 is_stmt 1 view .LVU102
+ 419              		.loc 1 123 31 is_stmt 0 view .LVU103
+ 420 0062 194B     		ldr	r3, .L34
+ 421 0064 5B5D     		ldrb	r3, [r3, r5]	@ zero_extendqisi2
+ 422              		.loc 1 123 14 view .LVU104
+ 423 0066 194A     		ldr	r2, .L34+4
+ 424 0068 02FB0344 		mla	r4, r2, r3, r4
+ 425              	.LVL47:
+ 124:BASIC/rtc/rtc.c ****     if (Is_Leap_Year(syear) && t == 1)
+ 426              		.loc 1 124 5 is_stmt 1 view .LVU105
+ 427              		.loc 1 124 9 is_stmt 0 view .LVU106
+ 428 006c 3046     		mov	r0, r6
+ 429 006e FFF7FEFF 		bl	Is_Leap_Year
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 11
+
+
+ 430              	.LVL48:
+ 431              		.loc 1 124 8 view .LVU107
+ 432 0072 0028     		cmp	r0, #0
+ 433 0074 EFD0     		beq	.L28
+ 434              		.loc 1 124 29 discriminator 1 view .LVU108
+ 435 0076 012D     		cmp	r5, #1
+ 436 0078 EDD1     		bne	.L28
+ 125:BASIC/rtc/rtc.c ****       seccount += 86400;  //闰年2月份增加一天的秒钟数
+ 437              		.loc 1 125 7 is_stmt 1 view .LVU109
+ 438              		.loc 1 125 16 is_stmt 0 view .LVU110
+ 439 007a 04F5A834 		add	r4, r4, #86016
+ 440              	.LVL49:
+ 441              		.loc 1 125 16 view .LVU111
+ 442 007e 04F5C074 		add	r4, r4, #384
+ 443              	.LVL50:
+ 444              		.loc 1 125 16 view .LVU112
+ 445 0082 E8E7     		b	.L28
+ 446              	.L33:
+ 126:BASIC/rtc/rtc.c ****   }
+ 127:BASIC/rtc/rtc.c ****   seccount += (u32)(sday - 1) * 86400;  //把前面日期的秒钟数相加
+ 447              		.loc 1 127 3 is_stmt 1 view .LVU113
+ 448              		.loc 1 127 26 is_stmt 0 view .LVU114
+ 449 0084 09F1FF39 		add	r9, r9, #-1
+ 450              		.loc 1 127 12 view .LVU115
+ 451 0088 104B     		ldr	r3, .L34+4
+ 452 008a 03FB0944 		mla	r4, r3, r9, r4
+ 453              	.LVL51:
+ 128:BASIC/rtc/rtc.c ****   seccount += (u32)hour * 3600;         //小时秒钟数
+ 454              		.loc 1 128 3 is_stmt 1 view .LVU116
+ 455              		.loc 1 128 12 is_stmt 0 view .LVU117
+ 456 008e 4FF46163 		mov	r3, #3600
+ 457 0092 03FB0844 		mla	r4, r3, r8, r4
+ 458              	.LVL52:
+ 129:BASIC/rtc/rtc.c ****   seccount += (u32)min * 60;            //分钟秒钟数
+ 459              		.loc 1 129 3 is_stmt 1 view .LVU118
+ 460              		.loc 1 129 24 is_stmt 0 view .LVU119
+ 461 0096 C7EB0717 		rsb	r7, r7, r7, lsl #4
+ 462              		.loc 1 129 12 view .LVU120
+ 463 009a 04EB8704 		add	r4, r4, r7, lsl #2
+ 464              	.LVL53:
+ 130:BASIC/rtc/rtc.c ****   seccount += sec;                      //最后的秒钟加上去
+ 465              		.loc 1 130 3 is_stmt 1 view .LVU121
+ 466              		.loc 1 130 12 is_stmt 0 view .LVU122
+ 467 009e 9DF82430 		ldrb	r3, [sp, #36]	@ zero_extendqisi2
+ 468 00a2 1C44     		add	r4, r4, r3
+ 469              	.LVL54:
+ 131:BASIC/rtc/rtc.c ****   RTC_First_Config();                   //重新初始化时钟
+ 470              		.loc 1 131 3 is_stmt 1 view .LVU123
+ 471 00a4 FFF7FEFF 		bl	RTC_First_Config
+ 472              	.LVL55:
+ 132:BASIC/rtc/rtc.c ****   BKP_WriteBackupRegister(BKP_DR1,
+ 473              		.loc 1 132 3 view .LVU124
+ 474 00a8 4AF2A551 		movw	r1, #42405
+ 475 00ac 0420     		movs	r0, #4
+ 476 00ae FFF7FEFF 		bl	BKP_WriteBackupRegister
+ 477              	.LVL56:
+ 133:BASIC/rtc/rtc.c ****                           0xA5A5);  //配置完成后，向后备寄存器中写特殊字符0xA5A5
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 12
+
+
+ 134:BASIC/rtc/rtc.c ****   RTC_SetCounter(seccount);  //把换算好的计数器值写入
+ 478              		.loc 1 134 3 view .LVU125
+ 479 00b2 2046     		mov	r0, r4
+ 480 00b4 FFF7FEFF 		bl	RTC_SetCounter
+ 481              	.LVL57:
+ 135:BASIC/rtc/rtc.c ****   RTC_WaitForLastTask();     //等待写入完成
+ 482              		.loc 1 135 3 view .LVU126
+ 483 00b8 FFF7FEFF 		bl	RTC_WaitForLastTask
+ 484              	.LVL58:
+ 136:BASIC/rtc/rtc.c ****   return 0;                  //返回值:0,成功;其他:错误代码.
+ 485              		.loc 1 136 3 view .LVU127
+ 486              		.loc 1 136 10 is_stmt 0 view .LVU128
+ 487 00bc 0020     		movs	r0, #0
+ 488              	.LVL59:
+ 489              	.L22:
+ 137:BASIC/rtc/rtc.c **** }
+ 490              		.loc 1 137 1 view .LVU129
+ 491 00be BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 492              	.LVL60:
+ 493              	.L30:
+ 114:BASIC/rtc/rtc.c ****   for (t = 1970; t < syear; t++) {  //把所有年份的秒钟相加
+ 494              		.loc 1 114 12 view .LVU130
+ 495 00c2 0120     		movs	r0, #1
+ 496              	.LVL61:
+ 114:BASIC/rtc/rtc.c ****   for (t = 1970; t < syear; t++) {  //把所有年份的秒钟相加
+ 497              		.loc 1 114 12 view .LVU131
+ 498 00c4 FBE7     		b	.L22
+ 499              	.L35:
+ 500 00c6 00BF     		.align	2
+ 501              	.L34:
+ 502 00c8 00000000 		.word	.LANCHOR0
+ 503 00cc 80510100 		.word	86400
+ 504              		.cfi_endproc
+ 505              	.LFE34:
+ 507              		.section	.text.RTC_Get_Week,"ax",%progbits
+ 508              		.align	1
+ 509              		.global	RTC_Get_Week
+ 510              		.syntax unified
+ 511              		.thumb
+ 512              		.thumb_func
+ 514              	RTC_Get_Week:
+ 515              	.LVL62:
+ 516              	.LFB36:
+ 138:BASIC/rtc/rtc.c **** 
+ 139:BASIC/rtc/rtc.c **** //读出时间
+ 140:BASIC/rtc/rtc.c **** u8 RTC_Get(void) {  //读出当前时间值 //返回值:0,成功;其他:错误代码.
+ 141:BASIC/rtc/rtc.c ****   static u16 daycnt = 0;
+ 142:BASIC/rtc/rtc.c ****   u32 timecount = 0;
+ 143:BASIC/rtc/rtc.c ****   u32 temp = 0;
+ 144:BASIC/rtc/rtc.c ****   u16 temp1 = 0;
+ 145:BASIC/rtc/rtc.c ****   timecount = RTC_GetCounter();
+ 146:BASIC/rtc/rtc.c ****   temp = timecount / 86400;  //得到天数(秒钟数对应的)
+ 147:BASIC/rtc/rtc.c ****   if (daycnt != temp) {      //超过一天了
+ 148:BASIC/rtc/rtc.c ****     daycnt = temp;
+ 149:BASIC/rtc/rtc.c ****     temp1 = 1970;  //从1970年开始
+ 150:BASIC/rtc/rtc.c ****     while (temp >= 365) {
+ 151:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(temp1)) {  //是闰年
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 13
+
+
+ 152:BASIC/rtc/rtc.c ****         if (temp >= 366)
+ 153:BASIC/rtc/rtc.c ****           temp -= 366;  //闰年的秒钟数
+ 154:BASIC/rtc/rtc.c ****         else {
+ 155:BASIC/rtc/rtc.c ****           temp1++;
+ 156:BASIC/rtc/rtc.c ****           break;
+ 157:BASIC/rtc/rtc.c ****         }
+ 158:BASIC/rtc/rtc.c ****       } else
+ 159:BASIC/rtc/rtc.c ****         temp -= 365;  //平年
+ 160:BASIC/rtc/rtc.c ****       temp1++;
+ 161:BASIC/rtc/rtc.c ****     }
+ 162:BASIC/rtc/rtc.c ****     ryear = temp1;  //得到年份
+ 163:BASIC/rtc/rtc.c ****     temp1 = 0;
+ 164:BASIC/rtc/rtc.c ****     while (temp >= 28) {                        //超过了一个月
+ 165:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(ryear) && temp1 == 1) {  //当年是不是闰年/2月份
+ 166:BASIC/rtc/rtc.c ****         if (temp >= 29)
+ 167:BASIC/rtc/rtc.c ****           temp -= 29;  //闰年的秒钟数
+ 168:BASIC/rtc/rtc.c ****         else
+ 169:BASIC/rtc/rtc.c ****           break;
+ 170:BASIC/rtc/rtc.c ****       } else {
+ 171:BASIC/rtc/rtc.c ****         if (temp >= mon_table[temp1])
+ 172:BASIC/rtc/rtc.c ****           temp -= mon_table[temp1];  //平年
+ 173:BASIC/rtc/rtc.c ****         else
+ 174:BASIC/rtc/rtc.c ****           break;
+ 175:BASIC/rtc/rtc.c ****       }
+ 176:BASIC/rtc/rtc.c ****       temp1++;
+ 177:BASIC/rtc/rtc.c ****     }
+ 178:BASIC/rtc/rtc.c ****     rmon = temp1 + 1;  //得到月份
+ 179:BASIC/rtc/rtc.c ****     rday = temp + 1;   //得到日期
+ 180:BASIC/rtc/rtc.c ****   }
+ 181:BASIC/rtc/rtc.c ****   temp = timecount % 86400;                 //得到秒钟数
+ 182:BASIC/rtc/rtc.c ****   rhour = temp / 3600;                      //小时
+ 183:BASIC/rtc/rtc.c ****   rmin = (temp % 3600) / 60;                //分钟
+ 184:BASIC/rtc/rtc.c ****   rsec = (temp % 3600) % 60;                //秒钟
+ 185:BASIC/rtc/rtc.c ****   rweek = RTC_Get_Week(ryear, rmon, rday);  //获取星期
+ 186:BASIC/rtc/rtc.c ****   return 0;
+ 187:BASIC/rtc/rtc.c **** }
+ 188:BASIC/rtc/rtc.c **** 
+ 189:BASIC/rtc/rtc.c **** u8 RTC_Get_Week(
+ 190:BASIC/rtc/rtc.c ****     u16 year, u8 month,
+ 191:BASIC/rtc/rtc.c ****     u8 day) {  //按年月日计算星期(只允许1901-2099年)//已由RTC_Get调用
+ 517              		.loc 1 191 13 is_stmt 1 view -0
+ 518              		.cfi_startproc
+ 519              		@ args = 0, pretend = 0, frame = 0
+ 520              		@ frame_needed = 0, uses_anonymous_args = 0
+ 521              		.loc 1 191 13 is_stmt 0 view .LVU133
+ 522 0000 10B5     		push	{r4, lr}
+ 523              	.LCFI5:
+ 524              		.cfi_def_cfa_offset 8
+ 525              		.cfi_offset 4, -8
+ 526              		.cfi_offset 14, -4
+ 527 0002 8446     		mov	ip, r0
+ 192:BASIC/rtc/rtc.c ****   u16 temp2;
+ 528              		.loc 1 192 3 is_stmt 1 view .LVU134
+ 193:BASIC/rtc/rtc.c ****   u8 yearH, yearL;
+ 529              		.loc 1 193 3 view .LVU135
+ 194:BASIC/rtc/rtc.c ****   yearH = year / 100;
+ 530              		.loc 1 194 3 view .LVU136
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 14
+
+
+ 531              		.loc 1 194 9 is_stmt 0 view .LVU137
+ 532 0004 1C4C     		ldr	r4, .L40
+ 533 0006 A4FB0034 		umull	r3, r4, r4, r0
+ 534 000a 6009     		lsrs	r0, r4, #5
+ 535              	.LVL63:
+ 536              		.loc 1 194 9 view .LVU138
+ 537 000c C4F34714 		ubfx	r4, r4, #5, #8
+ 538              	.LVL64:
+ 195:BASIC/rtc/rtc.c ****   yearL = year % 100;
+ 539              		.loc 1 195 3 is_stmt 1 view .LVU139
+ 540              		.loc 1 195 9 is_stmt 0 view .LVU140
+ 541 0010 6423     		movs	r3, #100
+ 542 0012 03FB10CC 		mls	ip, r3, r0, ip
+ 543 0016 5FFA8CFC 		uxtb	ip, ip
+ 544              	.LVL65:
+ 196:BASIC/rtc/rtc.c ****   // 如果为21世纪,年份数加100
+ 197:BASIC/rtc/rtc.c ****   if (yearH > 19) yearL += 100;
+ 545              		.loc 1 197 3 is_stmt 1 view .LVU141
+ 546              		.loc 1 197 6 is_stmt 0 view .LVU142
+ 547 001a 132C     		cmp	r4, #19
+ 548 001c 02D9     		bls	.L37
+ 549              		.loc 1 197 19 is_stmt 1 discriminator 1 view .LVU143
+ 550              		.loc 1 197 25 is_stmt 0 discriminator 1 view .LVU144
+ 551 001e 9C44     		add	ip, ip, r3
+ 552              	.LVL66:
+ 553              		.loc 1 197 25 discriminator 1 view .LVU145
+ 554 0020 5FFA8CFC 		uxtb	ip, ip
+ 555              	.LVL67:
+ 556              	.L37:
+ 198:BASIC/rtc/rtc.c ****   // 所过闰年数只算1900年之后的
+ 199:BASIC/rtc/rtc.c ****   temp2 = yearL + yearL / 4;
+ 557              		.loc 1 199 3 is_stmt 1 view .LVU146
+ 558              		.loc 1 199 9 is_stmt 0 view .LVU147
+ 559 0024 0CEB9C03 		add	r3, ip, ip, lsr #2
+ 560              	.LVL68:
+ 200:BASIC/rtc/rtc.c ****   temp2 = temp2 % 7;
+ 561              		.loc 1 200 3 is_stmt 1 view .LVU148
+ 562              		.loc 1 200 9 is_stmt 0 view .LVU149
+ 563 0028 144C     		ldr	r4, .L40+4
+ 564              	.LVL69:
+ 565              		.loc 1 200 9 view .LVU150
+ 566 002a A4FB030E 		umull	r0, lr, r4, r3
+ 567 002e A3EB0E00 		sub	r0, r3, lr
+ 568 0032 0EEB500E 		add	lr, lr, r0, lsr #1
+ 569 0036 4FEA9E0E 		lsr	lr, lr, #2
+ 570 003a CEEBCE00 		rsb	r0, lr, lr, lsl #3
+ 571 003e 181A     		subs	r0, r3, r0
+ 572 0040 80B2     		uxth	r0, r0
+ 573              	.LVL70:
+ 201:BASIC/rtc/rtc.c ****   temp2 = temp2 + day + table_week[month - 1];
+ 574              		.loc 1 201 3 is_stmt 1 view .LVU151
+ 575              		.loc 1 201 17 is_stmt 0 view .LVU152
+ 576 0042 1044     		add	r0, r0, r2
+ 577              	.LVL71:
+ 578              		.loc 1 201 17 view .LVU153
+ 579 0044 80B2     		uxth	r0, r0
+ 580              		.loc 1 201 42 view .LVU154
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 15
+
+
+ 581 0046 4B1E     		subs	r3, r1, #1
+ 582              	.LVL72:
+ 583              		.loc 1 201 35 view .LVU155
+ 584 0048 0D4A     		ldr	r2, .L40+8
+ 585              	.LVL73:
+ 586              		.loc 1 201 35 view .LVU156
+ 587 004a D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 588              		.loc 1 201 9 view .LVU157
+ 589 004c 1844     		add	r0, r0, r3
+ 590 004e 80B2     		uxth	r0, r0
+ 591              	.LVL74:
+ 202:BASIC/rtc/rtc.c ****   if (yearL % 4 == 0 && month < 3) temp2--;
+ 592              		.loc 1 202 3 is_stmt 1 view .LVU158
+ 593              		.loc 1 202 6 is_stmt 0 view .LVU159
+ 594 0050 1CF0030F 		tst	ip, #3
+ 595 0054 03D1     		bne	.L38
+ 596              		.loc 1 202 22 discriminator 1 view .LVU160
+ 597 0056 0229     		cmp	r1, #2
+ 598 0058 01D8     		bhi	.L38
+ 599              		.loc 1 202 36 is_stmt 1 discriminator 2 view .LVU161
+ 600              		.loc 1 202 41 is_stmt 0 discriminator 2 view .LVU162
+ 601 005a 0138     		subs	r0, r0, #1
+ 602              	.LVL75:
+ 603              		.loc 1 202 41 discriminator 2 view .LVU163
+ 604 005c 80B2     		uxth	r0, r0
+ 605              	.LVL76:
+ 606              	.L38:
+ 203:BASIC/rtc/rtc.c ****   return (temp2 % 7);  //返回星期值
+ 607              		.loc 1 203 3 is_stmt 1 view .LVU164
+ 608              		.loc 1 203 17 is_stmt 0 view .LVU165
+ 609 005e 074B     		ldr	r3, .L40+4
+ 610 0060 A3FB0023 		umull	r2, r3, r3, r0
+ 611 0064 C21A     		subs	r2, r0, r3
+ 612 0066 03EB5203 		add	r3, r3, r2, lsr #1
+ 613 006a 9B08     		lsrs	r3, r3, #2
+ 614 006c C3EBC303 		rsb	r3, r3, r3, lsl #3
+ 615 0070 C01A     		subs	r0, r0, r3
+ 616              	.LVL77:
+ 204:BASIC/rtc/rtc.c **** }...
+ 617              		.loc 1 204 1 view .LVU166
+ 618 0072 C0B2     		uxtb	r0, r0
+ 619 0074 10BD     		pop	{r4, pc}
+ 620              	.L41:
+ 621 0076 00BF     		.align	2
+ 622              	.L40:
+ 623 0078 1F85EB51 		.word	1374389535
+ 624 007c 25499224 		.word	613566757
+ 625 0080 00000000 		.word	.LANCHOR1
+ 626              		.cfi_endproc
+ 627              	.LFE36:
+ 629              		.section	.text.RTC_Get,"ax",%progbits
+ 630              		.align	1
+ 631              		.global	RTC_Get
+ 632              		.syntax unified
+ 633              		.thumb
+ 634              		.thumb_func
+ 636              	RTC_Get:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 16
+
+
+ 637              	.LFB35:
+ 140:BASIC/rtc/rtc.c **** u8 RTC_Get(void) {  //读出当前时间值 //返回值:0,成功;其他:错误代码.
+ 638              		.loc 1 140 18 is_stmt 1 view -0
+ 639              		.cfi_startproc
+ 640              		@ args = 0, pretend = 0, frame = 0
+ 641              		@ frame_needed = 0, uses_anonymous_args = 0
+ 642 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 643              	.LCFI6:
+ 644              		.cfi_def_cfa_offset 24
+ 645              		.cfi_offset 3, -24
+ 646              		.cfi_offset 4, -20
+ 647              		.cfi_offset 5, -16
+ 648              		.cfi_offset 6, -12
+ 649              		.cfi_offset 7, -8
+ 650              		.cfi_offset 14, -4
+ 141:BASIC/rtc/rtc.c ****   static u16 daycnt = 0;
+ 651              		.loc 1 141 3 view .LVU168
+ 142:BASIC/rtc/rtc.c ****   u32 timecount = 0;
+ 652              		.loc 1 142 3 view .LVU169
+ 653              	.LVL78:
+ 143:BASIC/rtc/rtc.c ****   u32 temp = 0;
+ 654              		.loc 1 143 3 view .LVU170
+ 144:BASIC/rtc/rtc.c ****   u16 temp1 = 0;
+ 655              		.loc 1 144 3 view .LVU171
+ 145:BASIC/rtc/rtc.c ****   timecount = RTC_GetCounter();
+ 656              		.loc 1 145 3 view .LVU172
+ 145:BASIC/rtc/rtc.c ****   timecount = RTC_GetCounter();
+ 657              		.loc 1 145 15 is_stmt 0 view .LVU173
+ 658 0002 FFF7FEFF 		bl	RTC_GetCounter
+ 659              	.LVL79:
+ 660 0006 0746     		mov	r7, r0
+ 661              	.LVL80:
+ 146:BASIC/rtc/rtc.c ****   temp = timecount / 86400;  //得到天数(秒钟数对应的)
+ 662              		.loc 1 146 3 is_stmt 1 view .LVU174
+ 146:BASIC/rtc/rtc.c ****   temp = timecount / 86400;  //得到天数(秒钟数对应的)
+ 663              		.loc 1 146 8 is_stmt 0 view .LVU175
+ 664 0008 344B     		ldr	r3, .L56
+ 665 000a A3FB0023 		umull	r2, r3, r3, r0
+ 666              	.LVL81:
+ 147:BASIC/rtc/rtc.c ****   if (daycnt != temp) {      //超过一天了
+ 667              		.loc 1 147 3 is_stmt 1 view .LVU176
+ 147:BASIC/rtc/rtc.c ****   if (daycnt != temp) {      //超过一天了
+ 668              		.loc 1 147 14 is_stmt 0 view .LVU177
+ 669 000e 344A     		ldr	r2, .L56+4
+ 670 0010 1288     		ldrh	r2, [r2]
+ 147:BASIC/rtc/rtc.c ****   if (daycnt != temp) {      //超过一天了
+ 671              		.loc 1 147 6 view .LVU178
+ 672 0012 B2EB134F 		cmp	r2, r3, lsr #16
+ 673 0016 37D0     		beq	.L43
+ 674 0018 1C0C     		lsrs	r4, r3, #16
+ 675              	.LVL82:
+ 148:BASIC/rtc/rtc.c ****     daycnt = temp;
+ 676              		.loc 1 148 5 is_stmt 1 view .LVU179
+ 148:BASIC/rtc/rtc.c ****     daycnt = temp;
+ 677              		.loc 1 148 12 is_stmt 0 view .LVU180
+ 678 001a 314B     		ldr	r3, .L56+4
+ 679 001c 1C80     		strh	r4, [r3]	@ movhi
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 17
+
+
+ 149:BASIC/rtc/rtc.c ****     temp1 = 1970;  //从1970年开始
+ 680              		.loc 1 149 5 is_stmt 1 view .LVU181
+ 681              	.LVL83:
+ 150:BASIC/rtc/rtc.c ****     while (temp >= 365) {
+ 682              		.loc 1 150 5 view .LVU182
+ 149:BASIC/rtc/rtc.c ****     temp1 = 1970;  //从1970年开始
+ 683              		.loc 1 149 11 is_stmt 0 view .LVU183
+ 684 001e 40F2B275 		movw	r5, #1970
+ 150:BASIC/rtc/rtc.c ****     while (temp >= 365) {
+ 685              		.loc 1 150 11 view .LVU184
+ 686 0022 09E0     		b	.L44
+ 687              	.LVL84:
+ 688              	.L46:
+ 155:BASIC/rtc/rtc.c ****           temp1++;
+ 689              		.loc 1 155 11 is_stmt 1 view .LVU185
+ 155:BASIC/rtc/rtc.c ****           temp1++;
+ 690              		.loc 1 155 16 is_stmt 0 view .LVU186
+ 691 0024 0135     		adds	r5, r5, #1
+ 692              	.LVL85:
+ 155:BASIC/rtc/rtc.c ****           temp1++;
+ 693              		.loc 1 155 16 view .LVU187
+ 694 0026 ADB2     		uxth	r5, r5
+ 695              	.LVL86:
+ 156:BASIC/rtc/rtc.c ****           break;
+ 696              		.loc 1 156 11 is_stmt 1 view .LVU188
+ 697              	.L48:
+ 162:BASIC/rtc/rtc.c ****     ryear = temp1;  //得到年份
+ 698              		.loc 1 162 5 view .LVU189
+ 162:BASIC/rtc/rtc.c ****     ryear = temp1;  //得到年份
+ 699              		.loc 1 162 11 is_stmt 0 view .LVU190
+ 700 0028 2E4B     		ldr	r3, .L56+8
+ 701 002a 1D80     		strh	r5, [r3]	@ movhi
+ 163:BASIC/rtc/rtc.c ****     temp1 = 0;
+ 702              		.loc 1 163 5 is_stmt 1 view .LVU191
+ 703              	.LVL87:
+ 164:BASIC/rtc/rtc.c ****     while (temp >= 28) {                        //超过了一个月
+ 704              		.loc 1 164 5 view .LVU192
+ 163:BASIC/rtc/rtc.c ****     temp1 = 0;
+ 705              		.loc 1 163 11 is_stmt 0 view .LVU193
+ 706 002c 0026     		movs	r6, #0
+ 164:BASIC/rtc/rtc.c ****     while (temp >= 28) {                        //超过了一个月
+ 707              		.loc 1 164 11 view .LVU194
+ 708 002e 18E0     		b	.L50
+ 709              	.LVL88:
+ 710              	.L45:
+ 159:BASIC/rtc/rtc.c ****         temp -= 365;  //平年
+ 711              		.loc 1 159 9 is_stmt 1 view .LVU195
+ 159:BASIC/rtc/rtc.c ****         temp -= 365;  //平年
+ 712              		.loc 1 159 14 is_stmt 0 view .LVU196
+ 713 0030 A4F26D14 		subw	r4, r4, #365
+ 714              	.LVL89:
+ 715              	.L47:
+ 160:BASIC/rtc/rtc.c ****       temp1++;
+ 716              		.loc 1 160 7 is_stmt 1 view .LVU197
+ 160:BASIC/rtc/rtc.c ****       temp1++;
+ 717              		.loc 1 160 12 is_stmt 0 view .LVU198
+ 718 0034 0135     		adds	r5, r5, #1
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 18
+
+
+ 719              	.LVL90:
+ 160:BASIC/rtc/rtc.c ****       temp1++;
+ 720              		.loc 1 160 12 view .LVU199
+ 721 0036 ADB2     		uxth	r5, r5
+ 722              	.LVL91:
+ 723              	.L44:
+ 150:BASIC/rtc/rtc.c ****     while (temp >= 365) {
+ 724              		.loc 1 150 11 is_stmt 1 view .LVU200
+ 725 0038 B4F5B67F 		cmp	r4, #364
+ 726 003c F4D9     		bls	.L48
+ 151:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(temp1)) {  //是闰年
+ 727              		.loc 1 151 7 view .LVU201
+ 151:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(temp1)) {  //是闰年
+ 728              		.loc 1 151 11 is_stmt 0 view .LVU202
+ 729 003e 2846     		mov	r0, r5
+ 730 0040 FFF7FEFF 		bl	Is_Leap_Year
+ 731              	.LVL92:
+ 151:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(temp1)) {  //是闰年
+ 732              		.loc 1 151 10 view .LVU203
+ 733 0044 0028     		cmp	r0, #0
+ 734 0046 F3D0     		beq	.L45
+ 152:BASIC/rtc/rtc.c ****         if (temp >= 366)
+ 735              		.loc 1 152 9 is_stmt 1 view .LVU204
+ 152:BASIC/rtc/rtc.c ****         if (temp >= 366)
+ 736              		.loc 1 152 12 is_stmt 0 view .LVU205
+ 737 0048 B4F5B77F 		cmp	r4, #366
+ 738 004c EAD3     		bcc	.L46
+ 153:BASIC/rtc/rtc.c ****           temp -= 366;  //闰年的秒钟数
+ 739              		.loc 1 153 11 is_stmt 1 view .LVU206
+ 153:BASIC/rtc/rtc.c ****           temp -= 366;  //闰年的秒钟数
+ 740              		.loc 1 153 16 is_stmt 0 view .LVU207
+ 741 004e A4F5B774 		sub	r4, r4, #366
+ 742              	.LVL93:
+ 153:BASIC/rtc/rtc.c ****           temp -= 366;  //闰年的秒钟数
+ 743              		.loc 1 153 16 view .LVU208
+ 744 0052 EFE7     		b	.L47
+ 745              	.LVL94:
+ 746              	.L51:
+ 171:BASIC/rtc/rtc.c ****         if (temp >= mon_table[temp1])
+ 747              		.loc 1 171 9 is_stmt 1 view .LVU209
+ 171:BASIC/rtc/rtc.c ****         if (temp >= mon_table[temp1])
+ 748              		.loc 1 171 30 is_stmt 0 view .LVU210
+ 749 0054 244B     		ldr	r3, .L56+12
+ 750 0056 9B5D     		ldrb	r3, [r3, r6]	@ zero_extendqisi2
+ 171:BASIC/rtc/rtc.c ****         if (temp >= mon_table[temp1])
+ 751              		.loc 1 171 12 view .LVU211
+ 752 0058 A342     		cmp	r3, r4
+ 753 005a 0FD8     		bhi	.L52
+ 172:BASIC/rtc/rtc.c ****           temp -= mon_table[temp1];  //平年
+ 754              		.loc 1 172 11 is_stmt 1 view .LVU212
+ 172:BASIC/rtc/rtc.c ****           temp -= mon_table[temp1];  //平年
+ 755              		.loc 1 172 16 is_stmt 0 view .LVU213
+ 756 005c E41A     		subs	r4, r4, r3
+ 757              	.LVL95:
+ 758              	.L53:
+ 176:BASIC/rtc/rtc.c ****       temp1++;
+ 759              		.loc 1 176 7 is_stmt 1 view .LVU214
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 19
+
+
+ 176:BASIC/rtc/rtc.c ****       temp1++;
+ 760              		.loc 1 176 12 is_stmt 0 view .LVU215
+ 761 005e 0136     		adds	r6, r6, #1
+ 762              	.LVL96:
+ 176:BASIC/rtc/rtc.c ****       temp1++;
+ 763              		.loc 1 176 12 view .LVU216
+ 764 0060 B6B2     		uxth	r6, r6
+ 765              	.LVL97:
+ 766              	.L50:
+ 164:BASIC/rtc/rtc.c ****     while (temp >= 28) {                        //超过了一个月
+ 767              		.loc 1 164 11 is_stmt 1 view .LVU217
+ 768 0062 1B2C     		cmp	r4, #27
+ 769 0064 0AD9     		bls	.L52
+ 165:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(ryear) && temp1 == 1) {  //当年是不是闰年/2月份
+ 770              		.loc 1 165 7 view .LVU218
+ 165:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(ryear) && temp1 == 1) {  //当年是不是闰年/2月份
+ 771              		.loc 1 165 11 is_stmt 0 view .LVU219
+ 772 0066 2846     		mov	r0, r5
+ 773 0068 FFF7FEFF 		bl	Is_Leap_Year
+ 774              	.LVL98:
+ 165:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(ryear) && temp1 == 1) {  //当年是不是闰年/2月份
+ 775              		.loc 1 165 10 view .LVU220
+ 776 006c 0028     		cmp	r0, #0
+ 777 006e F1D0     		beq	.L51
+ 165:BASIC/rtc/rtc.c ****       if (Is_Leap_Year(ryear) && temp1 == 1) {  //当年是不是闰年/2月份
+ 778              		.loc 1 165 31 discriminator 1 view .LVU221
+ 779 0070 012E     		cmp	r6, #1
+ 780 0072 EFD1     		bne	.L51
+ 166:BASIC/rtc/rtc.c ****         if (temp >= 29)
+ 781              		.loc 1 166 9 is_stmt 1 view .LVU222
+ 166:BASIC/rtc/rtc.c ****         if (temp >= 29)
+ 782              		.loc 1 166 12 is_stmt 0 view .LVU223
+ 783 0074 1C2C     		cmp	r4, #28
+ 784 0076 01D9     		bls	.L52
+ 167:BASIC/rtc/rtc.c ****           temp -= 29;  //闰年的秒钟数
+ 785              		.loc 1 167 11 is_stmt 1 view .LVU224
+ 167:BASIC/rtc/rtc.c ****           temp -= 29;  //闰年的秒钟数
+ 786              		.loc 1 167 16 is_stmt 0 view .LVU225
+ 787 0078 1D3C     		subs	r4, r4, #29
+ 788              	.LVL99:
+ 166:BASIC/rtc/rtc.c ****         if (temp >= 29)
+ 789              		.loc 1 166 12 view .LVU226
+ 790 007a F0E7     		b	.L53
+ 791              	.L52:
+ 178:BASIC/rtc/rtc.c ****     rmon = temp1 + 1;  //得到月份
+ 792              		.loc 1 178 5 is_stmt 1 view .LVU227
+ 178:BASIC/rtc/rtc.c ****     rmon = temp1 + 1;  //得到月份
+ 793              		.loc 1 178 18 is_stmt 0 view .LVU228
+ 794 007c 0136     		adds	r6, r6, #1
+ 795              	.LVL100:
+ 178:BASIC/rtc/rtc.c ****     rmon = temp1 + 1;  //得到月份
+ 796              		.loc 1 178 10 view .LVU229
+ 797 007e 1B4B     		ldr	r3, .L56+16
+ 798 0080 1E70     		strb	r6, [r3]
+ 179:BASIC/rtc/rtc.c ****     rday = temp + 1;   //得到日期
+ 799              		.loc 1 179 5 is_stmt 1 view .LVU230
+ 179:BASIC/rtc/rtc.c ****     rday = temp + 1;   //得到日期
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 20
+
+
+ 800              		.loc 1 179 17 is_stmt 0 view .LVU231
+ 801 0082 0134     		adds	r4, r4, #1
+ 802              	.LVL101:
+ 179:BASIC/rtc/rtc.c ****     rday = temp + 1;   //得到日期
+ 803              		.loc 1 179 10 view .LVU232
+ 804 0084 1A4B     		ldr	r3, .L56+20
+ 805 0086 1C70     		strb	r4, [r3]
+ 806              	.LVL102:
+ 807              	.L43:
+ 181:BASIC/rtc/rtc.c ****   temp = timecount % 86400;                 //得到秒钟数
+ 808              		.loc 1 181 3 is_stmt 1 view .LVU233
+ 181:BASIC/rtc/rtc.c ****   temp = timecount % 86400;                 //得到秒钟数
+ 809              		.loc 1 181 8 is_stmt 0 view .LVU234
+ 810 0088 144B     		ldr	r3, .L56
+ 811 008a A3FB0723 		umull	r2, r3, r3, r7
+ 812 008e 1B0C     		lsrs	r3, r3, #16
+ 813 0090 184A     		ldr	r2, .L56+24
+ 814 0092 02FB1373 		mls	r3, r2, r3, r7
+ 815              	.LVL103:
+ 182:BASIC/rtc/rtc.c ****   rhour = temp / 3600;                      //小时
+ 816              		.loc 1 182 3 is_stmt 1 view .LVU235
+ 182:BASIC/rtc/rtc.c ****   rhour = temp / 3600;                      //小时
+ 817              		.loc 1 182 16 is_stmt 0 view .LVU236
+ 818 0096 184A     		ldr	r2, .L56+28
+ 819 0098 A2FB0312 		umull	r1, r2, r2, r3
+ 820 009c D20A     		lsrs	r2, r2, #11
+ 182:BASIC/rtc/rtc.c ****   rhour = temp / 3600;                      //小时
+ 821              		.loc 1 182 9 view .LVU237
+ 822 009e 1749     		ldr	r1, .L56+32
+ 823 00a0 0A70     		strb	r2, [r1]
+ 183:BASIC/rtc/rtc.c ****   rmin = (temp % 3600) / 60;                //分钟
+ 824              		.loc 1 183 3 is_stmt 1 view .LVU238
+ 183:BASIC/rtc/rtc.c ****   rmin = (temp % 3600) / 60;                //分钟
+ 825              		.loc 1 183 16 is_stmt 0 view .LVU239
+ 826 00a2 4FF46161 		mov	r1, #3600
+ 827 00a6 01FB1233 		mls	r3, r1, r2, r3
+ 828              	.LVL104:
+ 183:BASIC/rtc/rtc.c ****   rmin = (temp % 3600) / 60;                //分钟
+ 829              		.loc 1 183 24 view .LVU240
+ 830 00aa 154A     		ldr	r2, .L56+36
+ 831 00ac A2FB0312 		umull	r1, r2, r2, r3
+ 832 00b0 5209     		lsrs	r2, r2, #5
+ 183:BASIC/rtc/rtc.c ****   rmin = (temp % 3600) / 60;                //分钟
+ 833              		.loc 1 183 8 view .LVU241
+ 834 00b2 1449     		ldr	r1, .L56+40
+ 835 00b4 0A70     		strb	r2, [r1]
+ 184:BASIC/rtc/rtc.c ****   rsec = (temp % 3600) % 60;                //秒钟
+ 836              		.loc 1 184 3 is_stmt 1 view .LVU242
+ 184:BASIC/rtc/rtc.c ****   rsec = (temp % 3600) % 60;                //秒钟
+ 837              		.loc 1 184 24 is_stmt 0 view .LVU243
+ 838 00b6 C2EB0212 		rsb	r2, r2, r2, lsl #4
+ 839 00ba A3EB8203 		sub	r3, r3, r2, lsl #2
+ 184:BASIC/rtc/rtc.c ****   rsec = (temp % 3600) % 60;                //秒钟
+ 840              		.loc 1 184 8 view .LVU244
+ 841 00be 124A     		ldr	r2, .L56+44
+ 842 00c0 1370     		strb	r3, [r2]
+ 185:BASIC/rtc/rtc.c ****   rweek = RTC_Get_Week(ryear, rmon, rday);  //获取星期
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 21
+
+
+ 843              		.loc 1 185 3 is_stmt 1 view .LVU245
+ 185:BASIC/rtc/rtc.c ****   rweek = RTC_Get_Week(ryear, rmon, rday);  //获取星期
+ 844              		.loc 1 185 11 is_stmt 0 view .LVU246
+ 845 00c2 0B4B     		ldr	r3, .L56+20
+ 846 00c4 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 847 00c6 094B     		ldr	r3, .L56+16
+ 848 00c8 1978     		ldrb	r1, [r3]	@ zero_extendqisi2
+ 849 00ca 064B     		ldr	r3, .L56+8
+ 850 00cc 1888     		ldrh	r0, [r3]
+ 851 00ce FFF7FEFF 		bl	RTC_Get_Week
+ 852              	.LVL105:
+ 185:BASIC/rtc/rtc.c ****   rweek = RTC_Get_Week(ryear, rmon, rday);  //获取星期
+ 853              		.loc 1 185 9 view .LVU247
+ 854 00d2 0E4B     		ldr	r3, .L56+48
+ 855 00d4 1870     		strb	r0, [r3]
+ 186:BASIC/rtc/rtc.c ****   return 0;
+ 856              		.loc 1 186 3 is_stmt 1 view .LVU248
+ 187:BASIC/rtc/rtc.c **** }
+ 857              		.loc 1 187 1 is_stmt 0 view .LVU249
+ 858 00d6 0020     		movs	r0, #0
+ 859 00d8 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 860              	.LVL106:
+ 861              	.L57:
+ 187:BASIC/rtc/rtc.c **** }
+ 862              		.loc 1 187 1 view .LVU250
+ 863 00da 00BF     		.align	2
+ 864              	.L56:
+ 865 00dc 07452EC2 		.word	-1037155065
+ 866 00e0 00000000 		.word	.LANCHOR2
+ 867 00e4 00000000 		.word	.LANCHOR3
+ 868 00e8 00000000 		.word	.LANCHOR0
+ 869 00ec 00000000 		.word	.LANCHOR4
+ 870 00f0 00000000 		.word	.LANCHOR5
+ 871 00f4 80510100 		.word	86400
+ 872 00f8 C5B3A291 		.word	-1851608123
+ 873 00fc 00000000 		.word	.LANCHOR6
+ 874 0100 89888888 		.word	-2004318071
+ 875 0104 00000000 		.word	.LANCHOR7
+ 876 0108 00000000 		.word	.LANCHOR8
+ 877 010c 00000000 		.word	.LANCHOR9
+ 878              		.cfi_endproc
+ 879              	.LFE35:
+ 881              		.global	mon_table
+ 882              		.global	table_week
+ 883              		.global	rweek
+ 884              		.global	rsec
+ 885              		.global	rmin
+ 886              		.global	rhour
+ 887              		.global	rday
+ 888              		.global	rmon
+ 889              		.global	ryear
+ 890              		.section	.bss.daycnt.0,"aw",%nobits
+ 891              		.align	1
+ 892              		.set	.LANCHOR2,. + 0
+ 895              	daycnt.0:
+ 896 0000 0000     		.space	2
+ 897              		.section	.bss.rday,"aw",%nobits
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 22
+
+
+ 898              		.set	.LANCHOR5,. + 0
+ 901              	rday:
+ 902 0000 00       		.space	1
+ 903              		.section	.bss.rhour,"aw",%nobits
+ 904              		.set	.LANCHOR6,. + 0
+ 907              	rhour:
+ 908 0000 00       		.space	1
+ 909              		.section	.bss.rmin,"aw",%nobits
+ 910              		.set	.LANCHOR7,. + 0
+ 913              	rmin:
+ 914 0000 00       		.space	1
+ 915              		.section	.bss.rmon,"aw",%nobits
+ 916              		.set	.LANCHOR4,. + 0
+ 919              	rmon:
+ 920 0000 00       		.space	1
+ 921              		.section	.bss.rsec,"aw",%nobits
+ 922              		.set	.LANCHOR8,. + 0
+ 925              	rsec:
+ 926 0000 00       		.space	1
+ 927              		.section	.bss.rweek,"aw",%nobits
+ 928              		.set	.LANCHOR9,. + 0
+ 931              	rweek:
+ 932 0000 00       		.space	1
+ 933              		.section	.bss.ryear,"aw",%nobits
+ 934              		.align	1
+ 935              		.set	.LANCHOR3,. + 0
+ 938              	ryear:
+ 939 0000 0000     		.space	2
+ 940              		.section	.rodata.mon_table,"a"
+ 941              		.align	2
+ 942              		.set	.LANCHOR0,. + 0
+ 945              	mon_table:
+ 946 0000 1F1C1F1E 		.ascii	"\037\034\037\036\037\036\037\037\036\037\036\037"
+ 946      1F1E1F1F 
+ 946      1E1F1E1F 
+ 947              		.section	.rodata.table_week,"a"
+ 948              		.align	2
+ 949              		.set	.LANCHOR1,. + 0
+ 952              	table_week:
+ 953 0000 00030306 		.ascii	"\000\003\003\006\001\004\006\002\005\000\003\005"
+ 953      01040602 
+ 953      05000305 
+ 954              		.text
+ 955              	.Letext0:
+ 956              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 957              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 958              		.file 4 "CMSIS/stm32f10x.h"
+ 959              		.file 5 "BASIC/rtc/rtc.h"
+ 960              		.file 6 "LIB/inc/stm32f10x_rtc.h"
+ 961              		.file 7 "LIB/inc/stm32f10x_bkp.h"
+ 962              		.file 8 "LIB/inc/stm32f10x_rcc.h"
+ 963              		.file 9 "LIB/inc/stm32f10x_pwr.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 23
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 rtc.c
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:18     .text.RTC_First_Config:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:24     .text.RTC_First_Config:00000000 RTC_First_Config
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:90     .text.RTC_Config:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:96     .text.RTC_Config:00000000 RTC_Config
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:160    .text.RTC_IRQHandler:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:166    .text.RTC_IRQHandler:00000000 RTC_IRQHandler
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:196    .text.RTCAlarm_IRQHandler:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:202    .text.RTCAlarm_IRQHandler:00000000 RTCAlarm_IRQHandler
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:232    .text.Is_Leap_Year:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:238    .text.Is_Leap_Year:00000000 Is_Leap_Year
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:297    .text.Is_Leap_Year:0000003c $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:302    .text.RTC_Set:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:308    .text.RTC_Set:00000000 RTC_Set
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:502    .text.RTC_Set:000000c8 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:508    .text.RTC_Get_Week:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:514    .text.RTC_Get_Week:00000000 RTC_Get_Week
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:623    .text.RTC_Get_Week:00000078 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:630    .text.RTC_Get:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:636    .text.RTC_Get:00000000 RTC_Get
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:865    .text.RTC_Get:000000dc $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:945    .rodata.mon_table:00000000 mon_table
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:952    .rodata.table_week:00000000 table_week
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:931    .bss.rweek:00000000 rweek
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:925    .bss.rsec:00000000 rsec
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:913    .bss.rmin:00000000 rmin
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:907    .bss.rhour:00000000 rhour
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:901    .bss.rday:00000000 rday
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:919    .bss.rmon:00000000 rmon
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:938    .bss.ryear:00000000 ryear
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:891    .bss.daycnt.0:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:895    .bss.daycnt.0:00000000 daycnt.0
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:902    .bss.rday:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:908    .bss.rhour:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:914    .bss.rmin:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:920    .bss.rmon:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:926    .bss.rsec:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:932    .bss.rweek:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:934    .bss.ryear:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:941    .rodata.mon_table:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s:948    .rodata.table_week:00000000 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphClockCmd
+PWR_BackupAccessCmd
+BKP_DeInit
+RCC_LSEConfig
+RCC_GetFlagStatus
+RCC_RTCCLKConfig
+RCC_RTCCLKCmd
+RTC_WaitForSynchro
+RTC_WaitForLastTask
+RTC_SetPrescaler
+BKP_ReadBackupRegister
+BKP_WriteBackupRegister
+RCC_ClearFlag
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccI8SYfg.s 			page 24
+
+
+RTC_GetITStatus
+RTC_ClearITPendingBit
+RTC_SetCounter
+RTC_GetCounter

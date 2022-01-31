@@ -1,0 +1,353 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"LM75A.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.LM75A_GetTemp,"ax",%progbits
+  18              		.align	1
+  19              		.global	LM75A_GetTemp
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	LM75A_GetTemp:
+  25              	.LVL0:
+  26              	.LFB29:
+  27              		.file 1 "Hardware/LM75A/LM75A.c"
+   1:Hardware/LM75A/LM75A.c **** #include "LM75A.h"
+   2:Hardware/LM75A/LM75A.c **** 
+   3:Hardware/LM75A/LM75A.c **** void LM75A_GetTemp(u8 *tempBuffer) {
+  28              		.loc 1 3 36 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 3 36 is_stmt 0 view .LVU1
+  33 0000 10B5     		push	{r4, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 8
+  36              		.cfi_offset 4, -8
+  37              		.cfi_offset 14, -4
+  38 0002 82B0     		sub	sp, sp, #8
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 16
+  41 0004 0446     		mov	r4, r0
+   4:Hardware/LM75A/LM75A.c ****   u8 buf[2];  //温度值储存
+  42              		.loc 1 4 3 is_stmt 1 view .LVU2
+   5:Hardware/LM75A/LM75A.c ****   u8 t = 0, a = 0;
+  43              		.loc 1 5 3 view .LVU3
+  44              	.LVL1:
+   6:Hardware/LM75A/LM75A.c ****   I2C_READ_BUFFER(LM75A_ADD, 0x00, buf,
+  45              		.loc 1 6 3 view .LVU4
+  46 0006 0223     		movs	r3, #2
+  47 0008 01AA     		add	r2, sp, #4
+  48 000a 0021     		movs	r1, #0
+  49 000c 9E20     		movs	r0, #158
+  50              	.LVL2:
+  51              		.loc 1 6 3 is_stmt 0 view .LVU5
+  52 000e FFF7FEFF 		bl	I2C_READ_BUFFER
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 2
+
+
+  53              	.LVL3:
+   7:Hardware/LM75A/LM75A.c ****                   2);  //读出温度值（器件地址，子地址，数据储存器，字节数�
+   8:Hardware/LM75A/LM75A.c ****   t = buf[0];         //处理温度整数部分，0~125度
+  54              		.loc 1 8 3 is_stmt 1 view .LVU6
+  55              		.loc 1 8 5 is_stmt 0 view .LVU7
+  56 0012 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+  57              	.LVL4:
+   9:Hardware/LM75A/LM75A.c ****   *tempBuffer = 0;    //温度值为正值
+  58              		.loc 1 9 3 is_stmt 1 view .LVU8
+  59              		.loc 1 9 15 is_stmt 0 view .LVU9
+  60 0016 0023     		movs	r3, #0
+  61 0018 2370     		strb	r3, [r4]
+  10:Hardware/LM75A/LM75A.c ****   if (t & 0x80) {     //判断温度是否是负（MSB表示温度符号）
+  62              		.loc 1 10 3 is_stmt 1 view .LVU10
+  63              		.loc 1 10 7 is_stmt 0 view .LVU11
+  64 001a 9DF90430 		ldrsb	r3, [sp, #4]
+  65              		.loc 1 10 6 view .LVU12
+  66 001e 002B     		cmp	r3, #0
+  67 0020 33DB     		blt	.L16
+  68              	.L2:
+  11:Hardware/LM75A/LM75A.c ****     *tempBuffer = 1;  //温度值为负值
+  12:Hardware/LM75A/LM75A.c ****     t = ~t;
+  13:Hardware/LM75A/LM75A.c ****     t++;  //计算补码（原码取反后加1）
+  14:Hardware/LM75A/LM75A.c ****   }
+  15:Hardware/LM75A/LM75A.c ****   if (t & 0x01) {
+  69              		.loc 1 15 3 is_stmt 1 view .LVU13
+  70              		.loc 1 15 6 is_stmt 0 view .LVU14
+  71 0022 12F00103 		ands	r3, r2, #1
+  72 0026 00D0     		beq	.L3
+  16:Hardware/LM75A/LM75A.c ****     a = a + 1;
+  73              		.loc 1 16 7 view .LVU15
+  74 0028 0123     		movs	r3, #1
+  75              	.L3:
+  76              	.LVL5:
+  17:Hardware/LM75A/LM75A.c ****   }  //从高到低按位加入温度积加值（0~125）
+  18:Hardware/LM75A/LM75A.c ****   if (t & 0x02) {
+  77              		.loc 1 18 3 is_stmt 1 view .LVU16
+  78              		.loc 1 18 6 is_stmt 0 view .LVU17
+  79 002a 12F0020F 		tst	r2, #2
+  80 002e 01D0     		beq	.L4
+  19:Hardware/LM75A/LM75A.c ****     a = a + 2;
+  81              		.loc 1 19 5 is_stmt 1 view .LVU18
+  82              		.loc 1 19 7 is_stmt 0 view .LVU19
+  83 0030 0233     		adds	r3, r3, #2
+  84              	.LVL6:
+  85              		.loc 1 19 7 view .LVU20
+  86 0032 DBB2     		uxtb	r3, r3
+  87              	.LVL7:
+  88              	.L4:
+  20:Hardware/LM75A/LM75A.c ****   }
+  21:Hardware/LM75A/LM75A.c ****   if (t & 0x04) {
+  89              		.loc 1 21 3 is_stmt 1 view .LVU21
+  90              		.loc 1 21 6 is_stmt 0 view .LVU22
+  91 0034 12F0040F 		tst	r2, #4
+  92 0038 01D0     		beq	.L5
+  22:Hardware/LM75A/LM75A.c ****     a = a + 4;
+  93              		.loc 1 22 5 is_stmt 1 view .LVU23
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 3
+
+
+  94              		.loc 1 22 7 is_stmt 0 view .LVU24
+  95 003a 0433     		adds	r3, r3, #4
+  96              	.LVL8:
+  97              		.loc 1 22 7 view .LVU25
+  98 003c DBB2     		uxtb	r3, r3
+  99              	.LVL9:
+ 100              	.L5:
+  23:Hardware/LM75A/LM75A.c ****   }
+  24:Hardware/LM75A/LM75A.c ****   if (t & 0x08) {
+ 101              		.loc 1 24 3 is_stmt 1 view .LVU26
+ 102              		.loc 1 24 6 is_stmt 0 view .LVU27
+ 103 003e 12F0080F 		tst	r2, #8
+ 104 0042 01D0     		beq	.L6
+  25:Hardware/LM75A/LM75A.c ****     a = a + 8;
+ 105              		.loc 1 25 5 is_stmt 1 view .LVU28
+ 106              		.loc 1 25 7 is_stmt 0 view .LVU29
+ 107 0044 0833     		adds	r3, r3, #8
+ 108              	.LVL10:
+ 109              		.loc 1 25 7 view .LVU30
+ 110 0046 DBB2     		uxtb	r3, r3
+ 111              	.LVL11:
+ 112              	.L6:
+  26:Hardware/LM75A/LM75A.c ****   }
+  27:Hardware/LM75A/LM75A.c ****   if (t & 0x10) {
+ 113              		.loc 1 27 3 is_stmt 1 view .LVU31
+ 114              		.loc 1 27 6 is_stmt 0 view .LVU32
+ 115 0048 12F0100F 		tst	r2, #16
+ 116 004c 01D0     		beq	.L7
+  28:Hardware/LM75A/LM75A.c ****     a = a + 16;
+ 117              		.loc 1 28 5 is_stmt 1 view .LVU33
+ 118              		.loc 1 28 7 is_stmt 0 view .LVU34
+ 119 004e 1033     		adds	r3, r3, #16
+ 120              	.LVL12:
+ 121              		.loc 1 28 7 view .LVU35
+ 122 0050 DBB2     		uxtb	r3, r3
+ 123              	.LVL13:
+ 124              	.L7:
+  29:Hardware/LM75A/LM75A.c ****   }
+  30:Hardware/LM75A/LM75A.c ****   if (t & 0x20) {
+ 125              		.loc 1 30 3 is_stmt 1 view .LVU36
+ 126              		.loc 1 30 6 is_stmt 0 view .LVU37
+ 127 0052 12F0200F 		tst	r2, #32
+ 128 0056 01D0     		beq	.L8
+  31:Hardware/LM75A/LM75A.c ****     a = a + 32;
+ 129              		.loc 1 31 5 is_stmt 1 view .LVU38
+ 130              		.loc 1 31 7 is_stmt 0 view .LVU39
+ 131 0058 2033     		adds	r3, r3, #32
+ 132              	.LVL14:
+ 133              		.loc 1 31 7 view .LVU40
+ 134 005a DBB2     		uxtb	r3, r3
+ 135              	.LVL15:
+ 136              	.L8:
+  32:Hardware/LM75A/LM75A.c ****   }
+  33:Hardware/LM75A/LM75A.c ****   if (t & 0x40) {
+ 137              		.loc 1 33 3 is_stmt 1 view .LVU41
+ 138              		.loc 1 33 6 is_stmt 0 view .LVU42
+ 139 005c 12F0400F 		tst	r2, #64
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 4
+
+
+ 140 0060 01D0     		beq	.L9
+  34:Hardware/LM75A/LM75A.c ****     a = a + 64;
+ 141              		.loc 1 34 5 is_stmt 1 view .LVU43
+ 142              		.loc 1 34 7 is_stmt 0 view .LVU44
+ 143 0062 4033     		adds	r3, r3, #64
+ 144              	.LVL16:
+ 145              		.loc 1 34 7 view .LVU45
+ 146 0064 DBB2     		uxtb	r3, r3
+ 147              	.LVL17:
+ 148              	.L9:
+  35:Hardware/LM75A/LM75A.c ****   }
+  36:Hardware/LM75A/LM75A.c ****   tempBuffer++;
+ 149              		.loc 1 36 3 is_stmt 1 view .LVU46
+  37:Hardware/LM75A/LM75A.c ****   *tempBuffer = a;
+ 150              		.loc 1 37 3 view .LVU47
+ 151              		.loc 1 37 15 is_stmt 0 view .LVU48
+ 152 0066 6370     		strb	r3, [r4, #1]
+  38:Hardware/LM75A/LM75A.c ****   a = 0;
+ 153              		.loc 1 38 3 is_stmt 1 view .LVU49
+ 154              	.LVL18:
+  39:Hardware/LM75A/LM75A.c ****   t = buf[1];  //处理小数部分，取0.125精度的前2位（12、25、37、50、62、75、87�
+ 155              		.loc 1 39 3 view .LVU50
+ 156              		.loc 1 39 5 is_stmt 0 view .LVU51
+ 157 0068 9DF80520 		ldrb	r2, [sp, #5]	@ zero_extendqisi2
+ 158              	.LVL19:
+  40:Hardware/LM75A/LM75A.c ****   if (t & 0x20) {
+ 159              		.loc 1 40 3 is_stmt 1 view .LVU52
+ 160              		.loc 1 40 6 is_stmt 0 view .LVU53
+ 161 006c 12F02003 		ands	r3, r2, #32
+ 162 0070 00D0     		beq	.L10
+  41:Hardware/LM75A/LM75A.c ****     a = a + 12;
+ 163              		.loc 1 41 7 view .LVU54
+ 164 0072 0C23     		movs	r3, #12
+ 165              	.L10:
+ 166              	.LVL20:
+  42:Hardware/LM75A/LM75A.c ****   }
+  43:Hardware/LM75A/LM75A.c ****   if (t & 0x40) {
+ 167              		.loc 1 43 3 is_stmt 1 view .LVU55
+ 168              		.loc 1 43 6 is_stmt 0 view .LVU56
+ 169 0074 12F0400F 		tst	r2, #64
+ 170 0078 01D0     		beq	.L11
+  44:Hardware/LM75A/LM75A.c ****     a = a + 25;
+ 171              		.loc 1 44 5 is_stmt 1 view .LVU57
+ 172              		.loc 1 44 7 is_stmt 0 view .LVU58
+ 173 007a 1933     		adds	r3, r3, #25
+ 174              	.LVL21:
+ 175              		.loc 1 44 7 view .LVU59
+ 176 007c DBB2     		uxtb	r3, r3
+ 177              	.LVL22:
+ 178              	.L11:
+  45:Hardware/LM75A/LM75A.c ****   }
+  46:Hardware/LM75A/LM75A.c ****   if (t & 0x80) {
+ 179              		.loc 1 46 3 is_stmt 1 view .LVU60
+ 180              		.loc 1 46 6 is_stmt 0 view .LVU61
+ 181 007e 12F0800F 		tst	r2, #128
+ 182 0082 07D1     		bne	.L17
+ 183              	.L12:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 5
+
+
+  47:Hardware/LM75A/LM75A.c ****     a = a + 50;
+  48:Hardware/LM75A/LM75A.c ****   }
+  49:Hardware/LM75A/LM75A.c ****   tempBuffer++;
+ 184              		.loc 1 49 3 is_stmt 1 view .LVU62
+ 185              	.LVL23:
+  50:Hardware/LM75A/LM75A.c ****   *tempBuffer = a;
+ 186              		.loc 1 50 3 view .LVU63
+ 187              		.loc 1 50 15 is_stmt 0 view .LVU64
+ 188 0084 A370     		strb	r3, [r4, #2]
+  51:Hardware/LM75A/LM75A.c **** }
+ 189              		.loc 1 51 1 view .LVU65
+ 190 0086 02B0     		add	sp, sp, #8
+ 191              	.LCFI2:
+ 192              		.cfi_remember_state
+ 193              		.cfi_def_cfa_offset 8
+ 194              		@ sp needed
+ 195 0088 10BD     		pop	{r4, pc}
+ 196              	.LVL24:
+ 197              	.L16:
+ 198              	.LCFI3:
+ 199              		.cfi_restore_state
+  11:Hardware/LM75A/LM75A.c ****     t = ~t;
+ 200              		.loc 1 11 5 is_stmt 1 view .LVU66
+  11:Hardware/LM75A/LM75A.c ****     t = ~t;
+ 201              		.loc 1 11 17 is_stmt 0 view .LVU67
+ 202 008a 0123     		movs	r3, #1
+ 203 008c 2370     		strb	r3, [r4]
+  12:Hardware/LM75A/LM75A.c ****     t++;  //计算补码（原码取反后加1）
+ 204              		.loc 1 12 5 is_stmt 1 view .LVU68
+ 205              	.LVL25:
+  13:Hardware/LM75A/LM75A.c ****   }
+ 206              		.loc 1 13 5 view .LVU69
+  13:Hardware/LM75A/LM75A.c ****   }
+ 207              		.loc 1 13 6 is_stmt 0 view .LVU70
+ 208 008e 5242     		rsbs	r2, r2, #0
+ 209              	.LVL26:
+  13:Hardware/LM75A/LM75A.c ****   }
+ 210              		.loc 1 13 6 view .LVU71
+ 211 0090 D2B2     		uxtb	r2, r2
+ 212              	.LVL27:
+  13:Hardware/LM75A/LM75A.c ****   }
+ 213              		.loc 1 13 6 view .LVU72
+ 214 0092 C6E7     		b	.L2
+ 215              	.LVL28:
+ 216              	.L17:
+  47:Hardware/LM75A/LM75A.c ****   }
+ 217              		.loc 1 47 5 is_stmt 1 view .LVU73
+  47:Hardware/LM75A/LM75A.c ****   }
+ 218              		.loc 1 47 7 is_stmt 0 view .LVU74
+ 219 0094 3233     		adds	r3, r3, #50
+ 220              	.LVL29:
+  47:Hardware/LM75A/LM75A.c ****   }
+ 221              		.loc 1 47 7 view .LVU75
+ 222 0096 DBB2     		uxtb	r3, r3
+ 223              	.LVL30:
+  47:Hardware/LM75A/LM75A.c ****   }
+ 224              		.loc 1 47 7 view .LVU76
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 6
+
+
+ 225 0098 F4E7     		b	.L12
+ 226              		.cfi_endproc
+ 227              	.LFE29:
+ 229              		.section	.text.LM75A_POWERDOWN,"ax",%progbits
+ 230              		.align	1
+ 231              		.global	LM75A_POWERDOWN
+ 232              		.syntax unified
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	LM75A_POWERDOWN:
+ 237              	.LFB30:
+  52:Hardware/LM75A/LM75A.c **** void LM75A_POWERDOWN(void) { I2C_SEND_BYTE(LM75A_ADD, 0x01, 1); }...
+ 238              		.loc 1 52 28 is_stmt 1 view -0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 0
+ 241              		@ frame_needed = 0, uses_anonymous_args = 0
+ 242 0000 08B5     		push	{r3, lr}
+ 243              	.LCFI4:
+ 244              		.cfi_def_cfa_offset 8
+ 245              		.cfi_offset 3, -8
+ 246              		.cfi_offset 14, -4
+ 247              		.loc 1 52 30 view .LVU78
+ 248 0002 0122     		movs	r2, #1
+ 249 0004 1146     		mov	r1, r2
+ 250 0006 9E20     		movs	r0, #158
+ 251 0008 FFF7FEFF 		bl	I2C_SEND_BYTE
+ 252              	.LVL31:
+ 253              		.loc 1 52 65 is_stmt 0 view .LVU79
+ 254 000c 08BD     		pop	{r3, pc}
+ 255              		.cfi_endproc
+ 256              	.LFE30:
+ 258              		.text
+ 259              	.Letext0:
+ 260              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 261              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 262              		.file 4 "BASIC/i2c/i2c.h"
+ 263              		.file 5 "CMSIS/stm32f10x.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 LM75A.c
+C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s:18     .text.LM75A_GetTemp:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s:24     .text.LM75A_GetTemp:00000000 LM75A_GetTemp
+C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s:230    .text.LM75A_POWERDOWN:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cc0m89aL.s:236    .text.LM75A_POWERDOWN:00000000 LM75A_POWERDOWN
+
+UNDEFINED SYMBOLS
+I2C_READ_BUFFER
+I2C_SEND_BYTE

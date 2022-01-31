@@ -1,0 +1,94 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cchkgrXe.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"touch_key.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.TOUCH_KEY_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	TOUCH_KEY_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	TOUCH_KEY_Init:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/TOUCH_KEY/touch_key.c"
+   1:Hardware/TOUCH_KEY/touch_key.c **** #include "touch_key.h"
+   2:Hardware/TOUCH_KEY/touch_key.c **** 
+   3:Hardware/TOUCH_KEY/touch_key.c **** void TOUCH_KEY_Init(void) {
+  27              		.loc 1 3 27 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 00B5     		push	{lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 14, -4
+  35 0002 83B0     		sub	sp, sp, #12
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_offset 16
+   4:Hardware/TOUCH_KEY/touch_key.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  38              		.loc 1 4 3 view .LVU1
+   5:Hardware/TOUCH_KEY/touch_key.c ****   GPIO_InitStructure.GPIO_Pin =
+  39              		.loc 1 5 3 view .LVU2
+  40              		.loc 1 5 31 is_stmt 0 view .LVU3
+  41 0004 0F23     		movs	r3, #15
+  42 0006 ADF80430 		strh	r3, [sp, #4]	@ movhi
+   6:Hardware/TOUCH_KEY/touch_key.c ****       TOUCH_KEY_A | TOUCH_KEY_B | TOUCH_KEY_C | TOUCH_KEY_D;
+   7:Hardware/TOUCH_KEY/touch_key.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+  43              		.loc 1 7 3 is_stmt 1 view .LVU4
+  44              		.loc 1 7 32 is_stmt 0 view .LVU5
+  45 000a 4823     		movs	r3, #72
+  46 000c 8DF80730 		strb	r3, [sp, #7]
+   8:Hardware/TOUCH_KEY/touch_key.c ****   GPIO_Init(TOUCH_KEYPORT, &GPIO_InitStructure);
+  47              		.loc 1 8 3 is_stmt 1 view .LVU6
+  48 0010 01A9     		add	r1, sp, #4
+  49 0012 0348     		ldr	r0, .L3
+  50 0014 FFF7FEFF 		bl	GPIO_Init
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cchkgrXe.s 			page 2
+
+
+  51              	.LVL0:
+   9:Hardware/TOUCH_KEY/touch_key.c **** }...
+  52              		.loc 1 9 1 is_stmt 0 view .LVU7
+  53 0018 03B0     		add	sp, sp, #12
+  54              	.LCFI2:
+  55              		.cfi_def_cfa_offset 4
+  56              		@ sp needed
+  57 001a 5DF804FB 		ldr	pc, [sp], #4
+  58              	.L4:
+  59 001e 00BF     		.align	2
+  60              	.L3:
+  61 0020 00080140 		.word	1073809408
+  62              		.cfi_endproc
+  63              	.LFE29:
+  65              		.text
+  66              	.Letext0:
+  67              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+  68              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+  69              		.file 4 "CMSIS/stm32f10x.h"
+  70              		.file 5 "LIB/inc/stm32f10x_gpio.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cchkgrXe.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 touch_key.c
+C:\Users\Rick\AppData\Local\Temp\cchkgrXe.s:18     .text.TOUCH_KEY_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cchkgrXe.s:24     .text.TOUCH_KEY_Init:00000000 TOUCH_KEY_Init
+C:\Users\Rick\AppData\Local\Temp\cchkgrXe.s:61     .text.TOUCH_KEY_Init:00000020 $d
+
+UNDEFINED SYMBOLS
+GPIO_Init

@@ -1,0 +1,106 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccLJp0CB.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"led.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.LED_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	LED_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	LED_Init:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/LED/led.c"
+   1:Hardware/LED/led.c **** #include "led.h"
+   2:Hardware/LED/led.c **** 
+   3:Hardware/LED/led.c **** void LED_Init(void)
+   4:Hardware/LED/led.c **** {
+  27              		.loc 1 4 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 00B5     		push	{lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 14, -4
+  35 0002 83B0     		sub	sp, sp, #12
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_offset 16
+   5:Hardware/LED/led.c ****     GPIO_InitTypeDef GPIO_InitStructure;
+  38              		.loc 1 5 5 view .LVU1
+   6:Hardware/LED/led.c ****     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC, ENAB
+  39              		.loc 1 6 5 view .LVU2
+  40 0004 0121     		movs	r1, #1
+  41 0006 1C20     		movs	r0, #28
+  42 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  43              	.LVL0:
+   7:Hardware/LED/led.c ****     GPIO_InitStructure.GPIO_Pin = LED1 | LED2;
+  44              		.loc 1 7 5 view .LVU3
+  45              		.loc 1 7 33 is_stmt 0 view .LVU4
+  46 000c 0323     		movs	r3, #3
+  47 000e ADF80430 		strh	r3, [sp, #4]	@ movhi
+   8:Hardware/LED/led.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  48              		.loc 1 8 5 is_stmt 1 view .LVU5
+  49              		.loc 1 8 34 is_stmt 0 view .LVU6
+  50 0012 1022     		movs	r2, #16
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccLJp0CB.s 			page 2
+
+
+  51 0014 8DF80720 		strb	r2, [sp, #7]
+   9:Hardware/LED/led.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  52              		.loc 1 9 5 is_stmt 1 view .LVU7
+  53              		.loc 1 9 35 is_stmt 0 view .LVU8
+  54 0018 8DF80630 		strb	r3, [sp, #6]
+  10:Hardware/LED/led.c ****     GPIO_Init(LEDPORT, &GPIO_InitStructure);
+  55              		.loc 1 10 5 is_stmt 1 view .LVU9
+  56 001c 01A9     		add	r1, sp, #4
+  57 001e 0348     		ldr	r0, .L3
+  58 0020 FFF7FEFF 		bl	GPIO_Init
+  59              	.LVL1:
+  11:Hardware/LED/led.c **** }
+  60              		.loc 1 11 1 is_stmt 0 view .LVU10
+  61 0024 03B0     		add	sp, sp, #12
+  62              	.LCFI2:
+  63              		.cfi_def_cfa_offset 4
+  64              		@ sp needed
+  65 0026 5DF804FB 		ldr	pc, [sp], #4
+  66              	.L4:
+  67 002a 00BF     		.align	2
+  68              	.L3:
+  69 002c 000C0140 		.word	1073810432
+  70              		.cfi_endproc
+  71              	.LFE29:
+  73              		.text
+  74              	.Letext0:
+  75              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+  76              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+  77              		.file 4 "CMSIS/stm32f10x.h"
+  78              		.file 5 "LIB/inc/stm32f10x_gpio.h"
+  79              		.file 6 "LIB/inc/stm32f10x_rcc.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccLJp0CB.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 led.c
+C:\Users\Rick\AppData\Local\Temp\ccLJp0CB.s:18     .text.LED_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccLJp0CB.s:24     .text.LED_Init:00000000 LED_Init
+C:\Users\Rick\AppData\Local\Temp\ccLJp0CB.s:69     .text.LED_Init:0000002c $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init

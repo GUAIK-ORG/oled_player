@@ -1,0 +1,437 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"buzzer.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.BUZZER_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	BUZZER_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	BUZZER_Init:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/BUZZER/buzzer.c"
+   1:Hardware/BUZZER/buzzer.c **** #include "buzzer.h"
+   2:Hardware/BUZZER/buzzer.c **** 
+   3:Hardware/BUZZER/buzzer.c **** #include <delay/delay.h>
+   4:Hardware/BUZZER/buzzer.c **** #include <stm32f10x_gpio.h>
+   5:Hardware/BUZZER/buzzer.c **** 
+   6:Hardware/BUZZER/buzzer.c **** void BUZZER_Init(void) {
+  27              		.loc 1 6 24 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 30B5     		push	{r4, r5, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 12
+  34              		.cfi_offset 4, -12
+  35              		.cfi_offset 5, -8
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 24
+   7:Hardware/BUZZER/buzzer.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+  40              		.loc 1 7 3 view .LVU1
+   8:Hardware/BUZZER/buzzer.c ****   GPIO_InitStructure.GPIO_Pin = BUZZER;
+  41              		.loc 1 8 3 view .LVU2
+  42              		.loc 1 8 31 is_stmt 0 view .LVU3
+  43 0004 2025     		movs	r5, #32
+  44 0006 ADF80450 		strh	r5, [sp, #4]	@ movhi
+   9:Hardware/BUZZER/buzzer.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  45              		.loc 1 9 3 is_stmt 1 view .LVU4
+  46              		.loc 1 9 32 is_stmt 0 view .LVU5
+  47 000a 1023     		movs	r3, #16
+  48 000c 8DF80730 		strb	r3, [sp, #7]
+  10:Hardware/BUZZER/buzzer.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 2
+
+
+  49              		.loc 1 10 3 is_stmt 1 view .LVU6
+  50              		.loc 1 10 33 is_stmt 0 view .LVU7
+  51 0010 0323     		movs	r3, #3
+  52 0012 8DF80630 		strb	r3, [sp, #6]
+  11:Hardware/BUZZER/buzzer.c ****   GPIO_Init(BUZZERPORT, &GPIO_InitStructure);
+  53              		.loc 1 11 3 is_stmt 1 view .LVU8
+  54 0016 064C     		ldr	r4, .L3
+  55 0018 01A9     		add	r1, sp, #4
+  56 001a 2046     		mov	r0, r4
+  57 001c FFF7FEFF 		bl	GPIO_Init
+  58              	.LVL0:
+  12:Hardware/BUZZER/buzzer.c **** 
+  13:Hardware/BUZZER/buzzer.c ****   GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)1);
+  59              		.loc 1 13 3 view .LVU9
+  60 0020 0122     		movs	r2, #1
+  61 0022 2946     		mov	r1, r5
+  62 0024 2046     		mov	r0, r4
+  63 0026 FFF7FEFF 		bl	GPIO_WriteBit
+  64              	.LVL1:
+  14:Hardware/BUZZER/buzzer.c **** }
+  65              		.loc 1 14 1 is_stmt 0 view .LVU10
+  66 002a 03B0     		add	sp, sp, #12
+  67              	.LCFI2:
+  68              		.cfi_def_cfa_offset 12
+  69              		@ sp needed
+  70 002c 30BD     		pop	{r4, r5, pc}
+  71              	.L4:
+  72 002e 00BF     		.align	2
+  73              	.L3:
+  74 0030 000C0140 		.word	1073810432
+  75              		.cfi_endproc
+  76              	.LFE29:
+  78              		.section	.text.BUZZER_BEEP1,"ax",%progbits
+  79              		.align	1
+  80              		.global	BUZZER_BEEP1
+  81              		.syntax unified
+  82              		.thumb
+  83              		.thumb_func
+  85              	BUZZER_BEEP1:
+  86              	.LFB30:
+  15:Hardware/BUZZER/buzzer.c **** 
+  16:Hardware/BUZZER/buzzer.c **** void BUZZER_BEEP1(void) {
+  87              		.loc 1 16 25 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91 0000 38B5     		push	{r3, r4, r5, lr}
+  92              	.LCFI3:
+  93              		.cfi_def_cfa_offset 16
+  94              		.cfi_offset 3, -16
+  95              		.cfi_offset 4, -12
+  96              		.cfi_offset 5, -8
+  97              		.cfi_offset 14, -4
+  17:Hardware/BUZZER/buzzer.c ****   for (u16 i = 0; i < 200; i++) {
+  98              		.loc 1 17 3 view .LVU12
+  99              	.LBB2:
+ 100              		.loc 1 17 8 view .LVU13
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 3
+
+
+ 101              	.LVL2:
+ 102              		.loc 1 17 12 is_stmt 0 view .LVU14
+ 103 0002 0024     		movs	r4, #0
+ 104              		.loc 1 17 3 view .LVU15
+ 105 0004 14E0     		b	.L6
+ 106              	.LVL3:
+ 107              	.L7:
+  18:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 108              		.loc 1 18 5 is_stmt 1 discriminator 3 view .LVU16
+ 109 0006 0C4D     		ldr	r5, .L9
+ 110 0008 0022     		movs	r2, #0
+ 111 000a 2021     		movs	r1, #32
+ 112 000c 2846     		mov	r0, r5
+ 113 000e FFF7FEFF 		bl	GPIO_WriteBit
+ 114              	.LVL4:
+  19:Hardware/BUZZER/buzzer.c ****     delay_us(500);
+ 115              		.loc 1 19 5 discriminator 3 view .LVU17
+ 116 0012 4FF4FA70 		mov	r0, #500
+ 117 0016 FFF7FEFF 		bl	delay_us
+ 118              	.LVL5:
+  20:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)1);
+ 119              		.loc 1 20 5 discriminator 3 view .LVU18
+ 120 001a 0122     		movs	r2, #1
+ 121 001c 2021     		movs	r1, #32
+ 122 001e 2846     		mov	r0, r5
+ 123 0020 FFF7FEFF 		bl	GPIO_WriteBit
+ 124              	.LVL6:
+  21:Hardware/BUZZER/buzzer.c ****     delay_us(500);
+ 125              		.loc 1 21 5 discriminator 3 view .LVU19
+ 126 0024 4FF4FA70 		mov	r0, #500
+ 127 0028 FFF7FEFF 		bl	delay_us
+ 128              	.LVL7:
+  17:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 129              		.loc 1 17 28 discriminator 3 view .LVU20
+  17:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 130              		.loc 1 17 29 is_stmt 0 discriminator 3 view .LVU21
+ 131 002c 0134     		adds	r4, r4, #1
+ 132              	.LVL8:
+  17:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 133              		.loc 1 17 29 discriminator 3 view .LVU22
+ 134 002e A4B2     		uxth	r4, r4
+ 135              	.LVL9:
+ 136              	.L6:
+  17:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 137              		.loc 1 17 19 is_stmt 1 discriminator 1 view .LVU23
+  17:Hardware/BUZZER/buzzer.c ****     GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 138              		.loc 1 17 3 is_stmt 0 discriminator 1 view .LVU24
+ 139 0030 C72C     		cmp	r4, #199
+ 140 0032 E8D9     		bls	.L7
+ 141              	.LBE2:
+  22:Hardware/BUZZER/buzzer.c ****   }
+  23:Hardware/BUZZER/buzzer.c **** }
+ 142              		.loc 1 23 1 view .LVU25
+ 143 0034 38BD     		pop	{r3, r4, r5, pc}
+ 144              	.LVL10:
+ 145              	.L10:
+ 146              		.loc 1 23 1 view .LVU26
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 4
+
+
+ 147 0036 00BF     		.align	2
+ 148              	.L9:
+ 149 0038 000C0140 		.word	1073810432
+ 150              		.cfi_endproc
+ 151              	.LFE30:
+ 153              		.section	.text.MIDI_Play,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	MIDI_Play
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	MIDI_Play:
+ 161              	.LFB31:
+  24:Hardware/BUZZER/buzzer.c **** 
+  25:Hardware/BUZZER/buzzer.c **** void MIDI_Play(void) {
+ 162              		.loc 1 25 22 is_stmt 1 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 64
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 167              	.LCFI4:
+ 168              		.cfi_def_cfa_offset 20
+ 169              		.cfi_offset 4, -20
+ 170              		.cfi_offset 5, -16
+ 171              		.cfi_offset 6, -12
+ 172              		.cfi_offset 7, -8
+ 173              		.cfi_offset 14, -4
+ 174 0002 91B0     		sub	sp, sp, #68
+ 175              	.LCFI5:
+ 176              		.cfi_def_cfa_offset 88
+  26:Hardware/BUZZER/buzzer.c ****   u16 music[] = {784, 200, 784, 200, 784, 200, 880, 400, 659, 200, 784,
+ 177              		.loc 1 26 3 view .LVU28
+ 178              		.loc 1 26 7 is_stmt 0 view .LVU29
+ 179 0004 6C46     		mov	r4, sp
+ 180 0006 224D     		ldr	r5, .L18
+ 181 0008 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 182 000a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 183 000c 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 184 000e 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 185 0010 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 186 0012 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 187 0014 95E80F00 		ldm	r5, {r0, r1, r2, r3}
+ 188 0018 84E80F00 		stm	r4, {r0, r1, r2, r3}
+  27:Hardware/BUZZER/buzzer.c ****                  200, 698, 200, 698, 400, 587, 200, 659, 200, 698, 400,
+  28:Hardware/BUZZER/buzzer.c ****                  587, 200, 988, 200, 880, 200, 988, 200, 784, 400};
+  29:Hardware/BUZZER/buzzer.c ****                  
+  30:Hardware/BUZZER/buzzer.c ****   for (u16 i = 0; i < 16; i++) {
+ 189              		.loc 1 30 3 is_stmt 1 view .LVU30
+ 190              	.LBB3:
+ 191              		.loc 1 30 8 view .LVU31
+ 192              	.LVL11:
+ 193              		.loc 1 30 12 is_stmt 0 view .LVU32
+ 194 001c 0026     		movs	r6, #0
+ 195              		.loc 1 30 3 view .LVU33
+ 196 001e 30E0     		b	.L12
+ 197              	.LVL12:
+ 198              	.L13:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 5
+
+
+ 199              	.LBB4:
+  31:Hardware/BUZZER/buzzer.c ****     for (u16 e = 0; e < music[i * 2] * music[i * 2 + 1] / 1000; e++) {
+  32:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 200              		.loc 1 32 7 is_stmt 1 discriminator 3 view .LVU34
+ 201 0020 1C4F     		ldr	r7, .L18+4
+ 202 0022 0022     		movs	r2, #0
+ 203 0024 2021     		movs	r1, #32
+ 204 0026 3846     		mov	r0, r7
+ 205 0028 FFF7FEFF 		bl	GPIO_WriteBit
+ 206              	.LVL13:
+  33:Hardware/BUZZER/buzzer.c ****       delay_us(500000 / music[i * 2]);
+ 207              		.loc 1 33 7 discriminator 3 view .LVU35
+ 208              		.loc 1 33 23 is_stmt 0 discriminator 3 view .LVU36
+ 209 002c 1A4B     		ldr	r3, .L18+8
+ 210 002e 93FBF5F5 		sdiv	r5, r3, r5
+ 211              		.loc 1 33 7 discriminator 3 view .LVU37
+ 212 0032 2846     		mov	r0, r5
+ 213 0034 FFF7FEFF 		bl	delay_us
+ 214              	.LVL14:
+  34:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)1);
+ 215              		.loc 1 34 7 is_stmt 1 discriminator 3 view .LVU38
+ 216 0038 0122     		movs	r2, #1
+ 217 003a 2021     		movs	r1, #32
+ 218 003c 3846     		mov	r0, r7
+ 219 003e FFF7FEFF 		bl	GPIO_WriteBit
+ 220              	.LVL15:
+  35:Hardware/BUZZER/buzzer.c ****       delay_us(500000 / music[i * 2]);
+ 221              		.loc 1 35 7 discriminator 3 view .LVU39
+ 222 0042 2846     		mov	r0, r5
+ 223 0044 FFF7FEFF 		bl	delay_us
+ 224              	.LVL16:
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 225              		.loc 1 31 65 discriminator 3 view .LVU40
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 226              		.loc 1 31 66 is_stmt 0 discriminator 3 view .LVU41
+ 227 0048 0134     		adds	r4, r4, #1
+ 228              	.LVL17:
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 229              		.loc 1 31 66 discriminator 3 view .LVU42
+ 230 004a A4B2     		uxth	r4, r4
+ 231              	.LVL18:
+ 232              	.L14:
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 233              		.loc 1 31 21 is_stmt 1 discriminator 1 view .LVU43
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 234              		.loc 1 31 33 is_stmt 0 discriminator 1 view .LVU44
+ 235 004c 7300     		lsls	r3, r6, #1
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 236              		.loc 1 31 30 discriminator 1 view .LVU45
+ 237 004e 10AA     		add	r2, sp, #64
+ 238 0050 02EB8602 		add	r2, r2, r6, lsl #2
+ 239 0054 32F8405C 		ldrh	r5, [r2, #-64]
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 240              		.loc 1 31 52 discriminator 1 view .LVU46
+ 241 0058 0133     		adds	r3, r3, #1
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 242              		.loc 1 31 45 discriminator 1 view .LVU47
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 6
+
+
+ 243 005a 10AA     		add	r2, sp, #64
+ 244 005c 02EB4303 		add	r3, r2, r3, lsl #1
+ 245 0060 33F8403C 		ldrh	r3, [r3, #-64]
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 246              		.loc 1 31 38 discriminator 1 view .LVU48
+ 247 0064 05FB03F3 		mul	r3, r5, r3
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 248              		.loc 1 31 57 discriminator 1 view .LVU49
+ 249 0068 0C4A     		ldr	r2, .L18+12
+ 250 006a 82FB0312 		smull	r1, r2, r2, r3
+ 251 006e DB17     		asrs	r3, r3, #31
+ 252 0070 C3EBA213 		rsb	r3, r3, r2, asr #6
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 253              		.loc 1 31 5 discriminator 1 view .LVU50
+ 254 0074 9C42     		cmp	r4, r3
+ 255 0076 D3DB     		blt	.L13
+ 256              	.LBE4:
+  36:Hardware/BUZZER/buzzer.c ****     }
+  37:Hardware/BUZZER/buzzer.c ****     delay_ms(100);
+ 257              		.loc 1 37 5 is_stmt 1 discriminator 2 view .LVU51
+ 258 0078 6420     		movs	r0, #100
+ 259 007a FFF7FEFF 		bl	delay_ms
+ 260              	.LVL19:
+  30:Hardware/BUZZER/buzzer.c ****     for (u16 e = 0; e < music[i * 2] * music[i * 2 + 1] / 1000; e++) {
+ 261              		.loc 1 30 27 discriminator 2 view .LVU52
+  30:Hardware/BUZZER/buzzer.c ****     for (u16 e = 0; e < music[i * 2] * music[i * 2 + 1] / 1000; e++) {
+ 262              		.loc 1 30 28 is_stmt 0 discriminator 2 view .LVU53
+ 263 007e 0136     		adds	r6, r6, #1
+ 264              	.LVL20:
+  30:Hardware/BUZZER/buzzer.c ****     for (u16 e = 0; e < music[i * 2] * music[i * 2 + 1] / 1000; e++) {
+ 265              		.loc 1 30 28 discriminator 2 view .LVU54
+ 266 0080 B6B2     		uxth	r6, r6
+ 267              	.LVL21:
+ 268              	.L12:
+  30:Hardware/BUZZER/buzzer.c ****     for (u16 e = 0; e < music[i * 2] * music[i * 2 + 1] / 1000; e++) {
+ 269              		.loc 1 30 19 is_stmt 1 discriminator 1 view .LVU55
+  30:Hardware/BUZZER/buzzer.c ****     for (u16 e = 0; e < music[i * 2] * music[i * 2 + 1] / 1000; e++) {
+ 270              		.loc 1 30 3 is_stmt 0 discriminator 1 view .LVU56
+ 271 0082 0F2E     		cmp	r6, #15
+ 272 0084 01D8     		bhi	.L17
+ 273              	.LBB5:
+  31:Hardware/BUZZER/buzzer.c ****       GPIO_WriteBit(BUZZERPORT, BUZZER, (BitAction)0);
+ 274              		.loc 1 31 14 view .LVU57
+ 275 0086 0024     		movs	r4, #0
+ 276 0088 E0E7     		b	.L14
+ 277              	.L17:
+ 278              	.LBE5:
+ 279              	.LBE3:
+  38:Hardware/BUZZER/buzzer.c ****   }
+  39:Hardware/BUZZER/buzzer.c **** }...
+ 280              		.loc 1 39 1 view .LVU58
+ 281 008a 11B0     		add	sp, sp, #68
+ 282              	.LCFI6:
+ 283              		.cfi_def_cfa_offset 20
+ 284              		@ sp needed
+ 285 008c F0BD     		pop	{r4, r5, r6, r7, pc}
+ 286              	.LVL22:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 7
+
+
+ 287              	.L19:
+ 288              		.loc 1 39 1 view .LVU59
+ 289 008e 00BF     		.align	2
+ 290              	.L18:
+ 291 0090 00000000 		.word	.LANCHOR0
+ 292 0094 000C0140 		.word	1073810432
+ 293 0098 20A10700 		.word	500000
+ 294 009c D34D6210 		.word	274877907
+ 295              		.cfi_endproc
+ 296              	.LFE31:
+ 298              		.section	.rodata
+ 299              		.align	2
+ 300              		.set	.LANCHOR0,. + 0
+ 301              	.LC0:
+ 302 0000 1003     		.short	784
+ 303 0002 C800     		.short	200
+ 304 0004 1003     		.short	784
+ 305 0006 C800     		.short	200
+ 306 0008 1003     		.short	784
+ 307 000a C800     		.short	200
+ 308 000c 7003     		.short	880
+ 309 000e 9001     		.short	400
+ 310 0010 9302     		.short	659
+ 311 0012 C800     		.short	200
+ 312 0014 1003     		.short	784
+ 313 0016 C800     		.short	200
+ 314 0018 BA02     		.short	698
+ 315 001a C800     		.short	200
+ 316 001c BA02     		.short	698
+ 317 001e 9001     		.short	400
+ 318 0020 4B02     		.short	587
+ 319 0022 C800     		.short	200
+ 320 0024 9302     		.short	659
+ 321 0026 C800     		.short	200
+ 322 0028 BA02     		.short	698
+ 323 002a 9001     		.short	400
+ 324 002c 4B02     		.short	587
+ 325 002e C800     		.short	200
+ 326 0030 DC03     		.short	988
+ 327 0032 C800     		.short	200
+ 328 0034 7003     		.short	880
+ 329 0036 C800     		.short	200
+ 330 0038 DC03     		.short	988
+ 331 003a C800     		.short	200
+ 332 003c 1003     		.short	784
+ 333 003e 9001     		.short	400
+ 334              		.text
+ 335              	.Letext0:
+ 336              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 337              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 338              		.file 4 "CMSIS/stm32f10x.h"
+ 339              		.file 5 "LIB/inc/stm32f10x_gpio.h"
+ 340              		.file 6 "BASIC/delay/delay.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s 			page 8
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 buzzer.c
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:18     .text.BUZZER_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:24     .text.BUZZER_Init:00000000 BUZZER_Init
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:74     .text.BUZZER_Init:00000030 $d
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:79     .text.BUZZER_BEEP1:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:85     .text.BUZZER_BEEP1:00000000 BUZZER_BEEP1
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:149    .text.BUZZER_BEEP1:00000038 $d
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:154    .text.MIDI_Play:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:160    .text.MIDI_Play:00000000 MIDI_Play
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:291    .text.MIDI_Play:00000090 $d
+C:\Users\Rick\AppData\Local\Temp\cc59ejTZ.s:299    .rodata:00000000 $d
+
+UNDEFINED SYMBOLS
+GPIO_Init
+GPIO_WriteBit
+delay_us
+delay_ms

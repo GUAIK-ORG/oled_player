@@ -1,0 +1,778 @@
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"TM1640.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.TM1640_start,"ax",%progbits
+  18              		.align	1
+  19              		.global	TM1640_start
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	TM1640_start:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/TM1640/TM1640.c"
+   1:Hardware/TM1640/TM1640.c **** #include "TM1640.h"
+   2:Hardware/TM1640/TM1640.c **** 
+   3:Hardware/TM1640/TM1640.c **** #include "delay/delay.h"
+   4:Hardware/TM1640/TM1640.c **** 
+   5:Hardware/TM1640/TM1640.c **** #define DEL 1  //宏定义 通信速率（默认为1，如不能通信可加大数值）
+   6:Hardware/TM1640/TM1640.c **** 
+   7:Hardware/TM1640/TM1640.c **** //地址模式的设置
+   8:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_ADD  0x40   //宏定义	自动加一模式
+   9:Hardware/TM1640/TM1640.c **** #define TM1640MEDO_ADD 0x44  //宏定义 固定地址模式（推荐）
+  10:Hardware/TM1640/TM1640.c **** 
+  11:Hardware/TM1640/TM1640.c **** //显示亮度的设置
+  12:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_DISPLAY  0x88   //宏定义 亮度  最小
+  13:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_DISPLAY  0x89   //宏定义 亮度
+  14:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_DISPLAY  0x8a   //宏定义 亮度
+  15:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_DISPLAY  0x8b   //宏定义 亮度
+  16:Hardware/TM1640/TM1640.c **** #define TM1640MEDO_DISPLAY 0x8c  //宏定义 亮度（推荐）
+  17:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_DISPLAY  0x8d   //宏定义 亮度
+  18:Hardware/TM1640/TM1640.c **** //#define TM1640MEDO_DISPLAY  0x8f   //宏定义 亮度 最大
+  19:Hardware/TM1640/TM1640.c **** 
+  20:Hardware/TM1640/TM1640.c **** #define TM1640MEDO_DISPLAY_OFF 0x80  //宏定义 亮度 关
+  21:Hardware/TM1640/TM1640.c **** 
+  22:Hardware/TM1640/TM1640.c **** void TM1640_start() {  //通信时序 启始（基础GPIO操作）（低层）
+  27              		.loc 1 22 21 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  23:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(1));  //接口输出高电平1
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 2
+
+
+  36              		.loc 1 23 3 view .LVU1
+  37 0002 114C     		ldr	r4, .L3
+  38 0004 0122     		movs	r2, #1
+  39 0006 4FF48051 		mov	r1, #4096
+  40 000a 2046     		mov	r0, r4
+  41 000c FFF7FEFF 		bl	GPIO_WriteBit
+  42              	.LVL0:
+  24:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK,
+  43              		.loc 1 24 3 view .LVU2
+  44 0010 0122     		movs	r2, #1
+  45 0012 4FF40061 		mov	r1, #2048
+  46 0016 2046     		mov	r0, r4
+  47 0018 FFF7FEFF 		bl	GPIO_WriteBit
+  48              	.LVL1:
+  25:Hardware/TM1640/TM1640.c ****                 (BitAction)(1));  //接口输出高电平1
+  26:Hardware/TM1640/TM1640.c ****   delay_us(DEL);
+  49              		.loc 1 26 3 view .LVU3
+  50 001c 0120     		movs	r0, #1
+  51 001e FFF7FEFF 		bl	delay_us
+  52              	.LVL2:
+  27:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(0));  //接口输出0
+  53              		.loc 1 27 3 view .LVU4
+  54 0022 0022     		movs	r2, #0
+  55 0024 4FF48051 		mov	r1, #4096
+  56 0028 2046     		mov	r0, r4
+  57 002a FFF7FEFF 		bl	GPIO_WriteBit
+  58              	.LVL3:
+  28:Hardware/TM1640/TM1640.c ****   delay_us(DEL);
+  59              		.loc 1 28 3 view .LVU5
+  60 002e 0120     		movs	r0, #1
+  61 0030 FFF7FEFF 		bl	delay_us
+  62              	.LVL4:
+  29:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+  63              		.loc 1 29 3 view .LVU6
+  64 0034 0022     		movs	r2, #0
+  65 0036 4FF40061 		mov	r1, #2048
+  66 003a 2046     		mov	r0, r4
+  67 003c FFF7FEFF 		bl	GPIO_WriteBit
+  68              	.LVL5:
+  30:Hardware/TM1640/TM1640.c ****   delay_us(DEL);
+  69              		.loc 1 30 3 view .LVU7
+  70 0040 0120     		movs	r0, #1
+  71 0042 FFF7FEFF 		bl	delay_us
+  72              	.LVL6:
+  31:Hardware/TM1640/TM1640.c **** }
+  73              		.loc 1 31 1 is_stmt 0 view .LVU8
+  74 0046 10BD     		pop	{r4, pc}
+  75              	.L4:
+  76              		.align	2
+  77              	.L3:
+  78 0048 00080140 		.word	1073809408
+  79              		.cfi_endproc
+  80              	.LFE29:
+  82              		.section	.text.TM1640_stop,"ax",%progbits
+  83              		.align	1
+  84              		.global	TM1640_stop
+  85              		.syntax unified
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 3
+
+
+  86              		.thumb
+  87              		.thumb_func
+  89              	TM1640_stop:
+  90              	.LFB30:
+  32:Hardware/TM1640/TM1640.c **** void TM1640_stop() {  //通信时序 结束（基础GPIO操作）（低层）
+  91              		.loc 1 32 20 is_stmt 1 view -0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 0
+  94              		@ frame_needed = 0, uses_anonymous_args = 0
+  95 0000 10B5     		push	{r4, lr}
+  96              	.LCFI1:
+  97              		.cfi_def_cfa_offset 8
+  98              		.cfi_offset 4, -8
+  99              		.cfi_offset 14, -4
+  33:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(0));  //接口输出0
+ 100              		.loc 1 33 3 view .LVU10
+ 101 0002 0D4C     		ldr	r4, .L7
+ 102 0004 0022     		movs	r2, #0
+ 103 0006 4FF48051 		mov	r1, #4096
+ 104 000a 2046     		mov	r0, r4
+ 105 000c FFF7FEFF 		bl	GPIO_WriteBit
+ 106              	.LVL7:
+  34:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK,
+ 107              		.loc 1 34 3 view .LVU11
+ 108 0010 0122     		movs	r2, #1
+ 109 0012 4FF40061 		mov	r1, #2048
+ 110 0016 2046     		mov	r0, r4
+ 111 0018 FFF7FEFF 		bl	GPIO_WriteBit
+ 112              	.LVL8:
+  35:Hardware/TM1640/TM1640.c ****                 (BitAction)(1));  //接口输出高电平1
+  36:Hardware/TM1640/TM1640.c ****   delay_us(DEL);
+ 113              		.loc 1 36 3 view .LVU12
+ 114 001c 0120     		movs	r0, #1
+ 115 001e FFF7FEFF 		bl	delay_us
+ 116              	.LVL9:
+  37:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(1));  //接口输出高电平1
+ 117              		.loc 1 37 3 view .LVU13
+ 118 0022 0122     		movs	r2, #1
+ 119 0024 4FF48051 		mov	r1, #4096
+ 120 0028 2046     		mov	r0, r4
+ 121 002a FFF7FEFF 		bl	GPIO_WriteBit
+ 122              	.LVL10:
+  38:Hardware/TM1640/TM1640.c ****   delay_us(DEL);
+ 123              		.loc 1 38 3 view .LVU14
+ 124 002e 0120     		movs	r0, #1
+ 125 0030 FFF7FEFF 		bl	delay_us
+ 126              	.LVL11:
+  39:Hardware/TM1640/TM1640.c **** }
+ 127              		.loc 1 39 1 is_stmt 0 view .LVU15
+ 128 0034 10BD     		pop	{r4, pc}
+ 129              	.L8:
+ 130 0036 00BF     		.align	2
+ 131              	.L7:
+ 132 0038 00080140 		.word	1073809408
+ 133              		.cfi_endproc
+ 134              	.LFE30:
+ 136              		.section	.text.TM1640_write,"ax",%progbits
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 4
+
+
+ 137              		.align	1
+ 138              		.global	TM1640_write
+ 139              		.syntax unified
+ 140              		.thumb
+ 141              		.thumb_func
+ 143              	TM1640_write:
+ 144              	.LVL12:
+ 145              	.LFB31:
+  40:Hardware/TM1640/TM1640.c **** void TM1640_write(u8 date) {  //写数据（低层）
+ 146              		.loc 1 40 28 is_stmt 1 view -0
+ 147              		.cfi_startproc
+ 148              		@ args = 0, pretend = 0, frame = 0
+ 149              		@ frame_needed = 0, uses_anonymous_args = 0
+ 150              		.loc 1 40 28 is_stmt 0 view .LVU17
+ 151 0000 38B5     		push	{r3, r4, r5, lr}
+ 152              	.LCFI2:
+ 153              		.cfi_def_cfa_offset 16
+ 154              		.cfi_offset 3, -16
+ 155              		.cfi_offset 4, -12
+ 156              		.cfi_offset 5, -8
+ 157              		.cfi_offset 14, -4
+ 158 0002 0546     		mov	r5, r0
+  41:Hardware/TM1640/TM1640.c ****   u8 i;
+ 159              		.loc 1 41 3 is_stmt 1 view .LVU18
+  42:Hardware/TM1640/TM1640.c ****   u8 aa;
+ 160              		.loc 1 42 3 view .LVU19
+  43:Hardware/TM1640/TM1640.c ****   aa = date;
+ 161              		.loc 1 43 3 view .LVU20
+ 162              	.LVL13:
+  44:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(0));   //接口输出0
+ 163              		.loc 1 44 3 view .LVU21
+ 164 0004 244C     		ldr	r4, .L16
+ 165 0006 0022     		movs	r2, #0
+ 166 0008 4FF48051 		mov	r1, #4096
+ 167 000c 2046     		mov	r0, r4
+ 168              	.LVL14:
+ 169              		.loc 1 44 3 is_stmt 0 view .LVU22
+ 170 000e FFF7FEFF 		bl	GPIO_WriteBit
+ 171              	.LVL15:
+  45:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 172              		.loc 1 45 3 is_stmt 1 view .LVU23
+ 173 0012 0022     		movs	r2, #0
+ 174 0014 4FF40061 		mov	r1, #2048
+ 175 0018 2046     		mov	r0, r4
+ 176 001a FFF7FEFF 		bl	GPIO_WriteBit
+ 177              	.LVL16:
+  46:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 8; i++) {
+ 178              		.loc 1 46 3 view .LVU24
+ 179              		.loc 1 46 10 is_stmt 0 view .LVU25
+ 180 001e 0024     		movs	r4, #0
+ 181              		.loc 1 46 3 view .LVU26
+ 182 0020 14E0     		b	.L10
+ 183              	.LVL17:
+ 184              	.L11:
+  47:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+  48:Hardware/TM1640/TM1640.c ****     delay_us(DEL);
+  49:Hardware/TM1640/TM1640.c **** 
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 5
+
+
+  50:Hardware/TM1640/TM1640.c ****     if (aa & 0x01) {
+  51:Hardware/TM1640/TM1640.c ****       GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN,
+  52:Hardware/TM1640/TM1640.c ****                     (BitAction)(1));  //接口输出高电平1
+  53:Hardware/TM1640/TM1640.c ****       delay_us(DEL);
+  54:Hardware/TM1640/TM1640.c ****     } else {
+  55:Hardware/TM1640/TM1640.c ****       GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(0));  //接口输出0
+ 185              		.loc 1 55 7 is_stmt 1 view .LVU27
+ 186 0022 0022     		movs	r2, #0
+ 187 0024 4FF48051 		mov	r1, #4096
+ 188 0028 1B48     		ldr	r0, .L16
+ 189 002a FFF7FEFF 		bl	GPIO_WriteBit
+ 190              	.LVL18:
+  56:Hardware/TM1640/TM1640.c ****       delay_us(DEL);
+ 191              		.loc 1 56 7 view .LVU28
+ 192 002e 0120     		movs	r0, #1
+ 193 0030 FFF7FEFF 		bl	delay_us
+ 194              	.LVL19:
+ 195              	.L12:
+  57:Hardware/TM1640/TM1640.c ****     }
+  58:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK,
+ 196              		.loc 1 58 5 discriminator 2 view .LVU29
+ 197 0034 0122     		movs	r2, #1
+ 198 0036 4FF40061 		mov	r1, #2048
+ 199 003a 1748     		ldr	r0, .L16
+ 200 003c FFF7FEFF 		bl	GPIO_WriteBit
+ 201              	.LVL20:
+  59:Hardware/TM1640/TM1640.c ****                   (BitAction)(1));  //接口输出高电平1
+  60:Hardware/TM1640/TM1640.c ****     delay_us(DEL);
+ 202              		.loc 1 60 5 discriminator 2 view .LVU30
+ 203 0040 0120     		movs	r0, #1
+ 204 0042 FFF7FEFF 		bl	delay_us
+ 205              	.LVL21:
+  61:Hardware/TM1640/TM1640.c ****     aa = aa >> 1;
+ 206              		.loc 1 61 5 discriminator 2 view .LVU31
+ 207              		.loc 1 61 8 is_stmt 0 discriminator 2 view .LVU32
+ 208 0046 6D08     		lsrs	r5, r5, #1
+ 209              	.LVL22:
+  46:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 210              		.loc 1 46 22 is_stmt 1 discriminator 2 view .LVU33
+  46:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 211              		.loc 1 46 23 is_stmt 0 discriminator 2 view .LVU34
+ 212 0048 0134     		adds	r4, r4, #1
+ 213              	.LVL23:
+  46:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 214              		.loc 1 46 23 discriminator 2 view .LVU35
+ 215 004a E4B2     		uxtb	r4, r4
+ 216              	.LVL24:
+ 217              	.L10:
+  46:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 218              		.loc 1 46 15 is_stmt 1 discriminator 1 view .LVU36
+  46:Hardware/TM1640/TM1640.c ****     GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 219              		.loc 1 46 3 is_stmt 0 discriminator 1 view .LVU37
+ 220 004c 072C     		cmp	r4, #7
+ 221 004e 15D8     		bhi	.L15
+  47:Hardware/TM1640/TM1640.c ****     delay_us(DEL);
+ 222              		.loc 1 47 5 is_stmt 1 view .LVU38
+ 223 0050 0022     		movs	r2, #0
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 6
+
+
+ 224 0052 4FF40061 		mov	r1, #2048
+ 225 0056 1048     		ldr	r0, .L16
+ 226 0058 FFF7FEFF 		bl	GPIO_WriteBit
+ 227              	.LVL25:
+  48:Hardware/TM1640/TM1640.c **** 
+ 228              		.loc 1 48 5 view .LVU39
+ 229 005c 0120     		movs	r0, #1
+ 230 005e FFF7FEFF 		bl	delay_us
+ 231              	.LVL26:
+  50:Hardware/TM1640/TM1640.c ****       GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN,
+ 232              		.loc 1 50 5 view .LVU40
+  50:Hardware/TM1640/TM1640.c ****       GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN,
+ 233              		.loc 1 50 8 is_stmt 0 view .LVU41
+ 234 0062 15F0010F 		tst	r5, #1
+ 235 0066 DCD0     		beq	.L11
+  51:Hardware/TM1640/TM1640.c ****                     (BitAction)(1));  //接口输出高电平1
+ 236              		.loc 1 51 7 is_stmt 1 view .LVU42
+ 237 0068 0122     		movs	r2, #1
+ 238 006a 4FF48051 		mov	r1, #4096
+ 239 006e 0A48     		ldr	r0, .L16
+ 240 0070 FFF7FEFF 		bl	GPIO_WriteBit
+ 241              	.LVL27:
+  53:Hardware/TM1640/TM1640.c ****     } else {
+ 242              		.loc 1 53 7 view .LVU43
+ 243 0074 0120     		movs	r0, #1
+ 244 0076 FFF7FEFF 		bl	delay_us
+ 245              	.LVL28:
+ 246 007a DBE7     		b	.L12
+ 247              	.L15:
+  62:Hardware/TM1640/TM1640.c ****   }
+  63:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(0));   //接口输出0
+ 248              		.loc 1 63 3 view .LVU44
+ 249 007c 064C     		ldr	r4, .L16
+ 250              	.LVL29:
+ 251              		.loc 1 63 3 is_stmt 0 view .LVU45
+ 252 007e 0022     		movs	r2, #0
+ 253 0080 4FF48051 		mov	r1, #4096
+ 254 0084 2046     		mov	r0, r4
+ 255 0086 FFF7FEFF 		bl	GPIO_WriteBit
+ 256              	.LVL30:
+  64:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK, (BitAction)(0));  //接口输出0
+ 257              		.loc 1 64 3 is_stmt 1 view .LVU46
+ 258 008a 0022     		movs	r2, #0
+ 259 008c 4FF40061 		mov	r1, #2048
+ 260 0090 2046     		mov	r0, r4
+ 261 0092 FFF7FEFF 		bl	GPIO_WriteBit
+ 262              	.LVL31:
+  65:Hardware/TM1640/TM1640.c **** }
+ 263              		.loc 1 65 1 is_stmt 0 view .LVU47
+ 264 0096 38BD     		pop	{r3, r4, r5, pc}
+ 265              	.LVL32:
+ 266              	.L17:
+ 267              		.loc 1 65 1 view .LVU48
+ 268              		.align	2
+ 269              	.L16:
+ 270 0098 00080140 		.word	1073809408
+ 271              		.cfi_endproc
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 7
+
+
+ 272              	.LFE31:
+ 274              		.section	.text.TM1640_Init,"ax",%progbits
+ 275              		.align	1
+ 276              		.global	TM1640_Init
+ 277              		.syntax unified
+ 278              		.thumb
+ 279              		.thumb_func
+ 281              	TM1640_Init:
+ 282              	.LFB32:
+  66:Hardware/TM1640/TM1640.c **** 
+  67:Hardware/TM1640/TM1640.c **** void TM1640_Init(void) {  // TM1640接口初始化
+ 283              		.loc 1 67 24 is_stmt 1 view -0
+ 284              		.cfi_startproc
+ 285              		@ args = 0, pretend = 0, frame = 8
+ 286              		@ frame_needed = 0, uses_anonymous_args = 0
+ 287 0000 10B5     		push	{r4, lr}
+ 288              	.LCFI3:
+ 289              		.cfi_def_cfa_offset 8
+ 290              		.cfi_offset 4, -8
+ 291              		.cfi_offset 14, -4
+ 292 0002 82B0     		sub	sp, sp, #8
+ 293              	.LCFI4:
+ 294              		.cfi_def_cfa_offset 16
+  68:Hardware/TM1640/TM1640.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+ 295              		.loc 1 68 3 view .LVU50
+  69:Hardware/TM1640/TM1640.c ****   RCC_APB2PeriphClockCmd(
+ 296              		.loc 1 69 3 view .LVU51
+ 297 0004 0121     		movs	r1, #1
+ 298 0006 1C20     		movs	r0, #28
+ 299 0008 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 300              	.LVL33:
+  70:Hardware/TM1640/TM1640.c ****       RCC_APB2Periph_GPIOA | RCC_APB2Periph_GPIOB | RCC_APB2Periph_GPIOC,
+  71:Hardware/TM1640/TM1640.c ****       ENABLE);
+  72:Hardware/TM1640/TM1640.c ****   GPIO_InitStructure.GPIO_Pin =
+ 301              		.loc 1 72 3 view .LVU52
+ 302              		.loc 1 72 31 is_stmt 0 view .LVU53
+ 303 000c 4FF4C053 		mov	r3, #6144
+ 304 0010 ADF80430 		strh	r3, [sp, #4]	@ movhi
+  73:Hardware/TM1640/TM1640.c ****       TM1640_DIN | TM1640_SCLK;  //选择端口号（0~15或all）
+  74:Hardware/TM1640/TM1640.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  //选择IO接口工作方式
+ 305              		.loc 1 74 3 is_stmt 1 view .LVU54
+ 306              		.loc 1 74 32 is_stmt 0 view .LVU55
+ 307 0014 1023     		movs	r3, #16
+ 308 0016 8DF80730 		strb	r3, [sp, #7]
+  75:Hardware/TM1640/TM1640.c ****   GPIO_InitStructure.GPIO_Speed =
+ 309              		.loc 1 75 3 is_stmt 1 view .LVU56
+ 310              		.loc 1 75 33 is_stmt 0 view .LVU57
+ 311 001a 0323     		movs	r3, #3
+ 312 001c 8DF80630 		strb	r3, [sp, #6]
+  76:Hardware/TM1640/TM1640.c ****       GPIO_Speed_50MHz;  //设置IO接口速度（2/10/50MHz）
+  77:Hardware/TM1640/TM1640.c ****   GPIO_Init(TM1640_GPIOPORT, &GPIO_InitStructure);
+ 313              		.loc 1 77 3 is_stmt 1 view .LVU58
+ 314 0020 104C     		ldr	r4, .L20
+ 315 0022 01A9     		add	r1, sp, #4
+ 316 0024 2046     		mov	r0, r4
+ 317 0026 FFF7FEFF 		bl	GPIO_Init
+ 318              	.LVL34:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 8
+
+
+  78:Hardware/TM1640/TM1640.c **** 
+  79:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_DIN, (BitAction)(1));  //接口输出高电平1
+ 319              		.loc 1 79 3 view .LVU59
+ 320 002a 0122     		movs	r2, #1
+ 321 002c 4FF48051 		mov	r1, #4096
+ 322 0030 2046     		mov	r0, r4
+ 323 0032 FFF7FEFF 		bl	GPIO_WriteBit
+ 324              	.LVL35:
+  80:Hardware/TM1640/TM1640.c ****   GPIO_WriteBit(TM1640_GPIOPORT, TM1640_SCLK,
+ 325              		.loc 1 80 3 view .LVU60
+ 326 0036 0122     		movs	r2, #1
+ 327 0038 4FF40061 		mov	r1, #2048
+ 328 003c 2046     		mov	r0, r4
+ 329 003e FFF7FEFF 		bl	GPIO_WriteBit
+ 330              	.LVL36:
+  81:Hardware/TM1640/TM1640.c ****                 (BitAction)(1));  //接口输出高电平1
+  82:Hardware/TM1640/TM1640.c ****   TM1640_start();
+ 331              		.loc 1 82 3 view .LVU61
+ 332 0042 FFF7FEFF 		bl	TM1640_start
+ 333              	.LVL37:
+  83:Hardware/TM1640/TM1640.c ****   TM1640_write(
+ 334              		.loc 1 83 3 view .LVU62
+ 335 0046 4420     		movs	r0, #68
+ 336 0048 FFF7FEFF 		bl	TM1640_write
+ 337              	.LVL38:
+  84:Hardware/TM1640/TM1640.c ****       TM1640MEDO_ADD);  //设置数据，0x40,0x44分别对应地址自动加一和固定地址模�
+  85:Hardware/TM1640/TM1640.c ****   TM1640_stop();
+ 338              		.loc 1 85 3 view .LVU63
+ 339 004c FFF7FEFF 		bl	TM1640_stop
+ 340              	.LVL39:
+  86:Hardware/TM1640/TM1640.c ****   TM1640_start();
+ 341              		.loc 1 86 3 view .LVU64
+ 342 0050 FFF7FEFF 		bl	TM1640_start
+ 343              	.LVL40:
+  87:Hardware/TM1640/TM1640.c ****   TM1640_write(
+ 344              		.loc 1 87 3 view .LVU65
+ 345 0054 8C20     		movs	r0, #140
+ 346 0056 FFF7FEFF 		bl	TM1640_write
+ 347              	.LVL41:
+  88:Hardware/TM1640/TM1640.c ****       TM1640MEDO_DISPLAY);  //控制显示，开显示，0x88,  0x89,  0x8a,  0x8b, 0x8c,
+  89:Hardware/TM1640/TM1640.c ****                             // 0x8d,  0x8e,  0x8f分别对应脉冲宽度为:
+  90:Hardware/TM1640/TM1640.c ****                             //------------------1/16,  2/16,  4/16,  10/16,
+  91:Hardware/TM1640/TM1640.c ****                             // 11/16, 12/16, 13/16, 14/16	 //0x80关显示
+  92:Hardware/TM1640/TM1640.c ****   TM1640_stop();
+ 348              		.loc 1 92 3 view .LVU66
+ 349 005a FFF7FEFF 		bl	TM1640_stop
+ 350              	.LVL42:
+  93:Hardware/TM1640/TM1640.c **** }
+ 351              		.loc 1 93 1 is_stmt 0 view .LVU67
+ 352 005e 02B0     		add	sp, sp, #8
+ 353              	.LCFI5:
+ 354              		.cfi_def_cfa_offset 8
+ 355              		@ sp needed
+ 356 0060 10BD     		pop	{r4, pc}
+ 357              	.L21:
+ 358 0062 00BF     		.align	2
+ 359              	.L20:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 9
+
+
+ 360 0064 00080140 		.word	1073809408
+ 361              		.cfi_endproc
+ 362              	.LFE32:
+ 364              		.section	.text.TM1640_led,"ax",%progbits
+ 365              		.align	1
+ 366              		.global	TM1640_led
+ 367              		.syntax unified
+ 368              		.thumb
+ 369              		.thumb_func
+ 371              	TM1640_led:
+ 372              	.LVL43:
+ 373              	.LFB33:
+  94:Hardware/TM1640/TM1640.c **** void TM1640_led(u8 date) {  //固定地址模式的显示输出8个LED控制
+ 374              		.loc 1 94 26 is_stmt 1 view -0
+ 375              		.cfi_startproc
+ 376              		@ args = 0, pretend = 0, frame = 0
+ 377              		@ frame_needed = 0, uses_anonymous_args = 0
+ 378              		.loc 1 94 26 is_stmt 0 view .LVU69
+ 379 0000 10B5     		push	{r4, lr}
+ 380              	.LCFI6:
+ 381              		.cfi_def_cfa_offset 8
+ 382              		.cfi_offset 4, -8
+ 383              		.cfi_offset 14, -4
+ 384 0002 0446     		mov	r4, r0
+  95:Hardware/TM1640/TM1640.c ****   TM1640_start();
+ 385              		.loc 1 95 3 is_stmt 1 view .LVU70
+ 386 0004 FFF7FEFF 		bl	TM1640_start
+ 387              	.LVL44:
+  96:Hardware/TM1640/TM1640.c ****   TM1640_write(TM1640_LEDPORT);  //传显示数据对应的地址
+ 388              		.loc 1 96 3 view .LVU71
+ 389 0008 C820     		movs	r0, #200
+ 390 000a FFF7FEFF 		bl	TM1640_write
+ 391              	.LVL45:
+  97:Hardware/TM1640/TM1640.c ****   TM1640_write(date);            //传1BYTE显示数据
+ 392              		.loc 1 97 3 view .LVU72
+ 393 000e 2046     		mov	r0, r4
+ 394 0010 FFF7FEFF 		bl	TM1640_write
+ 395              	.LVL46:
+  98:Hardware/TM1640/TM1640.c ****   TM1640_stop();
+ 396              		.loc 1 98 3 view .LVU73
+ 397 0014 FFF7FEFF 		bl	TM1640_stop
+ 398              	.LVL47:
+  99:Hardware/TM1640/TM1640.c **** }
+ 399              		.loc 1 99 1 is_stmt 0 view .LVU74
+ 400 0018 10BD     		pop	{r4, pc}
+ 401              		.cfi_endproc
+ 402              	.LFE33:
+ 404              		.section	.rodata.TM1640_display.str1.4,"aMS",%progbits,1
+ 405              		.align	2
+ 406              	.LC0:
+ 407 0000 3F065B4F 		.ascii	"?\006[Ofm}\007\177o\277\206\333\317\346\355\375\207"
+ 407      666D7D07 
+ 407      7F6FBF86 
+ 407      DBCFE6ED 
+ 407      FD87
+ 408 0012 FFEF00   		.ascii	"\377\357\000"
+ 409              		.section	.text.TM1640_display,"ax",%progbits
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 10
+
+
+ 410              		.align	1
+ 411              		.global	TM1640_display
+ 412              		.syntax unified
+ 413              		.thumb
+ 414              		.thumb_func
+ 416              	TM1640_display:
+ 417              	.LVL48:
+ 418              	.LFB34:
+ 100:Hardware/TM1640/TM1640.c **** void TM1640_display(u8 address, u8 date) {  //固定地址模式的显示输出
+ 419              		.loc 1 100 42 is_stmt 1 view -0
+ 420              		.cfi_startproc
+ 421              		@ args = 0, pretend = 0, frame = 24
+ 422              		@ frame_needed = 0, uses_anonymous_args = 0
+ 423              		.loc 1 100 42 is_stmt 0 view .LVU76
+ 424 0000 70B5     		push	{r4, r5, r6, lr}
+ 425              	.LCFI7:
+ 426              		.cfi_def_cfa_offset 16
+ 427              		.cfi_offset 4, -16
+ 428              		.cfi_offset 5, -12
+ 429              		.cfi_offset 6, -8
+ 430              		.cfi_offset 14, -4
+ 431 0002 86B0     		sub	sp, sp, #24
+ 432              	.LCFI8:
+ 433              		.cfi_def_cfa_offset 40
+ 434 0004 0646     		mov	r6, r0
+ 435 0006 0D46     		mov	r5, r1
+ 101:Hardware/TM1640/TM1640.c ****   const u8
+ 436              		.loc 1 101 3 is_stmt 1 view .LVU77
+ 102:Hardware/TM1640/TM1640.c ****       buff[21] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
+ 437              		.loc 1 102 7 is_stmt 0 view .LVU78
+ 438 0008 EC46     		mov	ip, sp
+ 439 000a 0E4C     		ldr	r4, .L26
+ 440 000c 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 441              	.LVL49:
+ 442              		.loc 1 102 7 view .LVU79
+ 443 000e ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 444 0012 94E80300 		ldm	r4, {r0, r1}
+ 445 0016 4CF8040B 		str	r0, [ip], #4
+ 446 001a 8CF80010 		strb	r1, [ip]
+ 103:Hardware/TM1640/TM1640.c ****                   0x7f, 0x6f, 0xbf, 0x86, 0xdb, 0xcf, 0xe6, 0xed,
+ 104:Hardware/TM1640/TM1640.c ****                   0xfd, 0x87, 0xff, 0xef, 0x00};  //数字0~9及0~9加点显示段码表
+ 105:Hardware/TM1640/TM1640.c ****   //---------------   0    1    2    3    4    5    6    7    8    9
+ 106:Hardware/TM1640/TM1640.c ****   // 0.   1.   2.   3.   4.   5.   6.   7.   8.   9.   无
+ 107:Hardware/TM1640/TM1640.c ****   TM1640_start();
+ 447              		.loc 1 107 3 is_stmt 1 view .LVU80
+ 448 001e FFF7FEFF 		bl	TM1640_start
+ 449              	.LVL50:
+ 108:Hardware/TM1640/TM1640.c ****   TM1640_write(0xC0 + address);  //传显示数据对应的地址
+ 450              		.loc 1 108 3 view .LVU81
+ 451 0022 A6F14000 		sub	r0, r6, #64
+ 452 0026 C0B2     		uxtb	r0, r0
+ 453 0028 FFF7FEFF 		bl	TM1640_write
+ 454              	.LVL51:
+ 109:Hardware/TM1640/TM1640.c ****   TM1640_write(buff[date]);      //传1BYTE显示数据
+ 455              		.loc 1 109 3 view .LVU82
+ 456 002c 05F11803 		add	r3, r5, #24
+ 457 0030 0DEB0305 		add	r5, sp, r3
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 11
+
+
+ 458 0034 15F8180C 		ldrb	r0, [r5, #-24]	@ zero_extendqisi2
+ 459 0038 FFF7FEFF 		bl	TM1640_write
+ 460              	.LVL52:
+ 110:Hardware/TM1640/TM1640.c ****   TM1640_stop();
+ 461              		.loc 1 110 3 view .LVU83
+ 462 003c FFF7FEFF 		bl	TM1640_stop
+ 463              	.LVL53:
+ 111:Hardware/TM1640/TM1640.c **** }
+ 464              		.loc 1 111 1 is_stmt 0 view .LVU84
+ 465 0040 06B0     		add	sp, sp, #24
+ 466              	.LCFI9:
+ 467              		.cfi_def_cfa_offset 16
+ 468              		@ sp needed
+ 469 0042 70BD     		pop	{r4, r5, r6, pc}
+ 470              	.L27:
+ 471              		.align	2
+ 472              	.L26:
+ 473 0044 00000000 		.word	.LC0
+ 474              		.cfi_endproc
+ 475              	.LFE34:
+ 477              		.section	.text.TM1640_display_add,"ax",%progbits
+ 478              		.align	1
+ 479              		.global	TM1640_display_add
+ 480              		.syntax unified
+ 481              		.thumb
+ 482              		.thumb_func
+ 484              	TM1640_display_add:
+ 485              	.LVL54:
+ 486              	.LFB35:
+ 112:Hardware/TM1640/TM1640.c **** void TM1640_display_add(u8 address, u8 date) {  //地址自动加一模式的显示输出
+ 487              		.loc 1 112 46 is_stmt 1 view -0
+ 488              		.cfi_startproc
+ 489              		@ args = 0, pretend = 0, frame = 24
+ 490              		@ frame_needed = 0, uses_anonymous_args = 0
+ 491              		.loc 1 112 46 is_stmt 0 view .LVU86
+ 492 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 493              	.LCFI10:
+ 494              		.cfi_def_cfa_offset 20
+ 495              		.cfi_offset 4, -20
+ 496              		.cfi_offset 5, -16
+ 497              		.cfi_offset 6, -12
+ 498              		.cfi_offset 7, -8
+ 499              		.cfi_offset 14, -4
+ 500 0002 87B0     		sub	sp, sp, #28
+ 501              	.LCFI11:
+ 502              		.cfi_def_cfa_offset 48
+ 503 0004 0746     		mov	r7, r0
+ 504 0006 0D46     		mov	r5, r1
+ 113:Hardware/TM1640/TM1640.c ****   u8 i;
+ 505              		.loc 1 113 3 is_stmt 1 view .LVU87
+ 114:Hardware/TM1640/TM1640.c ****   const u8
+ 506              		.loc 1 114 3 view .LVU88
+ 115:Hardware/TM1640/TM1640.c ****       buff[21] = {0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07,
+ 507              		.loc 1 115 7 is_stmt 0 view .LVU89
+ 508 0008 6C46     		mov	r4, sp
+ 509 000a 104E     		ldr	r6, .L32
+ 510 000c 0FCE     		ldmia	r6!, {r0, r1, r2, r3}
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 12
+
+
+ 511              	.LVL55:
+ 512              		.loc 1 115 7 view .LVU90
+ 513 000e 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 514 0010 96E80300 		ldm	r6, {r0, r1}
+ 515 0014 44F8040B 		str	r0, [r4], #4
+ 516 0018 2170     		strb	r1, [r4]
+ 116:Hardware/TM1640/TM1640.c ****                   0x7f, 0x6f, 0xbf, 0x86, 0xdb, 0xcf, 0xe6, 0xed,
+ 117:Hardware/TM1640/TM1640.c ****                   0xfd, 0x87, 0xff, 0xef, 0x00};  //数字0~9及0~9加点显示段码表
+ 118:Hardware/TM1640/TM1640.c ****   //---------------   0    1    2    3    4    5    6    7    8    9
+ 119:Hardware/TM1640/TM1640.c ****   // 0.   1.   2.   3.   4.   5.   6.   7.   8.   9.   无
+ 120:Hardware/TM1640/TM1640.c ****   TM1640_start();
+ 517              		.loc 1 120 3 is_stmt 1 view .LVU91
+ 518 001a FFF7FEFF 		bl	TM1640_start
+ 519              	.LVL56:
+ 121:Hardware/TM1640/TM1640.c ****   TM1640_write(0xC0 + address);  //设置起始地址
+ 520              		.loc 1 121 3 view .LVU92
+ 521 001e A7F14000 		sub	r0, r7, #64
+ 522 0022 C0B2     		uxtb	r0, r0
+ 523 0024 FFF7FEFF 		bl	TM1640_write
+ 524              	.LVL57:
+ 122:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 16; i++) {
+ 525              		.loc 1 122 3 view .LVU93
+ 526              		.loc 1 122 10 is_stmt 0 view .LVU94
+ 527 0028 0024     		movs	r4, #0
+ 528              		.loc 1 122 3 view .LVU95
+ 529 002a 08E0     		b	.L29
+ 530              	.LVL58:
+ 531              	.L30:
+ 123:Hardware/TM1640/TM1640.c ****     TM1640_write(buff[date]);
+ 532              		.loc 1 123 5 is_stmt 1 discriminator 3 view .LVU96
+ 533 002c 05F11803 		add	r3, r5, #24
+ 534 0030 6B44     		add	r3, sp, r3
+ 535 0032 13F8180C 		ldrb	r0, [r3, #-24]	@ zero_extendqisi2
+ 536 0036 FFF7FEFF 		bl	TM1640_write
+ 537              	.LVL59:
+ 122:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 16; i++) {
+ 538              		.loc 1 122 23 discriminator 3 view .LVU97
+ 122:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 16; i++) {
+ 539              		.loc 1 122 24 is_stmt 0 discriminator 3 view .LVU98
+ 540 003a 0134     		adds	r4, r4, #1
+ 541              	.LVL60:
+ 122:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 16; i++) {
+ 542              		.loc 1 122 24 discriminator 3 view .LVU99
+ 543 003c E4B2     		uxtb	r4, r4
+ 544              	.LVL61:
+ 545              	.L29:
+ 122:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 16; i++) {
+ 546              		.loc 1 122 15 is_stmt 1 discriminator 1 view .LVU100
+ 122:Hardware/TM1640/TM1640.c ****   for (i = 0; i < 16; i++) {
+ 547              		.loc 1 122 3 is_stmt 0 discriminator 1 view .LVU101
+ 548 003e 0F2C     		cmp	r4, #15
+ 549 0040 F4D9     		bls	.L30
+ 124:Hardware/TM1640/TM1640.c ****   }
+ 125:Hardware/TM1640/TM1640.c ****   TM1640_stop();
+ 550              		.loc 1 125 3 is_stmt 1 view .LVU102
+ 551 0042 FFF7FEFF 		bl	TM1640_stop
+ 552              	.LVL62:
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 13
+
+
+ 126:Hardware/TM1640/TM1640.c **** }...
+ 553              		.loc 1 126 1 is_stmt 0 view .LVU103
+ 554 0046 07B0     		add	sp, sp, #28
+ 555              	.LCFI12:
+ 556              		.cfi_def_cfa_offset 20
+ 557              		@ sp needed
+ 558 0048 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 559              	.LVL63:
+ 560              	.L33:
+ 561              		.loc 1 126 1 view .LVU104
+ 562 004a 00BF     		.align	2
+ 563              	.L32:
+ 564 004c 00000000 		.word	.LC0
+ 565              		.cfi_endproc
+ 566              	.LFE35:
+ 568              		.text
+ 569              	.Letext0:
+ 570              		.file 2 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 571              		.file 3 "c:\\develop\\gcc-arm-none-eabi\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 572              		.file 4 "CMSIS/stm32f10x.h"
+ 573              		.file 5 "LIB/inc/stm32f10x_gpio.h"
+ 574              		.file 6 "LIB/inc/stm32f10x_rcc.h"
+ 575              		.file 7 "BASIC/delay/delay.h"
+ARM GAS  C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 TM1640.c
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:18     .text.TM1640_start:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:24     .text.TM1640_start:00000000 TM1640_start
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:78     .text.TM1640_start:00000048 $d
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:83     .text.TM1640_stop:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:89     .text.TM1640_stop:00000000 TM1640_stop
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:132    .text.TM1640_stop:00000038 $d
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:137    .text.TM1640_write:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:143    .text.TM1640_write:00000000 TM1640_write
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:270    .text.TM1640_write:00000098 $d
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:275    .text.TM1640_Init:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:281    .text.TM1640_Init:00000000 TM1640_Init
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:360    .text.TM1640_Init:00000064 $d
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:365    .text.TM1640_led:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:371    .text.TM1640_led:00000000 TM1640_led
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:405    .rodata.TM1640_display.str1.4:00000000 $d
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:410    .text.TM1640_display:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:416    .text.TM1640_display:00000000 TM1640_display
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:473    .text.TM1640_display:00000044 $d
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:478    .text.TM1640_display_add:00000000 $t
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:484    .text.TM1640_display_add:00000000 TM1640_display_add
+C:\Users\Rick\AppData\Local\Temp\ccaWnRsi.s:564    .text.TM1640_display_add:0000004c $d
+
+UNDEFINED SYMBOLS
+GPIO_WriteBit
+delay_us
+RCC_APB2PeriphClockCmd
+GPIO_Init
